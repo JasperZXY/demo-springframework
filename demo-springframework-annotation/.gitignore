@@ -1,6 +1,5 @@
 /target/
 /.settings/
-/.DS_Store
 /.project
 /demo-springframework-annotation.log
 /.classpath
