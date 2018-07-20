@@ -1,7 +1,6 @@
 package org.ruanwei.demo.springframework.core.ioc;
 
 import java.beans.ConstructorProperties;
-import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -9,7 +8,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat.Separator;
-import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.EnvironmentAware;
@@ -28,12 +25,13 @@ import org.springframework.context.MessageSourceAware;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 
-public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNameAware, ApplicationEventPublisherAware,
-		EnvironmentAware, MessageSourceAware, ResourceLoaderAware, BeanClassLoaderAware, LoadTimeWeaverAware {
+public class Family implements ApplicationContextAware, BeanFactoryAware,
+		BeanNameAware, ApplicationEventPublisherAware, EnvironmentAware,
+		MessageSourceAware, ResourceLoaderAware, BeanClassLoaderAware,
+		LoadTimeWeaverAware {
 	private static Log log = LogFactory.getLog(Family.class);
 
 	private String familyName;
@@ -42,10 +40,10 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 
 	@Valid
 	private People mother;
-	
+
 	@PeopleFormat(separator = Separator.SLASH)
 	private People son;
-	
+
 	@PeopleFormat(separator = Separator.SLASH)
 	private People daughter;
 
@@ -69,7 +67,8 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 		this.familyName = familyName;
 		this.familyCount = familyCount;
 		this.father = father;
-		log.info("Family(String familyName, int familyCount, People father)" + this);
+		log.info("Family(String familyName, int familyCount, People father)"
+				+ this);
 	}
 
 	// 2.Setter-based dependency injection
@@ -102,8 +101,10 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 	}
 
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		log.info("setApplicationContext(ApplicationContext applicationContext)" + applicationContext);
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		log.info("setApplicationContext(ApplicationContext applicationContext)"
+				+ applicationContext);
 		this.context = applicationContext;
 	}
 
@@ -120,33 +121,49 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 	}
 
 	@Override
-	public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+	public void setApplicationEventPublisher(
+			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher)"
 				+ applicationEventPublisher);
+		if (applicationEventPublisher == null) {
+			applicationEventPublisher = (ApplicationEventPublisher) context;
+		}
 		this.publisher = applicationEventPublisher;
 	}
 
 	@Override
 	public void setEnvironment(Environment env) {
 		log.info("setEnvironment(Environment env)" + env);
+		if (env == null) {
+			env = context.getEnvironment();
+		}
 		this.env = env;
 	}
 
 	@Override
 	public void setMessageSource(MessageSource messageSource) {
-		log.info("setMessageSource(MessageSource messageSource)" + messageSource);
+		log.info("setMessageSource(MessageSource messageSource)"
+				+ messageSource);
+		if (messageSource == null) {
+			messageSource = (MessageSource) context;
+		}
 		this.messageSource = messageSource;
 	}
 
 	@Override
 	public void setResourceLoader(ResourceLoader resourceLoader) {
-		log.info("setResourceLoader(ResourceLoader resourceLoader)" + resourceLoader);
+		log.info("setResourceLoader(ResourceLoader resourceLoader)"
+				+ resourceLoader);
+		if (resourceLoader == null) {
+			resourceLoader = (ResourceLoader) context;
+		}
 		this.resourceLoader = resourceLoader;
 	}
 
 	@Override
 	public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
-		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)" + loadTimeWeaver);
+		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)"
+				+ loadTimeWeaver);
 		this.loadTimeWeaver = loadTimeWeaver;
 	}
 
@@ -173,47 +190,14 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 		log.info("3 + 5 = " + calc(3, 5));
 
 		People guest = createGuest();
-		ApplicationEvent event = new MyApplicationEvent(this, message);
-		
 		// 这里是为了兼容不适用@Lookup注解时的方法注入
-		if(guest==null){
-			guest = new People("guest_def",18);
+		if (guest == null) {
+			guest = new People("guest_def", 18);
 		}
-		// 等价于
-		// publisher.publishEvent(new
-		// PayloadApplicationEvent<People2>(this,guest));
-		// context.publishEvent(new
-		// PayloadApplicationEvent<String>(this,guest));
+		// 等价于publisher.publishEvent(new PayloadApplicationEvent<People2>(this,guest));
 		publisher.publishEvent(guest);
-		publisher.publishEvent(event);
-		context.publishEvent(guest);
-		context.publishEvent(event);
-
+		
 		context.getBean("house", House.class).greeting("whatever");
-
-		if (messageSource == null) {
-			messageSource = (MessageSource) context;
-		}
-		log.info("messageSource==========" + messageSource);
-		String msg = messageSource.getMessage("my.messageSource", new Object[] { "ruanwei" },
-				"This is my message source.", Locale.US);
-		log.info("message==========" + msg);
-
-		if (resourceLoader == null) {
-			resourceLoader = (ResourceLoader) context;
-		}
-		log.info("resourceLoader==========" + resourceLoader);
-		Resource resource = resourceLoader.getResource("spring/applicationContext.xml");
-		log.info("resource==========" + resource);
-
-		if (env == null) {
-			env = context.getEnvironment();
-		}
-		log.info("env==========" + env);
-		String a = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
-		String b = env.getProperty("b"); // -Db=3 MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
-		String c = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
-		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 	}
 
 	// Initialization callback
@@ -228,9 +212,10 @@ public class Family implements ApplicationContextAware, BeanFactoryAware, BeanNa
 
 	@Override
 	public String toString() {
-		return "Family [familyName=" + familyName + ", familyCount=" + familyCount + ", father=" + father + ", mother="
-				+ mother + ", son=" + son + ", daughter=" + daughter + ", guest1=" + guest1 + ", guest2=" + guest2
-				+ "]";
+		return "Family [familyName=" + familyName + ", familyCount="
+				+ familyCount + ", father=" + father + ", mother=" + mother
+				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
+				+ guest1 + ", guest2=" + guest2 + "]";
 	}
 
 }

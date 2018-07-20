@@ -11,14 +11,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.ioc.databinding.validation.FamilyName;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.SmartLifecycle;
-import org.springframework.context.event.ApplicationContextEvent;
 
-public class People implements SmartLifecycle, ApplicationListener<ApplicationEvent> {
+public class People implements SmartLifecycle,
+		ApplicationListener<ApplicationEvent> {
 	private static Log log = LogFactory.getLog(People.class);
 
 	private volatile boolean running = true;
@@ -43,7 +42,8 @@ public class People implements SmartLifecycle, ApplicationListener<ApplicationEv
 	// ApplicationListener callback
 	@Override
 	public void onApplicationEvent(ApplicationEvent event) {
-		log.info("====================onApplicationEvent(ApplicationEvent event)" + event);
+		log.info("====================onApplicationEvent(ApplicationEvent event)"
+				+ event);
 		log.info("Recieve " + event.getClass() + " from " + event.getSource());
 
 		if (event instanceof PayloadApplicationEvent<?>) {
@@ -52,9 +52,9 @@ public class People implements SmartLifecycle, ApplicationListener<ApplicationEv
 		} else if (event instanceof MyApplicationEvent) {
 			String message = ((MyApplicationEvent) event).getMessage();
 			log.info(event.getTimestamp() + " message=" + message);
-		} else if (event instanceof ApplicationContextEvent) {
-			ApplicationContext context = ((ApplicationContextEvent) event).getApplicationContext();
-			log.info(event.getTimestamp() + " context=" + context);
+		} else {
+			long timestamp = event.getTimestamp();
+			log.info(event.getSource() + " timestamp=" + timestamp);
 		}
 	}
 

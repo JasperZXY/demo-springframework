@@ -83,36 +83,30 @@
 	<bean id="absHouse" abstract="true">
 		<property name="houseName" value="${abshouse.name}" />
 		<!-- bean | ref | idref | list | set | map | props | value | null -->
-		<!-- results in a Array -->
 		<property name="someArray">
 			<list>
 				<value>1</value>
 				<value>2</value>
 			</list>
 		</property>
-		<!-- results in a java.util.List -->
 		<property name="someList">
 			<list>
 				<value>3</value>
 				<value>4</value>
 			</list>
 		</property>
-		<!-- results in a java.util.Set -->
 		<property name="someSet">
 			<set>
 				<value>5</value>
 				<value>6</value>
 			</set>
-			<!-- <array></array> -->
 		</property>
-		<!-- results in a java.util.Properties -->
 		<property name="someProperties">
 			<props>
 				<prop key="a">1</prop>
 				<prop key="b">2</prop>
 			</props>
 		</property>
-		<!-- results in a java.util.Map -->
 		<property name="someMap">
 			<map>
 				<entry key="c" value="3" />
@@ -128,35 +122,35 @@
 		<property name="someField3" ref="someField3" />
 	</bean>
 
-	<!-- ListFactoryBean -->
+	<!-- see ListFactoryBean -->
 	<util:list id="someList2" list-class="java.util.ArrayList"
 		value-type="java.lang.Integer">
 		<value>1</value>
 		<value>2</value>
 	</util:list>
-	<!-- SetFactoryBean -->
+	<!-- see SetFactoryBean -->
 	<util:set id="someSet2" set-class="java.util.HashSet"
 		value-type="java.lang.Integer">
 		<value>3</value>
 		<value>4</value>
 	</util:set>
-	<!-- PropertiesFactoryBean -->
+	<!-- see PropertiesFactoryBean -->
 	<util:properties id="someProperties2" location="classpath:family.properties"
 		value-type="java.lang.Integer">
 		<prop key="a">1</prop>
 		<prop key="b">2</prop>
 	</util:properties>
-	<!-- MapFactoryBean -->
+	<!-- see MapFactoryBean -->
 	<util:map id="someMap2" map-class="java.util.HashMap"
 		key-type="java.lang.String" value-type="java.lang.Integer">
 		<entry key="c" value="3" />
 		<entry key="d" value="4" />
 	</util:map>
-	<!-- FieldRetrievingFactoryBean -->
+	<!-- see FieldRetrievingFactoryBean -->
 	<util:constant id="someField1" static-field="java.lang.Math.PI" />
-	<!-- PropertyPathFactoryBean -->
+	<!-- see PropertyPathFactoryBean -->
 	<util:property-path id="someField2" path="father.name" />
-	<!-- MethodInvokingFactoryBean -->
+	<!-- see MethodInvokingFactoryBean -->
 	<bean id="sysProps"
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetClass" value="java.lang.System" />
@@ -212,14 +206,14 @@
 
 	<!-- A.2.2.PropertyEditor-based Conversion -->
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-		<!-- 方式四：单个指定 -->
+		<!-- 方式四：单个指定PropertyEditor -->
 		<property name="customEditors">
 			<map>
 				<entry key="org.ruanwei.demo.springframework.core.ioc.People"
 					value="org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor" />
 			</map>
 		</property>
-		<!-- 方式五：分组指定 -->
+		<!-- 方式五：分组指定PropertyEditor -->
 		<property name="propertyEditorRegistrars">
 			<list>
 				<bean
@@ -239,7 +233,6 @@
 	<bean
 		class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"
 		p:validator-ref="validator" />
-
 	<!-- JSR-349:Bean Validation 1.1 -->
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
@@ -261,42 +254,25 @@
 	<!-- A.4.1.Bean lifecycle callbacks -->
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyInitializingBean" />
-
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyDisposableBean" />
 
 	<!-- A.4.2.Context lifecycle callbacks -->
 	<bean class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycle" />
-
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MySmartLifecycle" />
-
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycleProcessor" />
 
 	<!-- A.5.Environment：Profile and PropertySource -->
 	<!-- A.5.1.PropertySource：参考@PropertySource注解.PropertySourcesPlaceholderConfigurer将PropertySources作为Placeholder，因此同时可以被@Value和Environment访问. -->
-	<!-- 等价于<context:property-placeholder location="classpath:family.properties,classpath:jdbc.properties" 
-		file-encoding="UTF-8" /> -->
 	<!-- versions <= 3.0 default to org.springframework.beans.factory.config.PropertyPlaceholderConfigurer. -->
 	<!-- versions >= 3.1 default to org.springframework.context.support.PropertySourcesPlaceholderConfigurer. -->
-	<!-- <context:property-override />对应org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
-	<bean
-		class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:family.properties</value>
-				<value>classpath:jdbc.properties</value>
-			</list>
-		</property>
-		<property name="properties">
-			<props>
-				<prop key="a">1</prop>
-			</props>
-		</property>
-		<property name="fileEncoding" value="UTF-8" />
-		<property name="order" value="0" />
-	</bean>
+	<context:property-placeholder
+		location="classpath:family.properties,classpath:jdbc.properties"
+		file-encoding="UTF-8" order="0" />
+	<!-- see org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
+	<!-- <context:property-override /> -->
 
 	<!-- A.6.Extension Points -->
 	<!-- A.6.1.Customizing beans using a BeanPostProcessor -->

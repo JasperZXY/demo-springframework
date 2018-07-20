@@ -2,7 +2,6 @@ package org.ruanwei.demo.springframework.core.ioc.event;
 
 import org.springframework.context.ApplicationEvent;
 
-@Deprecated
 @SuppressWarnings("serial")
 public class MyApplicationEvent extends ApplicationEvent {
 	private String message;
