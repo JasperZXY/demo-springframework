@@ -11,7 +11,6 @@ import org.springframework.context.LifecycleProcessor;
  * @author ruanwei
  *
  */
-@Deprecated
 public class MyLifecycleProcessor implements LifecycleProcessor {
 	private static Log log = LogFactory.getLog(MyLifecycleProcessor.class);
 	

@@ -18,7 +18,7 @@ import org.springframework.format.Printer;
  * @author Administrator
  *
  */
-final class PeopleFormatAnnotationFormatterFactory implements AnnotationFormatterFactory<PeopleFormat> {
+public final class PeopleFormatAnnotationFormatterFactory implements AnnotationFormatterFactory<PeopleFormat> {
 	private static Log log = LogFactory.getLog(PeopleFormatAnnotationFormatterFactory.class);
 
 	public PeopleFormatAnnotationFormatterFactory() {

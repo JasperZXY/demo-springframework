@@ -68,7 +68,7 @@ public class SpringApplicaiton {
 		switch (type) {
 		case ANNOTATION_CONFIG: {// GenericApplicationContext
 			context = new AnnotationConfigApplicationContext(AppConfig.class);
-			// 要在加载bean定义之前进行上述设置并刷新
+			// 要在getBean之前进行设置并刷新
 			// context.setConfigLocation("spring/applicationContext.xml");
 			// context.register(AppConfig.class);
 			// context.refresh();

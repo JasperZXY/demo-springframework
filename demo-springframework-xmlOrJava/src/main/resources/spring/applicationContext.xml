@@ -301,6 +301,7 @@
 		class="org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean">
 		<constructor-arg type="java.lang.String" value="${family.x.familyName}" />
 		<constructor-arg type="int" value="${family.familyCount}" />
+		<constructor-arg index="2" ref="father" />
 	</bean>
 
 	<!-- ==========B.AOP and Instrumentation========== -->

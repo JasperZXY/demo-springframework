@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.context.SmartLifecycle;
 
 // Startup and shutdown callbacks
-@Deprecated
 public class MySmartLifecycle implements SmartLifecycle {
 	private static Log log = LogFactory.getLog(MySmartLifecycle.class);
 	

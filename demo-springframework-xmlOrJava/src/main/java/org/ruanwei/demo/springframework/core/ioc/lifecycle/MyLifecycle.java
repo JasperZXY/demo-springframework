@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.Lifecycle;
 
-@Deprecated
 // Startup and shutdown callbacks
 public class MyLifecycle implements Lifecycle {
 	private static Log log = LogFactory.getLog(MyLifecycle.class);

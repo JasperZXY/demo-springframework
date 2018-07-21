@@ -11,7 +11,7 @@ import org.springframework.core.convert.converter.Converter;
  * @author Administrator
  *
  */
-final class StringToPeopleConverter implements Converter<String, People> {
+public final class StringToPeopleConverter implements Converter<String, People> {
 	private static Log log = LogFactory.getLog(StringToPeopleConverter.class);
 
 	public StringToPeopleConverter() {
