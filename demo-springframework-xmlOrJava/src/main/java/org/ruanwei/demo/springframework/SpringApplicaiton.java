@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.AppConfig;
 import org.ruanwei.demo.springframework.core.aop.Good;
 import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;

@@ -1,4 +1,4 @@
-package org.ruanwei.demo.springframework.core;
+package org.ruanwei.demo.springframework;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -105,10 +105,10 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author Administrator
  *
  */
-@Configuration
-@PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @EnableAspectJAutoProxy
+@PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework.core" })
+@Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 
