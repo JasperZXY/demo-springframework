@@ -29,6 +29,7 @@
 		<property name="daughter" value="${daughter.all}" />
 		<!-- Proxied scoped beans as dependencies -->
 		<property name="guest1" ref="guest1" />
+		
 		<!-- 3.Method injection: Lookup method injection -->
 		<lookup-method name="createGuest" bean="guest1" />
 		<!-- 3.Method injection: Arbitrary method replacement -->

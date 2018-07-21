@@ -10,6 +10,7 @@ import org.ruanwei.demo.springframework.core.AppConfig;
 import org.ruanwei.demo.springframework.core.aop.Good;
 import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
+import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.springframework.context.ApplicationContext;
@@ -36,16 +37,11 @@ public class SpringApplicaiton {
 	}
 
 	private static void test1(String[] args) {
-
 		log.info("0======================================================================================");
-		// AbstractApplicationContext context =
-		// getAnnotationConfigApplicationContext();
-		AbstractApplicationContext context = getClassPathXmlApplicationContext();
-		// AbstractApplicationContext context =
-		// getFileSystemXmlApplicationContext();
+		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.CLASSPATH_XML);
 
 		log.info("1======================================================================================");
-		testEnvironment(context.getEnvironment());
+		testEnvironment(context);
 
 		log.info("2======================================================================================");
 		testMessageSource(context);
@@ -66,46 +62,47 @@ public class SpringApplicaiton {
 		testApplicationEvent(context);
 	}
 
-	// GenericApplicationContext
-	private static AbstractApplicationContext getAnnotationConfigApplicationContext() {
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(
-				AppConfig.class);
-		context.registerShutdownHook();
+	private static AbstractApplicationContext getApplicationContext(
+			ApplicationContextType type) {
+		AbstractApplicationContext context = null;
 
-		// 要在加载bean定义之前进行上述设置并刷新
-		// context.setConfigLocation("spring/applicationContext.xml");
-		// context.register(AppConfig.class);
-		// context.refresh();
+		switch (type) {
+		case ANNOTATION_CONFIG: {// GenericApplicationContext
+			context = new AnnotationConfigApplicationContext(AppConfig.class);
+			// 要在加载bean定义之前进行上述设置并刷新
+			// context.setConfigLocation("spring/applicationContext.xml");
+			// context.register(AppConfig.class);
+			// context.refresh();
+			break;
+		}
+		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
+			context = new ClassPathXmlApplicationContext(
+					new String[] { "spring/applicationContext.xml" });
+			break;
+		}
+		case FILESYSTEM_XML: {// AbstractRefreshableApplicationContext
+			context = new FileSystemXmlApplicationContext(
+					new String[] { "file:spring/applicationContext.xml" });
+			break;
+		}
+		default:
+		}
 
-		return context;
-	}
-
-	// AbstractRefreshableApplicationContext
-	private static AbstractApplicationContext getClassPathXmlApplicationContext() {
-		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
-				new String[] { "spring/applicationContext.xml" });
-		context.registerShutdownHook();
-		return context;
-	}
-
-	// AbstractRefreshableApplicationContext
-	private static AbstractApplicationContext getFileSystemXmlApplicationContext() {
-		FileSystemXmlApplicationContext context = new FileSystemXmlApplicationContext(
-				new String[] { "file:spring/applicationContext.xml" });
 		context.registerShutdownHook();
 		return context;
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
-	private static void testEnvironment(Environment env) {
-		log.info("env==========" + env);
+	private static void testEnvironment(ApplicationContext context) {
+		log.info("env==========" + context.getEnvironment());
 
-		testProfile(env);
+		testProfile(context);
 
-		testPropertySource(env);
+		testPropertySource(context.getEnvironment());
 	}
 
-	private static void testProfile(Environment env) {
+	private static void testProfile(ApplicationContext context) {
+		Environment env = context.getEnvironment();
 		log.info("profiles==========" + env.getActiveProfiles() + " "
 				+ env.getDefaultProfiles());
 
@@ -116,6 +113,9 @@ public class SpringApplicaiton {
 			configEnv.setActiveProfiles("development");
 			configEnv.setDefaultProfiles("production");
 		}
+
+		House house = context.getBean("house", House.class);
+		log.info("house==========" + house);
 	}
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
@@ -179,6 +179,7 @@ public class SpringApplicaiton {
 		log.info(family);
 		log.info(familyx);
 		log.info(myFamilyFactoryBean);
+
 	}
 
 	private static void testAOP(ApplicationContext context) {
@@ -207,5 +208,9 @@ public class SpringApplicaiton {
 			log.info("7.4======================================================================================");
 			absContext.close();
 		}
+	}
+
+	public enum ApplicationContextType {
+		CLASSPATH_XML, FILESYSTEM_XML, ANNOTATION_CONFIG
 	}
 }

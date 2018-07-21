@@ -37,13 +37,14 @@ public class House {
 	private String someField2;
 	private String someField3;
 
-	// JSR-349:Bean Validation 1.1
+	// JSR-349:Method Validation with @Validated
 	@NotNull
 	public String greeting(@Size(min = 2, max = 8) String message) {
 		log.info("greeting(String message)" + message);
 		return message;
 	}
 
+	// Setter-based dependency injection
 	@Required
 	public void setHouseName(String houseName) {
 		log.info("setHouseName(String houseName)" + houseName);

@@ -22,7 +22,7 @@ public class People implements SmartLifecycle,
 
 	private volatile boolean running = true;
 
-	// JSR-303
+	// JSR-303 Bean Validation
 	@NotEmpty
 	@Size(min = 1, max = 10)
 	@FamilyName("ruan")
@@ -32,6 +32,8 @@ public class People implements SmartLifecycle,
 	@Max(100)
 	private int age;
 
+	// a.Bean instantiation with a constructor
+	// 1.Constructor-based dependency injection(byName with javac -g)
 	@ConstructorProperties({ "name", "age" })
 	public People(String name, int age) {
 		this.name = name;
