@@ -118,7 +118,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Import(DataConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
-@PropertySource("classpath:family.properties")
+// @PropertySource("classpath:family.properties")
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
