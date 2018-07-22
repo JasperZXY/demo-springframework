@@ -13,7 +13,7 @@ import org.springframework.format.Formatter;
  * @author Administrator
  *
  */
-final class PeopleFormatter2 implements Formatter<People2> {
+public final class PeopleFormatter2 implements Formatter<People2> {
 	private static Log log = LogFactory.getLog(PeopleFormatter2.class);
 
 	private String delimiter;

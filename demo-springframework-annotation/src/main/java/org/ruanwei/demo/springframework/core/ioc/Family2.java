@@ -1,16 +1,15 @@
 package org.ruanwei.demo.springframework.core.ioc;
 
-import java.util.Locale;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat2.Separator;
-import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanNameAware;
@@ -19,14 +18,12 @@ import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.stereotype.Component;
@@ -40,18 +37,16 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		LoadTimeWeaverAware {
 	private static Log log = LogFactory.getLog(Family2.class);
 
+	// 1.Constructor-based dependency injection
 	private String familyName;
 	private int familyCount;
 	private People2 father;
 
+	// @Value("#{father}")
 	@Valid
-	@Value("#{father}")
-	private People2 mother;
-
-	@Valid
-	@Autowired(required = false)
+	@Autowired
 	@Qualifier("first")
-	private People2 mother2;
+	private People2 mother;
 
 	@Value("${son.all}")
 	@PeopleFormat2(separator = Separator.SLASH)
@@ -61,6 +56,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	@PeopleFormat2(separator = Separator.SLASH)
 	private People2 daughter;
 
+	// 2.Setter-based dependency injection
 	@Autowired
 	private ApplicationContext context;
 
@@ -68,21 +64,39 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	private BeanFactory beanFactory;
 
 	@Autowired
-	private ApplicationEventPublisher publisher;
-
-	@Autowired
-	private Environment env;
-
-	@Autowired
 	private MessageSource messageSource;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
 
+	@Autowired
+	private ApplicationEventPublisher publisher;
+
+	@Autowired
+	private Environment env;
+
 	// 需要*Aware接口
 	private String beanName;
 	private ClassLoader classLoader;
 	private LoadTimeWeaver loadTimeWeaver;
+
+	// JSR-349:Method Validation with @Validated
+	@NotNull
+	public void sayHello(@Size(min = 2, max = 8) String message) {
+		log.info("sayHello(String message)" + message);
+
+		// 3.Method injection: Arbitrary method replacement
+		log.info("3 + 5 = " + calc(3, 5));
+
+		// 3.Method injection: Lookup method injection
+		People2 guest = createGuest();
+		// 这里是为了兼容不适用@Lookup注解时的方法注入
+		if (guest == null) {
+			guest = new People2("guest_def", 18);
+		}
+		// 等价于PayloadApplicationEvent<People2>(this,guest);
+		publisher.publishEvent(guest);
+	}
 
 	// a.Bean instantiation with a constructor
 	// 1.Constructor-based dependency injection(byName with javac -g)
@@ -95,65 +109,6 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		this.father = father;
 		log.info("Family2(String familyName, int familyCount, People father)"
 				+ this);
-	}
-
-	// 3.Method injection: Lookup method injection
-	@Lookup("father")
-	protected People2 createGuest() {
-		log.info("createGuest");
-		return null;
-	}
-
-	// 3.Method injection: Arbitrary method replacement
-	protected int calc(int a, int b) {
-		return a + b;
-	}
-
-	public void sayHello(String message) {
-		log.info("sayHello(String message)" + message);
-
-		log.info("3 + 5 = " + calc(3, 5));
-
-		People2 guest = createGuest();
-		ApplicationEvent event = new MyApplicationEvent2(this, message);
-		// 等价于
-		// publisher.publishEvent(new
-		// PayloadApplicationEvent<People2>(this,guest));
-		// context.publishEvent(new
-		// PayloadApplicationEvent<String>(this,guest));
-		publisher.publishEvent(guest);
-		publisher.publishEvent(event);
-		context.publishEvent(guest);
-		context.publishEvent(event);
-
-		context.getBean("house", AbsHouse2.class).greeting("whatever");
-
-		if (messageSource == null) {
-			messageSource = (MessageSource) context;
-		}
-		log.info("messageSource==========" + messageSource);
-		String msg = messageSource.getMessage("my.messageSource",
-				new Object[] { "ruanwei" }, "This is my message source.",
-				Locale.US);
-		log.info("message==========" + msg);
-
-		if (resourceLoader == null) {
-			resourceLoader = (ResourceLoader) context;
-		}
-		log.info("resourceLoader==========" + resourceLoader);
-		Resource resource = resourceLoader
-				.getResource("spring/applicationContext.xml");
-		log.info("resource==========" + resource);
-
-		if (env == null) {
-			env = context.getEnvironment();
-		}
-		log.info("env==========" + env);
-		String a = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
-		String b = env.getProperty("b"); // -Db=3
-											// MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
-		String c = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
-		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 	}
 
 	// 2.Setter-based dependency injection
@@ -176,6 +131,18 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		this.classLoader = classLoader;
 	}
 
+	// 3.Method injection: Lookup method injection
+	@Lookup("father")
+	protected People2 createGuest() {
+		log.info("createGuest");
+		return null;
+	}
+
+	// 3.Method injection: Arbitrary method replacement
+	protected int calc(int a, int b) {
+		return a + b;
+	}
+
 	// JSR-250.Initialization callback.等价于<bean init-method="init"/>.
 	@PostConstruct
 	public void init() {
@@ -192,8 +159,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	public String toString() {
 		return "Family2 [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
-				+ ", mother2=" + mother2 + ", son=" + son + ", daughter="
-				+ daughter + "]";
+				+ ", son=" + son + ", daughter=" + daughter + "]";
 	}
 
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
  * @author ruanwei
  *
  */
-@Deprecated
 @Order(Ordered.LOWEST_PRECEDENCE)
 @Component
 public class MyLifecycleProcessor2 implements LifecycleProcessor {

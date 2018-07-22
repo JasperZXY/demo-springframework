@@ -234,5 +234,4 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
 				+ guest1 + ", guest2=" + guest2 + "]";
 	}
-
 }

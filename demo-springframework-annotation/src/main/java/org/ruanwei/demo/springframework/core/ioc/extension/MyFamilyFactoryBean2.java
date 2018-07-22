@@ -3,6 +3,7 @@ package org.ruanwei.demo.springframework.core.ioc.extension;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.ioc.Family2;
+import org.ruanwei.demo.springframework.core.ioc.People2;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,18 +13,19 @@ import org.springframework.stereotype.Component;
 public class MyFamilyFactoryBean2 implements FactoryBean<Family2> {
 	private static Log log = LogFactory.getLog(MyFamilyFactoryBean2.class);
 
-	@Value("${family.x.familyName}")
 	private String familyName;
-	
-	@Value("${family.familyCount}")
 	private int familyCount;
+	private People2 father;
 
 	@Autowired
-	public MyFamilyFactoryBean2(@Value("${family.x.familyName}") String familyName,
-			@Value("${family.familyCount}") int familyCount) {
+	public MyFamilyFactoryBean2(
+			@Value("${family.x.familyName}") String familyName,
+			@Value("${family.familyCount}") int familyCount, People2 father) {
 		this.familyName = familyName;
 		this.familyCount = familyCount;
-		log.info("MyFamilyFactoryBean(String familyName, int familyCount)" + this);
+		this.father = father;
+		log.info("MyFamilyFactoryBean(String familyName, int familyCount, People2 father)"
+				+ this);
 	}
 
 	@Override
@@ -44,10 +46,11 @@ public class MyFamilyFactoryBean2 implements FactoryBean<Family2> {
 		log.info("isSingleton()");
 		return true;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "MyFamilyFactoryBean [familyName=" + familyName + ", familyCount=" + familyCount + "]";
+		return "MyFamilyFactoryBean2 [familyName=" + familyName
+				+ ", familyCount=" + familyCount + ", father=" + father + "]";
 	}
 
 }

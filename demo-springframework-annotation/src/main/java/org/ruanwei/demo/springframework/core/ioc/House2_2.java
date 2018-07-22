@@ -14,7 +14,10 @@ import org.springframework.stereotype.Component;
 public class House2_2 extends AbsHouse2 {
 	private static Log log = LogFactory.getLog(House2_2.class);
 
-	@Value("${abshouse.host.production}")
+	@Value("${house.name:houseName_def}")
+	private String houseName;
+	
+	@Value("${house.host.production:production_def}")
 	private String hostName;
 
 	// JSR-250.Initialization callback.等价于<bean init-method="init"/>.

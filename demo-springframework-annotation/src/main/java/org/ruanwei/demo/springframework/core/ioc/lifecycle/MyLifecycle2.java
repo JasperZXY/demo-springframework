@@ -7,7 +7,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-@Deprecated
 @Order(Ordered.LOWEST_PRECEDENCE)
 @Component
 public class MyLifecycle2 implements Lifecycle {
