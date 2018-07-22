@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.aop.Good;
-import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
@@ -17,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -37,7 +37,7 @@ public class SpringApplicaiton {
 
 	private static void test1(String[] args) {
 		log.info("0======================================================================================");
-		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
 
 		log.info("1======================================================================================");
 		testEnvironment(context);
@@ -119,10 +119,9 @@ public class SpringApplicaiton {
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
-		String a = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
-		String b = env.getProperty("b"); // -Db=3
-											// MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
-		String c = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
+		String a = env.getProperty("a"); // MapPropertySource(-Da=1)
+		String b = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
+		String c = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 
 		if (env instanceof ConfigurableEnvironment) {
@@ -156,7 +155,7 @@ public class SpringApplicaiton {
 	private static void testResourceLoader(ResourceLoader resourceLoader) {
 		log.info("resourceLoader==========" + resourceLoader);
 		Resource resource = resourceLoader
-				.getResource("spring/applicationContext.xml");
+				.getResource("classpath:spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 	}
 
@@ -185,9 +184,10 @@ public class SpringApplicaiton {
 		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
 
+		// TODO:Java配置下还不能正常工作
 		Good good = (Good) context.getBean("good");
-		Happy mixin = (Happy) context.getBean("good");
-		log.info(good.good("whatever") + mixin.happy("whatever"));
+		// Happy mixin = (Happy) context.getBean("good");
+		// log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	private static void testApplicationEvent(ApplicationContext context) {
@@ -200,9 +200,11 @@ public class SpringApplicaiton {
 			log.info("7.2======================================================================================");
 			absContext.stop();
 
-			// AbstractRefreshableApplicationContext
 			log.info("7.3======================================================================================");
-			absContext.refresh();
+			// 即ClassPathXmlApplicationContext和FileSystemXmlApplicationContext
+			if(context instanceof AbstractRefreshableApplicationContext){
+				absContext.refresh();
+			}
 
 			log.info("7.4======================================================================================");
 			absContext.close();

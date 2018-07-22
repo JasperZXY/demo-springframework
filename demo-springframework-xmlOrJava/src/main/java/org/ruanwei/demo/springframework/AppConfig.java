@@ -54,6 +54,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
@@ -117,12 +118,15 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Import(DataConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
+@PropertySource("classpath:family.properties")
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 
-	private final DataConfig dataConfig;
+	@Autowired
+	private DataConfig dataConfig;
 
+	// TODO:@Value在这里取不到值，但在@Bean方法中可以,why
 	@Value("${family.familyCount:4}")
 	private int familyCount;
 	@Value("#{father}")
@@ -158,10 +162,8 @@ public class AppConfig {
 	@Resource
 	private Environment env;
 
-	@Autowired
-	public AppConfig(DataConfig dataConfig) {
+	public AppConfig() {
 		log.info("AppConfig()======" + username + password);
-		this.dataConfig = dataConfig;
 
 		// if (username == null || username.isEmpty()) {
 		// username = env.getProperty("p.username", "ruanwei_def");
@@ -178,7 +180,8 @@ public class AppConfig {
 	@DependsOn("house")
 	@Bean(name = "family", initMethod = "init", destroyMethod = "destroy")
 	public Family family(
-			@Value("${family.1.familyName:ruan_def}") String familyName) {
+			@Value("${family.1.familyName:ruan_def}") String familyName,
+			@Value("#{father}") People father) {
 		// 1.Constructor-based dependency injection
 		Family family = new Family(familyName, familyCount, father);
 		// 2.Setter-based dependency injection
@@ -233,7 +236,7 @@ public class AppConfig {
 		return new People(name, age);
 	}
 
-	@Lazy
+	// @Lazy
 	@Bean("mother")
 	public People mother(@Value("${mother.name:lixiaoling_def}") String name,
 			@Value("${mother.age:34}") int age) {
@@ -243,7 +246,7 @@ public class AppConfig {
 	@Lazy
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	@Bean("guest1")
-	public People guest1(@Value("${guest.name:guest_def}") String name,
+	public People guest1(@Value("${guest.name:ruan_def}") String name,
 			@Value("${guest.age:100}") int age) {
 		return new People(name, age);
 	}
@@ -475,7 +478,8 @@ public class AppConfig {
 
 	// A.5.Environment：Profile and PropertySource
 
-	// A.5.1.PropertySource：参考@PropertySource和PropertySourcePlaceholderConfiguer
+	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
+	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
@@ -483,7 +487,8 @@ public class AppConfig {
 				new ClassPathResource("family.properties"),
 				new ClassPathResource("jdbc.properties"));
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer.setOrder(0);
+		propertySourcesPlaceholderConfigurer
+				.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		log.info("propertySourcesPlaceholderConfigurer=========="
 				+ propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
@@ -538,7 +543,7 @@ public class AppConfig {
 	// A.6.3.Customizing instantiation logic with a FactoryBean
 	@Bean("familyx")
 	public MyFamilyFactoryBean myFamilyFactoryBean(
-			@Value("${family.x.familyName}") String familyName) {
+			@Value("${family.x.familyName:ruan_def}") String familyName) {
 		MyFamilyFactoryBean myFamilyFactoryBean = new MyFamilyFactoryBean(
 				familyName, familyCount, father);
 		return myFamilyFactoryBean;

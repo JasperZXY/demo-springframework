@@ -15,7 +15,7 @@ public class PeopleFormatterRegistrar implements FormatterRegistrar {
 
 	@Override
 	public void registerFormatters(FormatterRegistry registry) {
-		log.debug("registerFormatters(FormatterRegistry registry)" + registry);
+		log.info("registerFormatters(FormatterRegistry registry)" + registry);
 		registry.addConverter(new StringToPeopleConverter());
 		registry.addConverterFactory(new StringToPeopleConverterFactory());
 		

@@ -6,13 +6,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.validation.annotation.Validated;
 
 // @Validated
 public class House {
@@ -36,13 +32,6 @@ public class House {
 	private double someField1;
 	private String someField2;
 	private String someField3;
-
-	// JSR-349:Method Validation with @Validated
-//	@NotNull
-//	public String greeting(@Size(min = 2, max = 8) String message) {
-//		log.info("greeting(String message)" + message);
-//		return message;
-//	}
 
 	// Setter-based dependency injection
 	@Required

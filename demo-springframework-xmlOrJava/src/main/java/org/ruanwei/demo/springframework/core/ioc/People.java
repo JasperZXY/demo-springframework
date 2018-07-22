@@ -24,7 +24,7 @@ public class People implements SmartLifecycle,
 
 	// JSR-303 Bean Validation
 	@NotEmpty
-	@Size(min = 1, max = 10)
+	@Size(min = 1, max = 15)
 	@FamilyName("ruan")
 	private String name;
 

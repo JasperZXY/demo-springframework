@@ -92,7 +92,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		People2 guest = createGuest();
 		// 这里是为了兼容不适用@Lookup注解时的方法注入
 		if (guest == null) {
-			guest = new People2("guest_def", 18);
+			guest = new People2("ruanwei_def", 18);
 		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);

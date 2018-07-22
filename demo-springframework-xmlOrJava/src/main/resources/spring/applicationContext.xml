@@ -267,7 +267,7 @@
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycleProcessor" />
 
 	<!-- A.5.Environment：Profile and PropertySource -->
-	<!-- A.5.1.PropertySource：参考@PropertySource注解.PropertySourcesPlaceholderConfigurer将PropertySources作为Placeholder，因此同时可以被@Value和Environment访问. -->
+	<!-- A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问. -->
 	<!-- versions <= 3.0 default to org.springframework.beans.factory.config.PropertyPlaceholderConfigurer. -->
 	<!-- versions >= 3.1 default to org.springframework.context.support.PropertySourcesPlaceholderConfigurer. -->
 	<context:property-placeholder

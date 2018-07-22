@@ -83,7 +83,7 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		People guest = createGuest();
 		// 这里是为了兼容不适用@Lookup注解时的方法注入
 		if (guest == null) {
-			guest = new People("guest_def", 18);
+			guest = new People("ruan_guest", 18);
 		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
