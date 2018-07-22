@@ -100,7 +100,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Import(DataConfig2.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
-@ComponentScan(basePackages = { "org.ruanwei.demo.springframework.core" })
+@ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
 @Configuration
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
@@ -287,8 +287,8 @@ public class AppConfig2 {
 	// A.4.Lifecycle:Initialization/Destruction/Startup/Shutdown callbacks
 	// A.4.1.Bean lifecycle callbacks
 	// A.4.2.Context lifecycle callbacks
+	
 	// A.5.Environment：Profile and PropertySource
-
 	// A.5.1.PropertySource：参考@PropertySource和PropertySourcePlaceholderConfiguer
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

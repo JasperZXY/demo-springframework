@@ -270,7 +270,7 @@
 	<!-- versions <= 3.0 default to org.springframework.beans.factory.config.PropertyPlaceholderConfigurer. -->
 	<!-- versions >= 3.1 default to org.springframework.context.support.PropertySourcesPlaceholderConfigurer. -->
 	<context:property-placeholder
-		location="classpath:family.properties,classpath:jdbc.properties"
+		location="classpath*:family.properties,classpath*:jdbc.properties"
 		file-encoding="UTF-8" order="0" />
 	<!-- see org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
 	<!-- <context:property-override /> -->

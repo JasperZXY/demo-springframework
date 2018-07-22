@@ -92,6 +92,8 @@
 			</set>
 		</property>
 	</bean>
+	
+	<!-- A.2.2.PropertyEditor-based Conversion -->
 
 	<!-- A.2.3.Validation JSR-303/JSR-349/JSR-380 -->
 	<bean id="validator"
@@ -130,12 +132,12 @@
 	<!-- 参考 @Component/@Order -->
 
 	<!-- A.5.Environment：Profile and PropertySource -->
-	<!-- A.5.1.PropertySource：参考@PropertySource注解和PropertySourcePlaceholderConfiguer -->
-	<!-- A.5.2.Profile：参考 @Profile -->
+	<!-- A.5.1.PropertySource：参考@PropertySource和@Configueration -->
+	<!-- A.5.2.Profile：参考 @Profile和@Component -->
 
 	<!-- PropertySourcesPlaceholderConfigurer/PropertyPlaceholderConfigurer -->
 	<context:property-placeholder
-		location="classpath:family.properties,classpath:jdbc*.properties"
+		location="classpath*:family.properties,classpath*:jdbc.properties"
 		file-encoding="UTF-8" order="0" />
 
 	<!-- A.6.Extension Points -->
