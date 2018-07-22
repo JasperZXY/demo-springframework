@@ -462,20 +462,17 @@ public class AppConfig {
 	// A.4.2.Context lifecycle callbacks
 	@Bean
 	public MyLifecycle myLifecycle() {
-		MyLifecycle myLifecycle = new MyLifecycle();
-		return myLifecycle;
+		return new MyLifecycle();
 	}
 
 	@Bean
 	public MySmartLifecycle mySmartLifecycle() {
-		MySmartLifecycle mySmartLifecycle = new MySmartLifecycle();
-		return mySmartLifecycle;
+		return new MySmartLifecycle();
 	}
 
 	@Bean
 	public MyLifecycleProcessor myLifecycleProcessor() {
-		MyLifecycleProcessor myLifecycleProcessor = new MyLifecycleProcessor();
-		return myLifecycleProcessor;
+		return new MyLifecycleProcessor();
 	}
 
 	// A.5.Environment：Profile and PropertySource

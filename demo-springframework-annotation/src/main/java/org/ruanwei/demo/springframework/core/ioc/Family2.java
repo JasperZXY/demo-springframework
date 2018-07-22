@@ -30,11 +30,14 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
+@Validated
 @Lazy
 @DependsOn("house")
 @Component("family")
-public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWeaverAware {
+public class Family2 implements BeanNameAware, BeanClassLoaderAware,
+		LoadTimeWeaverAware {
 	private static Log log = LogFactory.getLog(Family2.class);
 
 	private String familyName;
@@ -85,11 +88,13 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 	// 1.Constructor-based dependency injection(byName with javac -g)
 	@Autowired
 	public Family2(@Value("${family.1.familyName:ruan_wei}") String familyName,
-			@Value("${family.familyCount:4}") int familyCount, @Valid People2 father) {
+			@Value("${family.familyCount:4}") int familyCount,
+			@Valid People2 father) {
 		this.familyName = familyName;
 		this.familyCount = familyCount;
 		this.father = father;
-		log.info("Family2(String familyName, int familyCount, People father)" + this);
+		log.info("Family2(String familyName, int familyCount, People father)"
+				+ this);
 	}
 
 	// 3.Method injection: Lookup method injection
@@ -127,15 +132,17 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 			messageSource = (MessageSource) context;
 		}
 		log.info("messageSource==========" + messageSource);
-		String msg = messageSource.getMessage("my.messageSource", new Object[] { "ruanwei" },
-				"This is my message source.", Locale.US);
+		String msg = messageSource.getMessage("my.messageSource",
+				new Object[] { "ruanwei" }, "This is my message source.",
+				Locale.US);
 		log.info("message==========" + msg);
 
 		if (resourceLoader == null) {
 			resourceLoader = (ResourceLoader) context;
 		}
 		log.info("resourceLoader==========" + resourceLoader);
-		Resource resource = resourceLoader.getResource("spring/applicationContext.xml");
+		Resource resource = resourceLoader
+				.getResource("spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 
 		if (env == null) {
@@ -143,7 +150,8 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 		}
 		log.info("env==========" + env);
 		String a = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
-		String b = env.getProperty("b"); // -Db=3 MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
+		String b = env.getProperty("b"); // -Db=3
+											// MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 		String c = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 	}
@@ -157,7 +165,8 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 
 	@Override
 	public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
-		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)" + loadTimeWeaver);
+		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)"
+				+ loadTimeWeaver);
 		this.loadTimeWeaver = loadTimeWeaver;
 	}
 
@@ -178,11 +187,13 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 	public void destroy() {
 		log.info("====================destroy()");
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Family2 [familyName=" + familyName + ", familyCount=" + familyCount + ", father=" + father + ", mother="
-				+ mother + ", mother2=" + mother2 + ", son=" + son + ", daughter=" + daughter + "]";
+		return "Family2 [familyName=" + familyName + ", familyCount="
+				+ familyCount + ", father=" + father + ", mother=" + mother
+				+ ", mother2=" + mother2 + ", son=" + son + ", daughter="
+				+ daughter + "]";
 	}
 
 }
