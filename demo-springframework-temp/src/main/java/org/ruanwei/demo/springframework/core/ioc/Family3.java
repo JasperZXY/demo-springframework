@@ -35,15 +35,13 @@ import org.springframework.stereotype.Component;
  * You can apply @Autowired to constructors, fields and methods with arbitrary
  * names and/or multiple arguments. <br/>
  * Fine-tuning annotation-based autowiring with primary and qualifier.<br/>
- * For a fallback match, the bean name is considered a default qualifier value.
- * <br/>
+ * For a fallback match, the bean name is considered a default qualifier value. <br/>
  * <li>JSR-250’s @Resource(name=”myBean”).by Name, then by Type, then by
- * Qualifiers.
- * <li>JSR-330’s @Named("myBean") @Inject @Named("fristCandidate").by Type, then
- * by Qualifiers, then by Name.
- * <li>Spring’s @Component("myBean") @Autowired(required=”false”) @Qualifier(
- * "fristCandidate").by Type, then by Qualifiers, then by Name.
- * <li>@Value("myName") @Primary @Required @Lazy . <br/>
+ * Qualifiers. <li>JSR-330’s @Named("myBean") @Inject
+ * @Named("fristCandidate").by Type, then by Qualifiers, then by Name. <li>
+ * Spring’s @Component("myBean") @Autowired(required=”false”) @Qualifier(
+ * "fristCandidate").by Type, then by Qualifiers, then by Name. <li>
+ * @Value("myName") @Primary @Required @Lazy . <br/>
  * 
  * @author Administrator
  *
@@ -51,7 +49,8 @@ import org.springframework.stereotype.Component;
 @Lazy
 @DependsOn("house")
 @Component("family")
-public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWeaverAware {
+public class Family3 implements BeanNameAware, BeanClassLoaderAware,
+		LoadTimeWeaverAware {
 	private static Log log = LogFactory.getLog(Family3.class);
 
 	private String familyName;
@@ -102,11 +101,13 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 	// 1.Constructor-based dependency injection(byName with javac -g)
 	@Autowired
 	public Family3(@Value("${family.1.familyName:ruan_wei}") String familyName,
-			@Value("${family.familyCount:4}") int familyCount, @Valid People3 father) {
+			@Value("${family.familyCount:4}") int familyCount,
+			@Valid People3 father) {
 		this.familyName = familyName;
 		this.familyCount = familyCount;
 		this.father = father;
-		log.info("Family3(String familyName, int familyCount, People father)" + this);
+		log.info("Family3(String familyName, int familyCount, People father)"
+				+ this);
 	}
 
 	// 3.Method injection: Lookup method injection
@@ -143,14 +144,16 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 		if (messageSource == null) {
 			messageSource = (MessageSource) context;
 		}
-		String msg = messageSource.getMessage("my.messageSource", new Object[] { "ruanwei" },
-				"This is my message source.", Locale.US);
+		String msg = messageSource.getMessage("my.messageSource",
+				new Object[] { "ruanwei" }, "This is my message source.",
+				Locale.US);
 		log.info("message==========" + msg);
 
 		if (resourceLoader == null) {
 			resourceLoader = (ResourceLoader) context;
 		}
-		Resource resource = resourceLoader.getResource("spring/applicationContext.xml");
+		Resource resource = resourceLoader
+				.getResource("spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 
 		if (env == null) {
@@ -158,7 +161,8 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 		}
 		log.info("env==========" + env);
 		String a = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
-		String b = env.getProperty("b"); // -Db=3 MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
+		String b = env.getProperty("b"); // -Db=3
+											// MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 		String c = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 	}
@@ -172,7 +176,8 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 
 	@Override
 	public void setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver) {
-		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)" + loadTimeWeaver);
+		log.info("setLoadTimeWeaver(LoadTimeWeaver loadTimeWeaver)"
+				+ loadTimeWeaver);
 		this.loadTimeWeaver = loadTimeWeaver;
 	}
 
@@ -196,8 +201,10 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware, LoadTimeWea
 
 	@Override
 	public String toString() {
-		return "Family3 [familyName=" + familyName + ", familyCount=" + familyCount + ", father=" + father + ", mother="
-				+ mother + ", mother2=" + mother2 + ", son=" + son + ", daughter=" + daughter + "]";
+		return "Family3 [familyName=" + familyName + ", familyCount="
+				+ familyCount + ", father=" + father + ", mother=" + mother
+				+ ", mother2=" + mother2 + ", son=" + son + ", daughter="
+				+ daughter + "]";
 	}
 
 }

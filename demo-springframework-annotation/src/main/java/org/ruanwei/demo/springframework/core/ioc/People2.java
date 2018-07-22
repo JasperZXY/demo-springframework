@@ -13,13 +13,11 @@ import org.ruanwei.demo.springframework.core.ioc.databinding.validation.FamilyNa
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.context.event.ApplicationContextEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -34,6 +32,7 @@ public class People2 implements SmartLifecycle {
 
 	private volatile boolean running = false;
 
+	// 1.Constructor-based dependency injection
 	@NotEmpty
 	@Size(min = 1, max = 10)
 	@FamilyName2("ruan")
@@ -43,18 +42,20 @@ public class People2 implements SmartLifecycle {
 	@Max(100)
 	private int age;
 
-	public People2(@Value("${father.name:ruan_wei}") String name, @Value("${father.age:34}") int age) {
+	// 1.Constructor-based dependency injection
+	public People2(@Value("${father.name:ruan_def}") String name, @Value("${father.age:35}") int age) {
 		this.name = name;
 		this.age = age;
 		log.info("People2(String name,int age)" + this);
 	}
 
 	// ApplicationListener callback
-	@EventListener({ ApplicationEvent.class })
 	@Order(1)
 	// @Async
+	@EventListener({ ApplicationEvent.class })
 	public void onApplicationEvent(ApplicationEvent event) {
-		log.info("====================onApplicationEvent(ApplicationEvent event)" + event);
+		log.info("====================onApplicationEvent(ApplicationEvent event)"
+				+ event);
 		log.info("Recieve " + event.getClass() + " from " + event.getSource());
 
 		if (event instanceof PayloadApplicationEvent<?>) {
@@ -63,9 +64,9 @@ public class People2 implements SmartLifecycle {
 		} else if (event instanceof MyApplicationEvent2) {
 			String message = ((MyApplicationEvent2) event).getMessage();
 			log.info(event.getTimestamp() + " message=" + message);
-		} else if (event instanceof ApplicationContextEvent) {
-			ApplicationContext context = ((ApplicationContextEvent) event).getApplicationContext();
-			log.info(event.getTimestamp() + " context=" + context);
+		} else {
+			long timestamp = event.getTimestamp();
+			log.info(event.getSource() + " timestamp=" + timestamp);
 		}
 	}
 

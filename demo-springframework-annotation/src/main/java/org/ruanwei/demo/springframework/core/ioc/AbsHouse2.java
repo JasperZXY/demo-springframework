@@ -47,11 +47,10 @@ import org.springframework.validation.annotation.Validated;
  * @author Administrator
  *
  */
-@Validated
 public abstract class AbsHouse2 {
 	private static Log log = LogFactory.getLog(AbsHouse2.class);
 
-	@Value("${abshouse.name:ruan_wei}")
+	@Value("${abshouse.name:abshouseName_def}")
 	private String houseName;
 
 	@Value("1,2")
@@ -138,13 +137,6 @@ public abstract class AbsHouse2 {
 
 	@Resource(name = "someField3")
 	private String someField3;
-
-	// JSR-349:Bean Validation 1.1
-	@NotNull
-	public String greeting(@Size(min = 2, max = 8) String message) {
-		log.info("greeting(String message)" + message);
-		return message;
-	}
 
 	// JSR-250.Initialization callback.等价于<bean init-method="init"/>.
 	@PostConstruct

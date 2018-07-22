@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Component;
 
-@Deprecated
 @Component
 public class MyDisposableBean2 implements DisposableBean {
 	private static Log log = LogFactory.getLog(MyDisposableBean2.class);

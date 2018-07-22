@@ -76,7 +76,7 @@ public class SpringApplicaiton {
 		}
 		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
 			context = new ClassPathXmlApplicationContext(
-					new String[] { "spring/applicationContext.xml" });
+					new String[] { "classpath:spring/applicationContext.xml" });
 			break;
 		}
 		case FILESYSTEM_XML: {// AbstractRefreshableApplicationContext

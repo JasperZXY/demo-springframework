@@ -9,7 +9,7 @@ import org.springframework.core.convert.converter.Converter;
  * Take care to ensure that your Converter implementation is thread-safe.
  * 
  */
-final class StringToPeopleConverter2 implements Converter<String, People2> {
+public final class StringToPeopleConverter2 implements Converter<String, People2> {
 	private static Log log = LogFactory.getLog(StringToPeopleConverter2.class);
 
 	public StringToPeopleConverter2() {
