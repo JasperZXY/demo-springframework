@@ -11,13 +11,13 @@ public class FamilyNameConstraintValidator implements ConstraintValidator<Family
 	private String familyName;
 
 	public void initialize(FamilyName constraintAnnotation) {
-		log.info("initialize(FamilyName constraintAnnotation)" + constraintAnnotation);
+		log.debug("initialize(FamilyName constraintAnnotation)" + constraintAnnotation);
 		this.familyName = constraintAnnotation.value();
 	}
 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
-		log.info("isValid(String value, ConstraintValidatorContext context)" + value + context);
+		log.debug("isValid(String value, ConstraintValidatorContext context)" + value + context);
 		// context.buildConstraintViolationWithTemplate("字符串不能为空").addConstraintViolation();
 		return value != null && (value.startsWith(this.familyName) || value.startsWith("li"));
 	}

@@ -10,7 +10,7 @@ public class PeoplePropertyEditor extends PropertyEditorSupport {
 	private static Log log = LogFactory.getLog(PeoplePropertyEditor.class);
 
 	public PeoplePropertyEditor() {
-		log.info("PeoplePropertyEditor()");
+		log.debug("PeoplePropertyEditor()");
 	}
 
 	@Override

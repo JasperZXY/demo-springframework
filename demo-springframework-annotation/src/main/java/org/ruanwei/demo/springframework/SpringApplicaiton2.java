@@ -106,8 +106,8 @@ public class SpringApplicaiton2 {
 
 		if (env instanceof ConfigurableEnvironment) {
 			ConfigurableEnvironment configEnv = (StandardEnvironment) env;
-			// -Dspring.profiles.active="development"
-			// -Dspring.profiles.default="production"
+			// -Dspring.profiles.active="production"
+			// -Dspring.profiles.default="development"
 			configEnv.setActiveProfiles("development");
 			configEnv.setDefaultProfiles("production");
 		}
@@ -163,7 +163,7 @@ public class SpringApplicaiton2 {
 			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("applicationEventPublisher=========="
 				+ applicationEventPublisher);
-		applicationEventPublisher.publishEvent(new MyApplicationEvent2(null,
+		applicationEventPublisher.publishEvent(new MyApplicationEvent2(SpringApplicaiton2.class,
 				"custom ApplicationEvent from SpringApplication"));
 		applicationEventPublisher.publishEvent(new String(
 				"PayloadApplicationEvent<String> from SpringApplication"));

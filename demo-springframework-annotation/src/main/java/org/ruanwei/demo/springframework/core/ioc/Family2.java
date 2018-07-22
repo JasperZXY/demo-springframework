@@ -82,7 +82,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 
 	// JSR-349:Method Validation with @Validated
 	@NotNull
-	public void sayHello(@Size(min = 2, max = 8) String message) {
+	public String sayHello(@Size(min = 2, max = 8) String message) {
 		log.info("sayHello(String message)" + message);
 
 		// 3.Method injection: Arbitrary method replacement
@@ -96,6 +96,8 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
+		
+		return message;
 	}
 
 	// a.Bean instantiation with a constructor

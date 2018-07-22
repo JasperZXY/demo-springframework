@@ -13,6 +13,7 @@ import org.ruanwei.demo.springframework.core.ioc.AbsHouse2;
 import org.ruanwei.demo.springframework.core.ioc.Family2;
 import org.ruanwei.demo.springframework.core.ioc.People2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.validation.PeopleSpringValidator2;
+import org.ruanwei.demo.springframework.core.ioc.databinding.validation.ValidationUtils2;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -49,75 +50,18 @@ public class MyBeanPostProcessor2 implements BeanPostProcessor {
 			People2 people = (People2) bean;
 			log.info("postProcessBeforeInitialization====================" + people);
 
-			validate(people);
-			validateBySpring(people, new PeopleSpringValidator2());
+			ValidationUtils2.validate1(people, validator);
+			ValidationUtils2.validate2(people, validatorFactory);
+			ValidationUtils2.validateBySpring(people, messageSource,
+					springValidator, new PeopleSpringValidator2());
 		} else if (bean instanceof Family2) {
 			Family2 family = (Family2) bean;
 			log.info("postProcessBeforeInitialization====================" + family);
-
-			// validate(family);
-			// validateBySpring(family);
 		} else if (bean instanceof AbsHouse2) {
 			AbsHouse2 house = (AbsHouse2) bean;
 			log.info("postProcessBeforeInitialization====================" + house);
-
-			// validate(house);
-			// validateBySpring(house);
 		}
 		return bean;
-	}
-
-	private <T> void validate(T t) {
-//		Validator validator = Validation.byProvider(HibernateValidator.class).configure()
-//		.messageInterpolator(
-//				new ResourceBundleMessageInterpolator(new PlatformResourceBundleLocator("message/validate")))
-//		.failFast(false).buildValidatorFactory().getValidator();
-
-		if (this.validator == null) {
-			this.validator = Validation.buildDefaultValidatorFactory().getValidator();
-		}
-		
-		Set<ConstraintViolation<T>> constraintViolations = validator.validate(t);
-		for (ConstraintViolation<T> violation : constraintViolations) {
-			log.info("validation1==========" + violation.getMessage());
-		}
-
-		Validator validator2 = validatorFactory.getValidator();
-		constraintViolations = validator2.validate(t);
-		for (ConstraintViolation<T> violation : constraintViolations) {
-			log.info("validation2==========" + violation.getMessage());
-		}
-	}
-
-	private void validateBySpring(Object target, org.springframework.validation.Validator... validators) {
-		DataBinder dataBinder = new DataBinder(target);
-		dataBinder.setValidator(springValidator);
-		dataBinder.addValidators(validators);
-		dataBinder.validate();
-		BindingResult bindingResult = dataBinder.getBindingResult();
-		if (bindingResult.hasGlobalErrors()) {
-			for (ObjectError error : bindingResult.getGlobalErrors()) {
-				log.info("globalError==========" + error);
-			}
-		}
-
-		if (bindingResult.hasFieldErrors()) {
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				log.info("fieldError==========" + error);
-				log.info("object==========" + error.getObjectName());
-				log.info("field==========" + error.getField());
-				log.info("rejectedValue==========" + error.getRejectedValue());
-
-				log.info("code==========" + error.getCode());
-				for (Object arg : error.getArguments()) {
-					log.info("argument==========" + arg);
-				}
-				log.info("defaultMessage==========" + error.getDefaultMessage());
-				String message = messageSource.getMessage(error.getCode(), error.getArguments(),
-						error.getDefaultMessage(), Locale.US);
-				log.info("message==========" + message);
-			}
-		}
 	}
 
 	@Override

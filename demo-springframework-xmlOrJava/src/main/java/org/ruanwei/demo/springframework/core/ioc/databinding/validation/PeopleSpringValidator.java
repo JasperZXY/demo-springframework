@@ -12,7 +12,7 @@ public class PeopleSpringValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		log.info("supports(Class<?> clazz)" + clazz);
+		log.debug("supports(Class<?> clazz)" + clazz);
 		return People.class.equals(clazz);
 	}
 

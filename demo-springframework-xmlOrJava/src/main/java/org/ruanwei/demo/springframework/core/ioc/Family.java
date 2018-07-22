@@ -55,9 +55,9 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	private People daughter;
 
 	// 3.Method injection: Lookup method injection
-	@Valid
+	// TODO:加@Valid报错
 	private People guest1;
-	@Valid
+	// @Valid
 	private People guest2;
 
 	private ApplicationContext context;
@@ -73,7 +73,7 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 
 	// JSR-349:Method Validation with @Validated
 	@NotNull
-	public void sayHello(@Size(min = 2, max = 8) String message) {
+	public String sayHello(@Size(min = 2, max = 8) String message) {
 		log.info("sayHello(String message)" + message);
 
 		// 3.Method injection: Arbitrary method replacement
@@ -87,6 +87,8 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
+
+		return message;
 	}
 
 	// a.Bean instantiation with a constructor

@@ -183,6 +183,7 @@
 			<set>
 				<bean
 					class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter" />
+				<!-- @PeopleFormat -->
 				<bean
 					class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory" />
 			</set>

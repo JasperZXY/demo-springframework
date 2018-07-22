@@ -32,7 +32,7 @@ public final class PeopleFormatter implements Formatter<People> {
 	public String print(People people, Locale locale) {
 		log.info("print(People people, Locale locale) " + people);
 		if (people == null) {
-			return "";
+			return "People";
 		}
 		return people.toString();
 	}
