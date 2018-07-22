@@ -118,7 +118,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Import(DataConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
-// @PropertySource("classpath:family.properties")
+@PropertySource("classpath:family.properties")
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
@@ -479,8 +479,20 @@ public class AppConfig {
 	// A.5.Environment：Profile and PropertySource
 
 	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
+	// 此处没有指定location，而是将@PropertySource加入，使得@Value支持占位符
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
+		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
+		propertySourcesPlaceholderConfigurer
+				.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertySourcesPlaceholderConfigurer=========="
+				+ propertySourcesPlaceholderConfigurer);
+		return propertySourcesPlaceholderConfigurer;
+	}
+	
+	// 方式二，直接指定location，使得@Value支持占位符
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setLocations(
