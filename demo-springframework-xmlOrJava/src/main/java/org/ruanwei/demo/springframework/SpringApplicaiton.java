@@ -11,6 +11,7 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -30,15 +31,18 @@ import org.springframework.core.io.ResourceLoader;
 
 public class SpringApplicaiton {
 	private static Log log = LogFactory.getLog(SpringApplicaiton.class);
+	private static AbstractApplicationContext context;
 
 	public static void main(String[] args) {
-		test1(args);
+		log.info("0======================================================================================");
+		getApplicationContext(ApplicationContextType.CLASSPATH_XML);
+
+		// testCoreContainer();
+		
+		testIntegration();
 	}
 
-	private static void test1(String[] args) {
-		log.info("0======================================================================================");
-		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.CLASSPATH_XML);
-
+	private static void testCoreContainer() {
 		log.info("1======================================================================================");
 		testEnvironment(context);
 
@@ -61,10 +65,14 @@ public class SpringApplicaiton {
 		testApplicationEvent(context);
 	}
 
-	private static AbstractApplicationContext getApplicationContext(
-			ApplicationContextType type) {
-		AbstractApplicationContext context = null;
+	private static void testIntegration() {
+		log.info("1======================================================================================");
+		UserJdbc userJdbc = context.getBean("userJdbc", UserJdbc.class);
+		int count = userJdbc.countAll();
+		log.info("count======"+count);
+	}
 
+	private static void getApplicationContext(ApplicationContextType type) {
 		switch (type) {
 		case ANNOTATION_CONFIG: {// GenericApplicationContext
 			context = new AnnotationConfigApplicationContext(AppConfig.class);
@@ -88,7 +96,6 @@ public class SpringApplicaiton {
 		}
 
 		context.registerShutdownHook();
-		return context;
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
@@ -120,8 +127,8 @@ public class SpringApplicaiton {
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
 		// TODO:ClassPathXmlApplicationContext不能获取到属性值，但是annotation那个项目却可以
-		String a = env.getProperty("a","a"); // MapPropertySource(-Da=1)
-		String b = env.getProperty("family.familyCount","2");// ResourcePropertySource(@PeopertySource("family.properties"))
+		String a = env.getProperty("a", "a"); // MapPropertySource(-Da=1)
+		String b = env.getProperty("family.familyCount", "2");// ResourcePropertySource(@PeopertySource("family.properties"))
 		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 
@@ -164,7 +171,8 @@ public class SpringApplicaiton {
 			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("applicationEventPublisher=========="
 				+ applicationEventPublisher);
-		applicationEventPublisher.publishEvent(new MyApplicationEvent(SpringApplicaiton.class,
+		applicationEventPublisher.publishEvent(new MyApplicationEvent(
+				SpringApplicaiton.class,
 				"custom ApplicationEvent from SpringApplication"));
 		applicationEventPublisher.publishEvent(new String(
 				"PayloadApplicationEvent<String> from SpringApplication"));
@@ -203,7 +211,7 @@ public class SpringApplicaiton {
 
 			log.info("7.3======================================================================================");
 			// 即ClassPathXmlApplicationContext和FileSystemXmlApplicationContext
-			if(context instanceof AbstractRefreshableApplicationContext){
+			if (context instanceof AbstractRefreshableApplicationContext) {
 				absContext.refresh();
 			}
 
