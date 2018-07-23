@@ -15,14 +15,13 @@
 	<name>Demo:Spring Framework(XML-Based/Java-Based Configuration Metadata)</name>
 
 	<dependencies>
-		<!-- used for logging -->
+		<!-- 0.logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
 
 		<!-- A.The IoC Container -->
-		<!-- 1.used for the core container -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -32,17 +31,13 @@
 			<artifactId>spring-context-indexer</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
-		<!-- used for JSR-330 Dependency Injection for Java -->
+		<!-- Dependency Injection for JSR-330  -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
 		
-		<!-- 2.used for validation -->
-		<!-- JSR-303 Bean Validation 1.0 -->
-		<!-- JSR-349 Bean Validation 1.1 -->
-		<!-- JSR-380 Bean Validation 2.0 -->
+		<!-- Bean Validation with JSR-303/JSR-349/JSR-380 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -52,7 +47,7 @@
 			<artifactId>javax.el</artifactId>
 		</dependency>
 
-		<!-- 3.used for conversion service -->
+		<!-- ConversionService for joda-time -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -68,6 +63,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-instrument</artifactId>
+		</dependency>
+		
+		<!-- C.Integration -->
+		<!-- jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
 		</dependency>
 
 		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
