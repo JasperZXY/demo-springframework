@@ -25,7 +25,7 @@ public class House {
 
 	private List<Integer> someList2;
 	private Set<Integer> someSet2;
-	// 注意这里注入的是所有的KV
+	// 注意这里还注入family.properties
 	private Properties someProperties2;
 	private Map<String, Integer> someMap2;
 
