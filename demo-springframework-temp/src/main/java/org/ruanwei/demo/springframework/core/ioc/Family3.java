@@ -8,9 +8,6 @@ import javax.validation.Valid;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat3;
-import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat3.Separator;
-import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent3;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanNameAware;
@@ -28,6 +25,7 @@ import org.springframework.context.weaving.LoadTimeWeaverAware;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.server.PathContainer.Separator;
 import org.springframework.instrument.classloading.LoadTimeWeaver;
 import org.springframework.stereotype.Component;
 
@@ -67,11 +65,11 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware,
 	private People3 mother2;
 
 	@Value("${son.all}")
-	@PeopleFormat3(separator = Separator.SLASH)
+	//@PeopleFormat3(separator = Separator.SLASH)
 	private People3 son;
 
 	@Value("${daughter.all}")
-	@PeopleFormat3(separator = Separator.SLASH)
+	//@PeopleFormat3(separator = Separator.SLASH)
 	private People3 daughter;
 
 	@Autowired
@@ -128,7 +126,7 @@ public class Family3 implements BeanNameAware, BeanClassLoaderAware,
 		log.info("3 + 5 = " + calc(3, 5));
 
 		People3 guest = createGuest();
-		ApplicationEvent event = new MyApplicationEvent3(this, message);
+		ApplicationEvent event = null;//new MyApplicationEvent3(this, message);
 		// 等价于
 		// publisher.publishEvent(new
 		// PayloadApplicationEvent<People2>(this,guest));

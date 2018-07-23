@@ -9,8 +9,6 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.databinding.validation.FamilyName3;
-import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent3;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -36,7 +34,6 @@ public class People3 implements SmartLifecycle {
 
 	@NotEmpty
 	@Size(min = 1, max = 10)
-	@FamilyName3("ruan")
 	private String name;
 
 	@Min(0)
@@ -60,10 +57,7 @@ public class People3 implements SmartLifecycle {
 		if (event instanceof PayloadApplicationEvent<?>) {
 			Object payload = ((PayloadApplicationEvent<?>) event).getPayload();
 			log.info(event.getTimestamp() + " payload=" + payload.toString());
-		} else if (event instanceof MyApplicationEvent3) {
-			String message = ((MyApplicationEvent3) event).getMessage();
-			log.info(event.getTimestamp() + " message=" + message);
-		} else if (event instanceof ApplicationContextEvent) {
+		}  else if (event instanceof ApplicationContextEvent) {
 			ApplicationContext context = ((ApplicationContextEvent) event).getApplicationContext();
 			log.info(event.getTimestamp() + " context=" + context);
 		}
