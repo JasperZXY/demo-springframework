@@ -1,6 +1,6 @@
 /target/
 /.settings/
 /.DS_Store
-/demo-springframework-xmlConfig.log
+/*.log
 /.classpath
 /.project
