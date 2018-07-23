@@ -348,7 +348,7 @@
 	<!-- <context:load-time-weaver/> -->
 
 	<!-- more bean definitions go here -->
-	<import resource="integration-dataAccess.xml" />
+	<import resource="dataAccess.xml" />
 
 	<!-- A.5.2.Profile：必须放在配置文件最后 -->
 	<beans profile="development">
