@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
@@ -21,8 +18,6 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.FamilyFactory;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.People;
-import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat;
-import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat.Separator;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegistrar;
@@ -116,10 +111,13 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author ruanwei
  *
  */
+//@Profile("development")
+//@Profile("production")
+//@ImportResource({"classpath:spring/applicationContext.xml"})
+@Import(DataConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
-@Import(DataConfig.class)
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
@@ -152,9 +150,9 @@ public class AppConfig {
 	// @Value("c=3,d=4")
 	private Map<String, Integer> someMap;
 
+	// @Inject
+	// @Resource
 	@Autowired
-	@Inject
-	@Resource
 	private Environment env;
 
 	public AppConfig() {
@@ -357,10 +355,10 @@ public class AppConfig {
 		conversionService.setRegisterDefaultFormatters(true);
 
 		// 方式一：单个指定Converter/ConverterFactory/GenericConverter S->T
-		registerConvertors(conversionService);
+		// registerConvertors(conversionService);
 
 		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
-		registerFormatters(conversionService);
+		// registerFormatters(conversionService);
 
 		// 方式三：分组指定converters和formatters
 		registerFormatterRegistrars(conversionService);
@@ -370,7 +368,7 @@ public class AppConfig {
 	}
 
 	// A.2.2.PropertyEditor-based Conversion
-	@Bean
+	// @Bean
 	public static CustomEditorConfigurer customEditorConfigurer() {
 		CustomEditorConfigurer customEditorConfigurer = new CustomEditorConfigurer();
 
@@ -525,7 +523,7 @@ public class AppConfig {
 		return propertySourcesPlaceholderConfigurer;
 	}
 
-	// A.5.2.Profile：必须放在配置文件最后
+	// A.5.2.Profile：@Profile和@Bean
 	@Profile("development")
 	@Bean("house")
 	public House house1(

@@ -9,9 +9,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
@@ -25,7 +22,6 @@ import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEdito
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
@@ -40,6 +36,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.format.FormatterRegistrar;
@@ -51,52 +49,51 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
- * <li>@Import(DataAccessConfig.class)等价于 <import
- * resource="dataAccess-${env}.xml" />
+ * <li>@Import(DataAccessConfig.class)等价于&lt;import resource="dataAccess.xml"/>.
  * 
- * <li>@ImportResource("classpath:spring/applicationContext-${env}.xml")等价于
- * <bean class="com.example.AppConfig"/>
+ * <li>@ImportResource("applicationContext.xml")等价于&lt;bean
+ * class="example.AppConfig"/>.
  * 
- * <li>@Profile("dev")等价于(可用于@Component) <beans profile="dev">
+ * <li>@Profile("dev")(可用于@Component)等价于&lt;beans profile="dev">.
  * 
- * <li>@Lazy等价于(可用于@Component) <beans default-lazy-init="true">或<bean
- * lazy-init="true" />
+ * <li>@Lazy(可用于@Component)等价于&lt;beans default-lazy-init="true">或&lt;bean
+ * lazy-init="true" />.
  * 
- * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)等价于(可用于@Component) <bean
- * scope="singleton" />
+ * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)(可用于@Component)等价于&lt;bean
+ * scope="singleton" />.
  * 
  * <li>@Scope(scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE,proxyMode=
- * ScopedProxyMode.TARGET_CLASS)等价于(可用于@Component) <bean
- * scope="prototype"><aop:scoped-proxy proxy-target-class="true"/></bean>或
- * <context:component-scan scoped-proxy="interfaces" />
+ * ScopedProxyMode.TARGET_CLASS)(可用于@Component)等价于&lt;bean
+ * scope="prototype">&lt;aop:scoped-proxy proxy-target-class="true"/>&lt;/bean>或
+ * &lt;context:component-scan scoped-proxy="interfaces" />.
  * 
- * <li>@DependsOn({ "bean1", "bean2" })等价于(可用于@Component) <bean
- * depends-on="bean1,bean2" />
+ * <li>@DependsOn({ "bean1", "bean2" })(可用于@Component)等价于&lt;bean
+ * depends-on="bean1,bean2" />.
  * 
- * <li>@Primary等价于(可用于@Component) <bean primary="true" autowire-candidate="true"
- * />
+ * <li>@Primary等价于(可用于@Component)等价于&lt;bean primary="true"
+ * autowire-candidate="true" />.
  * 
- * <li>@Qualifier("first")等价于(可用于@Component) <bean><qualifier
- * value="first"/></bean>
+ * <li>@Qualifier("first")(可用于@Component)等价于&lt;bean>&lt;qualifier
+ * value="first"/>&lt;/bean>.
  * 
- * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于 <bean
- * init-method="init" destroy-method="destroy" />
+ * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于&lt;bean
+ * init-method="init" destroy-method="destroy" />.
  * 
- * <li>@Bean(autowire = Autowire.BY_NAME)等价于 <bean autowire="byName" />
+ * <li>@Bean(autowire = Autowire.BY_NAME)等价于&lt;bean autowire="byName" />.
  * 
- * <li>@PropertySource(
- * "classpath:propertySource-${spring.profiles.active}.properties")等价于
+ * <li>@PropertySource("propertySource.properties")等价于
  * ctx.getEnvironment().getPropertySources().addFirst(new
- * ResourcePropertySource(classpath:propertySource.properties));
+ * ResourcePropertySource("propertySource.properties")).
  * 
- * <li>@ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })等价于
- * <context:component-scan base-package="org.ruanwei.demo.springframework">
+ * <li>@ComponentScan(basePackages = { "org.ruanwei.demo"
+ * })等价于&lt;context:component-scan base-package="org.ruanwei.demo">.
  * 
- * <li>@EnableAsync <li>@EnableScheduling <li>@EnableTransactionManagement <li>
+ * <li>@EnableAsync. <li>@EnableScheduling. <li>@EnableTransactionManagement.
+ * <li>@EnableAspectJAutoProxy等价于&lt;aop:aspectj-autoproxy />. <li>
  * 
- * @EnableAspectJAutoProxy等价于<aop:aspectj-autoproxy /> <li>@EnableWebMvc
+ * @EnableWebMvc.
  * 
- * @author Administrator
+ * @author ruanwei
  *
  */
 // @Profile("development")
@@ -105,6 +102,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Import(DataConfig2.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
+@PropertySource("classpath:family.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
 @Configuration
 public class AppConfig2 {
@@ -112,28 +110,20 @@ public class AppConfig2 {
 
 	private final DataConfig2 dataConfig;
 
-	@Value("${p.username:ruanwei_def}")
-	private String username;
-
-	@Value("${p.password:mypass_def}")
-	private String password;
-
+	// @Inject
+	// @Resource
 	@Autowired
-	@Inject
-	@Resource
 	private Environment env;
 
 	@Autowired
 	public AppConfig2(DataConfig2 dataConfig) {
-		log.info("AppConfig()======" + username + password);
+		log.info("AppConfig()======");
 		this.dataConfig = dataConfig;
 
-		// if (username == null || username.isEmpty()) {
-		// username = env.getProperty("p.username", "ruanwei_def");
-		// }
-		// if (password == null || password.isEmpty()) {
-		// password = env.getProperty("p.password", "mypass_def");
-		// }
+		/*
+		 * if (familyCount == 0) { familyCount =
+		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
+		 */
 	}
 
 	@Lazy
@@ -220,10 +210,10 @@ public class AppConfig2 {
 		conversionService.setRegisterDefaultFormatters(true);
 
 		// 方式一：单个指定Converter/ConverterFactory/GenericConverter S->T
-		registerConvertors(conversionService);
+		// registerConvertors(conversionService);
 
 		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
-		registerFormatters(conversionService);
+		// registerFormatters(conversionService);
 
 		// 方式三：分组指定converters和formatters
 		registerFormatterRegistrars(conversionService);
@@ -233,7 +223,7 @@ public class AppConfig2 {
 	}
 
 	// A.2.2.PropertyEditor-based Conversion omitted
-	@Bean
+	// @Bean
 	public static CustomEditorConfigurer customEditorConfigurer() {
 		CustomEditorConfigurer customEditorConfigurer = new CustomEditorConfigurer();
 
@@ -335,21 +325,35 @@ public class AppConfig2 {
 	// A.4.2.Context lifecycle callbacks
 
 	// A.5.Environment：Profile and PropertySource
-	// A.5.1.PropertySource：参考@PropertySource和PropertySourcePlaceholderConfiguer
+	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
+	// 方式一，通过指定@PropertySource，使得@Value支持占位符
+	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-		propertySourcesPlaceholderConfigurer.setLocations(
-				new ClassPathResource("family.properties"),
-				new ClassPathResource("jdbc.properties"));
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer.setOrder(0);
+		propertySourcesPlaceholderConfigurer
+				.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		log.info("propertySourcesPlaceholderConfigurer=========="
 				+ propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
 	}
 
-	// A.5.2.Profile：@Profile
+	// 方式二，通过指定location/properties，使得@Value支持占位符
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
+		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+		propertySourcesPlaceholderConfigurer.setLocations(
+				new ClassPathResource("family.properties"),
+				new ClassPathResource("jdbc.properties"));
+		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
+		propertySourcesPlaceholderConfigurer
+				.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertySourcesPlaceholderConfigurer2=========="
+				+ propertySourcesPlaceholderConfigurer);
+		return propertySourcesPlaceholderConfigurer;
+	}
+
+	// A.5.2.Profile：参考@Profile和@Component
 
 	// A.6.Extension Points
 	// A.6.1.Customizing beans using a BeanPostProcessor
