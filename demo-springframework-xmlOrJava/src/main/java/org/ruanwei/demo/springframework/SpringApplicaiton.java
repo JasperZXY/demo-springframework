@@ -119,7 +119,7 @@ public class SpringApplicaiton {
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
-		// TODO:能获取到属性值吗
+		// TODO:ClassPathXmlApplicationContext不能获取到属性值，但是annotation那个项目却可以
 		String a = env.getProperty("a","a"); // MapPropertySource(-Da=1)
 		String b = env.getProperty("family.familyCount","2");// ResourcePropertySource(@PeopertySource("family.properties"))
 		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换

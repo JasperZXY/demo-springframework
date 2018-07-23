@@ -36,7 +36,7 @@ public class SpringApplicaiton2 {
 
 	private static void test1(String[] args) {
 		log.info("0======================================================================================");
-		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
 
 		log.info("1======================================================================================");
 		testEnvironment(context);
@@ -75,12 +75,12 @@ public class SpringApplicaiton2 {
 		}
 		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
 			context = new ClassPathXmlApplicationContext(
-					new String[] { "classpath:spring/applicationContext.xml" });
+					new String[] { "classpath:spring/applicationContext2.xml" });
 			break;
 		}
 		case FILESYSTEM_XML: {// AbstractRefreshableApplicationContext
 			context = new FileSystemXmlApplicationContext(
-					new String[] { "file:spring/applicationContext.xml" });
+					new String[] { "file:spring/applicationContext2.xml" });
 			break;
 		}
 		default:
@@ -118,7 +118,6 @@ public class SpringApplicaiton2 {
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
-		// TODO:能获取到属性值吗
 		String a = env.getProperty("a","a"); // MapPropertySource(-Da=1)
 		String b = env.getProperty("family.familyCount","2");// ResourcePropertySource(@PeopertySource("family.properties"))
 		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换

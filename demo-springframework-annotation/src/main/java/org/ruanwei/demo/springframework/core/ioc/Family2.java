@@ -42,10 +42,9 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	private int familyCount;
 	private People2 father;
 
-	// @Value("#{father}")
 	@Valid
-	@Autowired
 	@Qualifier("first")
+	@Autowired
 	private People2 mother;
 
 	@Value("${son.all}")
@@ -55,6 +54,11 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	@Value("${daughter.all}")
 	@PeopleFormat2(separator = Separator.SLASH)
 	private People2 daughter;
+	
+	@Valid
+	@Qualifier("first")
+	@Autowired
+	private People2 guest1;
 
 	// 2.Setter-based dependency injection
 	@Autowired
@@ -161,7 +165,8 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	public String toString() {
 		return "Family2 [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
-				+ ", son=" + son + ", daughter=" + daughter + "]";
+				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
+				+ guest1 + "]";
 	}
 
 }

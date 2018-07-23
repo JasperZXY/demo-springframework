@@ -29,7 +29,6 @@
 		process @Configuration -->
 	<!-- org.springframework.context.event.EventListenerMethodProcessor process 
 		@EventListener -->
-
 	<!-- <context:annotation-config /> registers the above 6 BeanPostProcessor 
 		default. -->
 	<!-- <context:component-scan> implicitly enables the functionality of <context:annotation-config>. -->
@@ -84,7 +83,7 @@
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="registerDefaultFormatters" value="true" />
-		<!-- 一共有五种方式，参考xml项目 -->
+		<!-- 一共有五种方式，参考xmlOrJava项目 -->
 		<property name="formatterRegistrars">
 			<set>
 				<bean
@@ -133,12 +132,16 @@
 
 	<!-- A.5.Environment：Profile and PropertySource -->
 	<!-- A.5.1.PropertySource：参考@PropertySource和@Configueration -->
-	<!-- A.5.2.Profile：参考 @Profile和@Component -->
-
-	<!-- PropertySourcesPlaceholderConfigurer/PropertyPlaceholderConfigurer -->
+	<!-- A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问. -->
+	<!-- versions <= 3.0 default to org.springframework.beans.factory.config.PropertyPlaceholderConfigurer. -->
+	<!-- versions >= 3.1 default to org.springframework.context.support.PropertySourcesPlaceholderConfigurer. -->
 	<context:property-placeholder
 		location="classpath*:family.properties,classpath*:jdbc.properties"
 		file-encoding="UTF-8" order="0" />
+	<!-- see org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
+	<!-- <context:property-override /> -->
+	
+	<!-- A.5.2.Profile：参考 @Profile和@Component -->	
 
 	<!-- A.6.Extension Points -->
 	<!-- A.6.1.Customizing beans using a BeanPostProcessor -->

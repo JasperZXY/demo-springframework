@@ -22,6 +22,7 @@ import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEdito
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
@@ -109,6 +110,9 @@ public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
 
 	private final DataConfig2 dataConfig;
+	
+	@Value("${family.familyCount:4}")
+	private int familyCount;
 
 	// @Inject
 	// @Resource
@@ -119,11 +123,11 @@ public class AppConfig2 {
 	public AppConfig2(DataConfig2 dataConfig) {
 		log.info("AppConfig()======");
 		this.dataConfig = dataConfig;
-
-		/*
-		 * if (familyCount == 0) { familyCount =
-		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
-		 */
+		
+		/*if (familyCount == 0) {
+			familyCount = Integer.valueOf(env.getProperty("family.familyCount",
+					"2"));
+		}*/
 	}
 
 	@Lazy
@@ -214,7 +218,7 @@ public class AppConfig2 {
 
 		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
 		// registerFormatters(conversionService);
-
+		
 		// 方式三：分组指定converters和formatters
 		registerFormatterRegistrars(conversionService);
 
