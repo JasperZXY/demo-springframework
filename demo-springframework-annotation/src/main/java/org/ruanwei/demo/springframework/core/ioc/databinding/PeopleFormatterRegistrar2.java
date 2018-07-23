@@ -17,7 +17,7 @@ public class PeopleFormatterRegistrar2 implements FormatterRegistrar {
 	public void registerFormatters(FormatterRegistry registry) {
 		log.info("registerFormatters(FormatterRegistry registry)" + registry);
 		registry.addConverter(new StringToPeopleConverter2());
-		// registry.addConverterFactory(new StringToPeopleConverterFactory());
+		registry.addConverterFactory(new StringToPeopleConverterFactory2());
 		registry.addFormatter(new PeopleFormatter2("/"));
 		registry.addFormatterForFieldType(People2.class, new PeopleFormatter2("/"));
 		registry.addFormatterForFieldAnnotation(new PeopleFormatAnnotationFormatterFactory2());

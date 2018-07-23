@@ -119,9 +119,9 @@ public class SpringApplicaiton {
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
-		String a = env.getProperty("a"); // MapPropertySource(-Da=1)
-		String b = env.getProperty("p.username");// ResourcePropertySource(@PeopertySource("peopertySource.properties"))
-		String c = env.getProperty("guest.name"); // @Value才可以取到PropertySourcesPlaceholderConfigurer的值
+		String a = env.getProperty("a","a"); // MapPropertySource(-Da=1)
+		String b = env.getProperty("family.familyCount","2");// ResourcePropertySource(@PeopertySource("family.properties"))
+		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 
 		if (env instanceof ConfigurableEnvironment) {

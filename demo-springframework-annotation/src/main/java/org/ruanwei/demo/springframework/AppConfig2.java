@@ -1,5 +1,6 @@
 package org.ruanwei.demo.springframework;
 
+import java.beans.PropertyEditor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,12 +17,16 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
 import org.ruanwei.demo.springframework.core.aop.GoodImpl2;
 import org.ruanwei.demo.springframework.core.aop.MyAspect2;
+import org.ruanwei.demo.springframework.core.ioc.People2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegistrar2;
+import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor2;
+import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.beans.factory.config.PropertyPathFactoryBean;
@@ -215,17 +220,50 @@ public class AppConfig2 {
 		conversionService.setRegisterDefaultFormatters(true);
 
 		// 方式一：单个指定Converter/ConverterFactory/GenericConverter S->T
+		registerConvertors(conversionService);
+
+		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
+		registerFormatters(conversionService);
+
+		// 方式三：分组指定converters和formatters
+		registerFormatterRegistrars(conversionService);
+
+		log.info("conversionService==========" + conversionService);
+		return conversionService;
+	}
+
+	// A.2.2.PropertyEditor-based Conversion omitted
+	@Bean
+	public static CustomEditorConfigurer customEditorConfigurer() {
+		CustomEditorConfigurer customEditorConfigurer = new CustomEditorConfigurer();
+
+		// 方式四：单个指定PropertyEditor
+		registerPropertyEditors(customEditorConfigurer);
+
+		// 方式五：分组指定PropertyEditor
+		registerPropertyEditorRegistrars(customEditorConfigurer);
+
+		log.info("customEditorConfigurer==========" + customEditorConfigurer);
+		return customEditorConfigurer;
+	}
+
+	private void registerConvertors(
+			FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> converters = new HashSet<Object>();
 		converters.add(new StringToPeopleConverter2());
 		conversionService.setConverters(converters);
+	}
 
-		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
+	private void registerFormatters(
+			FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> formatters = new HashSet<Object>();
 		formatters.add(new PeopleFormatter2());
 		formatters.add(new PeopleFormatAnnotationFormatterFactory2());
 		conversionService.setFormatters(formatters);
+	}
 
-		// 方式三：分组指定converters和formatters
+	private void registerFormatterRegistrars(
+			FormattingConversionServiceFactoryBean conversionService) {
 		Set<FormatterRegistrar> formatterRegistrars = new HashSet<FormatterRegistrar>();
 		formatterRegistrars.add(new PeopleFormatterRegistrar2());
 		JodaTimeFormatterRegistrar jodaTimeFormatterRegistrar = new JodaTimeFormatterRegistrar();
@@ -235,12 +273,20 @@ public class AppConfig2 {
 				.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
 		formatterRegistrars.add(jodaTimeFormatterRegistrar);
 		conversionService.setFormatterRegistrars(formatterRegistrars);
-
-		log.info("conversionService==========" + conversionService);
-		return conversionService;
 	}
 
-	// A.2.2.PropertyEditor-based Conversion omitted
+	private static void registerPropertyEditors(
+			CustomEditorConfigurer customEditorConfigurer) {
+		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
+		customEditors.put(People2.class, PeoplePropertyEditor2.class);
+		customEditorConfigurer.setCustomEditors(customEditors);
+	}
+
+	private static void registerPropertyEditorRegistrars(
+			CustomEditorConfigurer customEditorConfigurer) {
+		customEditorConfigurer
+				.setPropertyEditorRegistrars(new PeoplePropertyEditorRegistrar2[] { new PeoplePropertyEditorRegistrar2() });
+	}
 
 	// A.2.3.Validation JSR-303/JSR-349/JSR-380
 	@Bean("validator")
@@ -287,7 +333,7 @@ public class AppConfig2 {
 	// A.4.Lifecycle:Initialization/Destruction/Startup/Shutdown callbacks
 	// A.4.1.Bean lifecycle callbacks
 	// A.4.2.Context lifecycle callbacks
-	
+
 	// A.5.Environment：Profile and PropertySource
 	// A.5.1.PropertySource：参考@PropertySource和PropertySourcePlaceholderConfiguer
 	@Bean

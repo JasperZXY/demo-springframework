@@ -21,6 +21,8 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.FamilyFactory;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.People;
+import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat;
+import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat.Separator;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegistrar;
@@ -67,58 +69,57 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
- * <li>@Import(DataAccessConfig.class)等价于 <import
- * resource="dataAccess-${env}.xml" />
+ * <li>@Import(DataAccessConfig.class)等价于&lt;import resource="dataAccess.xml"/>.
  * 
- * <li>@ImportResource("classpath:spring/applicationContext-${env}.xml")等价于
- * <bean class="com.example.AppConfig"/>
+ * <li>@ImportResource("applicationContext.xml")等价于&lt;bean
+ * class="example.AppConfig"/>.
  * 
- * <li>@Profile("dev")等价于(可用于@Component) <beans profile="dev">
+ * <li>@Profile("dev")(可用于@Component)等价于&lt;beans profile="dev">.
  * 
- * <li>@Lazy等价于(可用于@Component) <beans default-lazy-init="true">或<bean
- * lazy-init="true" />
+ * <li>@Lazy(可用于@Component)等价于&lt;beans default-lazy-init="true">或&lt;bean
+ * lazy-init="true" />.
  * 
- * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)等价于(可用于@Component) <bean
- * scope="singleton" />
+ * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)(可用于@Component)等价于&lt;bean
+ * scope="singleton" />.
  * 
  * <li>@Scope(scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE,proxyMode=
- * ScopedProxyMode.TARGET_CLASS)等价于(可用于@Component) <bean
- * scope="prototype"><aop:scoped-proxy proxy-target-class="true"/></bean>或
- * <context:component-scan scoped-proxy="interfaces" />
+ * ScopedProxyMode.TARGET_CLASS)(可用于@Component)等价于&lt;bean
+ * scope="prototype">&lt;aop:scoped-proxy proxy-target-class="true"/>&lt;/bean>或
+ * &lt;context:component-scan scoped-proxy="interfaces" />.
  * 
- * <li>@DependsOn({ "bean1", "bean2" })等价于(可用于@Component) <bean
- * depends-on="bean1,bean2" />
+ * <li>@DependsOn({ "bean1", "bean2" })(可用于@Component)等价于&lt;bean
+ * depends-on="bean1,bean2" />.
  * 
- * <li>@Primary等价于(可用于@Component) <bean primary="true" autowire-candidate="true"
- * />
+ * <li>@Primary等价于(可用于@Component)等价于&lt;bean primary="true"
+ * autowire-candidate="true" />.
  * 
- * <li>@Qualifier("first")等价于(可用于@Component) <bean><qualifier
- * value="first"/></bean>
+ * <li>@Qualifier("first")(可用于@Component)等价于&lt;bean>&lt;qualifier
+ * value="first"/>&lt;/bean>.
  * 
- * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于 <bean
- * init-method="init" destroy-method="destroy" />
+ * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于&lt;bean
+ * init-method="init" destroy-method="destroy" />.
  * 
- * <li>@Bean(autowire = Autowire.BY_NAME)等价于 <bean autowire="byName" />
+ * <li>@Bean(autowire = Autowire.BY_NAME)等价于&lt;bean autowire="byName" />.
  * 
- * <li>@PropertySource(
- * "classpath:propertySource-${spring.profiles.active}.properties")等价于
+ * <li>@PropertySource("propertySource.properties")等价于
  * ctx.getEnvironment().getPropertySources().addFirst(new
- * ResourcePropertySource(classpath:propertySource.properties));
+ * ResourcePropertySource("propertySource.properties")).
  * 
- * <li>@ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })等价于
- * <context:component-scan base-package="org.ruanwei.demo.springframework">
+ * <li>@ComponentScan(basePackages = { "org.ruanwei.demo"
+ * })等价于&lt;context:component-scan base-package="org.ruanwei.demo">.
  * 
- * <li>@EnableAsync <li>@EnableScheduling <li>@EnableTransactionManagement <li>
+ * <li>@EnableAsync. <li>@EnableScheduling. <li>@EnableTransactionManagement.
+ * <li>@EnableAspectJAutoProxy等价于&lt;aop:aspectj-autoproxy />. <li>
  * 
- * @EnableAspectJAutoProxy等价于<aop:aspectj-autoproxy /> <li>@EnableWebMvc
+ * @EnableWebMvc.
  * 
- * @author Administrator
+ * @author ruanwei
  *
  */
-@Import(DataConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
+@Import(DataConfig.class)
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
@@ -126,7 +127,7 @@ public class AppConfig {
 	@Autowired
 	private DataConfig dataConfig;
 
-	// TODO:@Value在这里取不到值，但在@Bean方法中可以,why
+	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
 	@Value("${family.familyCount:4}")
 	private int familyCount;
 	@Value("#{father}")
@@ -151,31 +152,24 @@ public class AppConfig {
 	// @Value("c=3,d=4")
 	private Map<String, Integer> someMap;
 
-	@Value("${p.username:ruanwei_def}")
-	private String username;
-
-	@Value("${p.password:mypass_def}")
-	private String password;
-
 	@Autowired
 	@Inject
 	@Resource
 	private Environment env;
 
 	public AppConfig() {
-		log.info("AppConfig()======" + username + password);
+		log.info("AppConfig()======");
 
-		// if (username == null || username.isEmpty()) {
-		// username = env.getProperty("p.username", "ruanwei_def");
-		// }
-		// if (password == null || password.isEmpty()) {
-		// password = env.getProperty("p.password", "mypass_def");
-		// }
+		/*
+		 * if (familyCount == 0) { familyCount =
+		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
+		 */
 	}
 
 	// ==========A.The IoC Container==========
 	// A.1.Bean Definition and Dependency Injection
 	// A.1.1.Bean instantiation with a constructor
+	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
 	@Lazy
 	@DependsOn("house")
 	@Bean(name = "family", initMethod = "init", destroyMethod = "destroy")
@@ -363,26 +357,13 @@ public class AppConfig {
 		conversionService.setRegisterDefaultFormatters(true);
 
 		// 方式一：单个指定Converter/ConverterFactory/GenericConverter S->T
-		Set<Object> converters = new HashSet<Object>();
-		converters.add(new StringToPeopleConverter());
-		conversionService.setConverters(converters);
+		registerConvertors(conversionService);
 
 		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
-		Set<Object> formatters = new HashSet<Object>();
-		formatters.add(new PeopleFormatter());
-		formatters.add(new PeopleFormatAnnotationFormatterFactory());
-		conversionService.setFormatters(formatters);
+		registerFormatters(conversionService);
 
 		// 方式三：分组指定converters和formatters
-		Set<FormatterRegistrar> formatterRegistrars = new HashSet<FormatterRegistrar>();
-		formatterRegistrars.add(new PeopleFormatterRegistrar());
-		JodaTimeFormatterRegistrar jodaTimeFormatterRegistrar = new JodaTimeFormatterRegistrar();
-		DateTimeFormatterFactoryBean dateTimeFormatterFactoryBean = new DateTimeFormatterFactoryBean();
-		dateTimeFormatterFactoryBean.setPattern("yyyy-MM-dd");
-		jodaTimeFormatterRegistrar
-				.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
-		formatterRegistrars.add(jodaTimeFormatterRegistrar);
-		conversionService.setFormatterRegistrars(formatterRegistrars);
+		registerFormatterRegistrars(conversionService);
 
 		log.info("conversionService==========" + conversionService);
 		return conversionService;
@@ -394,16 +375,54 @@ public class AppConfig {
 		CustomEditorConfigurer customEditorConfigurer = new CustomEditorConfigurer();
 
 		// 方式四：单个指定PropertyEditor
-		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
-		customEditors.put(People.class, PeoplePropertyEditor.class);
-		customEditorConfigurer.setCustomEditors(customEditors);
+		registerPropertyEditors(customEditorConfigurer);
 
 		// 方式五：分组指定PropertyEditor
-		customEditorConfigurer
-				.setPropertyEditorRegistrars(new PeoplePropertyEditorRegistrar[] { new PeoplePropertyEditorRegistrar() });
+		registerPropertyEditorRegistrars(customEditorConfigurer);
 
 		log.info("customEditorConfigurer==========" + customEditorConfigurer);
 		return customEditorConfigurer;
+	}
+
+	private void registerConvertors(
+			FormattingConversionServiceFactoryBean conversionService) {
+		Set<Object> converters = new HashSet<Object>();
+		converters.add(new StringToPeopleConverter());
+		conversionService.setConverters(converters);
+	}
+
+	private void registerFormatters(
+			FormattingConversionServiceFactoryBean conversionService) {
+		Set<Object> formatters = new HashSet<Object>();
+		formatters.add(new PeopleFormatter());
+		formatters.add(new PeopleFormatAnnotationFormatterFactory());
+		conversionService.setFormatters(formatters);
+	}
+
+	private void registerFormatterRegistrars(
+			FormattingConversionServiceFactoryBean conversionService) {
+		Set<FormatterRegistrar> formatterRegistrars = new HashSet<FormatterRegistrar>();
+		formatterRegistrars.add(new PeopleFormatterRegistrar());
+		JodaTimeFormatterRegistrar jodaTimeFormatterRegistrar = new JodaTimeFormatterRegistrar();
+		DateTimeFormatterFactoryBean dateTimeFormatterFactoryBean = new DateTimeFormatterFactoryBean();
+		dateTimeFormatterFactoryBean.setPattern("yyyy-MM-dd");
+		jodaTimeFormatterRegistrar
+				.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
+		formatterRegistrars.add(jodaTimeFormatterRegistrar);
+		conversionService.setFormatterRegistrars(formatterRegistrars);
+	}
+
+	private static void registerPropertyEditors(
+			CustomEditorConfigurer customEditorConfigurer) {
+		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
+		customEditors.put(People.class, PeoplePropertyEditor.class);
+		customEditorConfigurer.setCustomEditors(customEditors);
+	}
+
+	private static void registerPropertyEditorRegistrars(
+			CustomEditorConfigurer customEditorConfigurer) {
+		customEditorConfigurer
+				.setPropertyEditorRegistrars(new PeoplePropertyEditorRegistrar[] { new PeoplePropertyEditorRegistrar() });
 	}
 
 	// A.2.3.Validation JSR-303/JSR-349/JSR-380
@@ -479,10 +498,10 @@ public class AppConfig {
 	// A.5.Environment：Profile and PropertySource
 
 	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
-	// 此处没有指定location，而是将@PropertySource加入，使得@Value支持占位符
+	// 方式一，通过指定@PropertySource，使得@Value支持占位符
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
 		propertySourcesPlaceholderConfigurer
@@ -491,9 +510,9 @@ public class AppConfig {
 				+ propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
 	}
-	
-	// 方式二，直接指定location，使得@Value支持占位符
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+
+	// 方式二，通过指定location/properties，使得@Value支持占位符
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setLocations(
 				new ClassPathResource("family.properties"),
@@ -501,7 +520,7 @@ public class AppConfig {
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
 		propertySourcesPlaceholderConfigurer
 				.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertySourcesPlaceholderConfigurer=========="
+		log.info("propertySourcesPlaceholderConfigurer2=========="
 				+ propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
 	}
