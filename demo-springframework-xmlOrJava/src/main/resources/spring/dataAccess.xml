@@ -26,7 +26,15 @@
 		<jdbc:script location="classpath:db-test-data.sql" />
 	</jdbc:embedded-database>
 	
-	<!-- data source&connection pool:dbcp2/c3p0 -->
+	<!-- data source&connection pool:jdbc/dbcp2/c3p0 -->
+	<bean id="dataSource1"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+	</bean>
+	
 	<bean id="dataSource2" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
@@ -75,7 +83,7 @@
 		<tx:attributes>
 			<!-- all methods starting with 'find' are read-only -->
 			<tx:method name="find*" read-only="true" propagation="REQUIRED"
-				isolation="DEFAULT" rollback-for="UnsupportedOperationException" />
+				isolation="DEFAULT" rollback-for="UnsupportedOperationException"  />
 			<!-- other methods use the default transaction settings (see below) -->
 			<tx:method name="*" />
 		</tx:attributes>

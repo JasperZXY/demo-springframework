@@ -30,6 +30,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.jdbc.object.SqlUpdate;
@@ -42,8 +43,10 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author ruanwei
  *
  */
-public class UserJdbc {
+public class UserJdbc /*extends JdbcDaoSupport*/{
 	private static Log log = LogFactory.getLog(UserJdbc.class);
+	
+	private DataSource dataSource;
 
 	// JdbcTemplate is the classic Spring JDBC approach and the most popular.
 	private JdbcTemplate jdbcTemplate; // is thread-safe
@@ -64,6 +67,7 @@ public class UserJdbc {
 	private StoredProcedure storedProcedure;
 
 	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);
