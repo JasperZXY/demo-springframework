@@ -47,20 +47,17 @@ public class UserJdbc /*extends JdbcDaoSupport*/{
 	private static Log log = LogFactory.getLog(UserJdbc.class);
 	
 	private DataSource dataSource;
-
-	// JdbcTemplate is the classic Spring JDBC approach and the most popular.
-	private JdbcTemplate jdbcTemplate; // is thread-safe
-
-	// NamedParameterJdbcTemplate wraps a JdbcTemplate to provide named
-	// parameters instead of the traditional JDBC "?" placeholders.
+	
+	// thread-safe
+	private JdbcTemplate jdbcTemplate; 
+	// rovide named parameters instead of the traditional JDBC "?" placeholders.
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	// SimpleJdbcInsert and SimpleJdbcCall optimize database metadata to limit
-	// the amount of necessary configuration.
+	// Simplifying JDBC operations with the SimpleJdbc classes
 	private SimpleJdbcInsert simpleJdbcInsert;
 	private SimpleJdbcCall simpleJdbcCall;// 执行存储过程或者函数
 
-	// RDBMS Objects including MappingSqlQuery, SqlUpdate and StoredProcedure.
+	// Modeling JDBC operations as Java objects.
 	private SqlQuery sqlQuery;
 	private MappingSqlQuery mappingSqlQuery;
 	private SqlUpdate sqlUpdate;
