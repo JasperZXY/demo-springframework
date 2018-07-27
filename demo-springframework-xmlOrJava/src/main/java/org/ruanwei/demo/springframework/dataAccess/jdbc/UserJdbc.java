@@ -30,11 +30,11 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.jdbc.object.MappingSqlQuery;
 import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.jdbc.object.SqlUpdate;
 import org.springframework.jdbc.object.StoredProcedure;
+import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
@@ -58,10 +58,13 @@ public class UserJdbc /*extends JdbcDaoSupport*/{
 	private SimpleJdbcCall simpleJdbcCall;// 执行存储过程或者函数
 
 	// Modeling JDBC operations as Java objects.
-	private SqlQuery sqlQuery;
-	private MappingSqlQuery mappingSqlQuery;
+	private SqlQuery<User> sqlQuery;
+	private MappingSqlQuery<User> mappingSqlQuery;
+	private UpdatableSqlQuery<User> updatableSqlQuery;
 	private SqlUpdate sqlUpdate;
 	private StoredProcedure storedProcedure;
+	
+	// RowCallbackHandler
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;

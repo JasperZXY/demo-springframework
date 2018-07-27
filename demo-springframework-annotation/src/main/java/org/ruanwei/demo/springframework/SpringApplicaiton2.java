@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -118,8 +119,8 @@ public class SpringApplicaiton2 {
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
-		String a = env.getProperty("a","a"); // MapPropertySource(-Da=1)
-		String b = env.getProperty("family.familyCount","2");// ResourcePropertySource(@PeopertySource("family.properties"))
+		String a = env.getProperty("a", "a"); // MapPropertySource(-Da=1)
+		String b = env.getProperty("family.familyCount", "2");// ResourcePropertySource(@PeopertySource("family.properties"))
 		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换
 		log.info("property=========a=" + a + " b=" + b + " c=" + c);
 
@@ -162,7 +163,8 @@ public class SpringApplicaiton2 {
 			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("applicationEventPublisher=========="
 				+ applicationEventPublisher);
-		applicationEventPublisher.publishEvent(new MyApplicationEvent2(SpringApplicaiton2.class,
+		applicationEventPublisher.publishEvent(new MyApplicationEvent2(
+				SpringApplicaiton2.class,
 				"custom ApplicationEvent from SpringApplication"));
 		applicationEventPublisher.publishEvent(new String(
 				"PayloadApplicationEvent<String> from SpringApplication"));
@@ -198,9 +200,11 @@ public class SpringApplicaiton2 {
 			log.info("7.2======================================================================================");
 			absContext.stop();
 
-			// AbstractRefreshableApplicationContext
 			log.info("7.3======================================================================================");
-			absContext.refresh();
+			// 即ClassPathXmlApplicationContext和FileSystemXmlApplicationContext
+			if (context instanceof AbstractRefreshableApplicationContext) {
+				absContext.refresh();
+			}
 
 			log.info("7.4======================================================================================");
 			absContext.close();
