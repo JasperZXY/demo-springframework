@@ -39,7 +39,7 @@ public class SpringApplicaiton {
 
 		// testCoreContainer();
 		
-		testIntegration();
+		testDataAccess();
 	}
 
 	private static void testCoreContainer() {
@@ -65,7 +65,7 @@ public class SpringApplicaiton {
 		testApplicationEvent(context);
 	}
 
-	private static void testIntegration() {
+	private static void testDataAccess() {
 		log.info("1======================================================================================");
 		UserJdbc userJdbc = context.getBean("userJdbc", UserJdbc.class);
 		int count = userJdbc.countAll();
