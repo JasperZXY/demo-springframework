@@ -104,7 +104,7 @@
 			order="2" />
 		<!-- execute before the transactional advice (hence the lower order number) -->
 		<!-- <aop:aspect id="myAspect3" ref="myAdvice" order="1"> <aop:pointcut 
-			id="daoPointcut2" expression="execution(* org.ruanwei.demo.springframework.integration.jdbc.UserJdbc.*(..)) 
+			id="daoPointcut2" expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc.*(..)) 
 			and args(name,age)" /> <aop:around pointcut-ref="daoPointcut2" method="profile" 
 			/> </aop:aspect> -->
 	</aop:config>
