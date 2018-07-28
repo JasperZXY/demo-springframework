@@ -1,4 +1,4 @@
-package org.ruanwei.demo.springframework.dataAccess.jdbc;
+package org.ruanwei.demo.springframework.dataAccess;
 
 public class User {
 	private String name;
