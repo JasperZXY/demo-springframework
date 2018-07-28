@@ -112,7 +112,7 @@
 	</aop:config>
 
 	<!-- ==========A.Data Access:DAO========== -->
-	<bean id="userJdbc"
+	<bean id="jdbcDAO"
 		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO">
 		<property name="dataSource" ref="dataSource1" />
 	</bean>

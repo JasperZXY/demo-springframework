@@ -66,10 +66,30 @@ public class SpringApplicaiton {
 	}
 
 	private static void testDataAccess() {
-		log.info("1======================================================================================");
 		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
-		int count = jdbcDAO.countAll();
-		log.info("count======"+count);
+		jdbcDAO.queryForSingleColumn();
+		jdbcDAO.queryForMultiColumn();
+		jdbcDAO.queryForObject();
+		
+		jdbcDAO.queryForSingleColumnList();
+		jdbcDAO.queryForMultiColumnList();
+		jdbcDAO.queryForObjectList();
+		
+//		jdbcDAO.queryForList();
+//		jdbcDAO.query();
+//		
+//		jdbcDAO.queryForList2();
+//		jdbcDAO.queryForMultiColumn();
+//		jdbcDAO.query2();
+//		
+//		jdbcDAO.queryWithParam();
+//		jdbcDAO.queryWithParam2();
+//		jdbcDAO.queryForListWithParam();
+//		jdbcDAO.queryForListWithParam2();
+//		jdbcDAO.queryForListWithParam3();
+//		
+//		jdbcDAO.queryWithNamedParam();
+//		jdbcDAO.queryWithNamedParam2();
 	}
 
 	private static void getApplicationContext(ApplicationContextType type) {
