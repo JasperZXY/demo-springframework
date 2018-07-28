@@ -114,7 +114,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 //@Profile("development")
 //@Profile("production")
 //@ImportResource({"classpath:spring/applicationContext.xml"})
-@Import(DataConfig.class)
+@Import(DataAcessConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
@@ -123,7 +123,7 @@ public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 
 	@Autowired
-	private DataConfig dataConfig;
+	private DataAcessConfig dataAcessConfig;
 
 	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
 	@Value("${family.familyCount:4}")
