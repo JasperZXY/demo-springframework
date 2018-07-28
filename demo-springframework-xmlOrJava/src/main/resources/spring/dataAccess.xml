@@ -99,19 +99,19 @@
 
 	<aop:config>
 		<aop:pointcut id="daoPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc.*(..))" />
+			expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="daoPointcut"
 			order="2" />
 		<!-- execute before the transactional advice (hence the lower order number) -->
 		<!-- <aop:aspect id="myAspect3" ref="myAdvice" order="1"> <aop:pointcut 
-			id="daoPointcut2" expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc.*(..)) 
+			id="daoPointcut2" expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO.*(..)) 
 			and args(name,age)" /> <aop:around pointcut-ref="daoPointcut2" method="profile" 
 			/> </aop:aspect> -->
 	</aop:config>
 
 	<!-- ==========A.Data Access:DAO========== -->
 	<bean id="userJdbc"
-		class="org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc">
+		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO">
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
 

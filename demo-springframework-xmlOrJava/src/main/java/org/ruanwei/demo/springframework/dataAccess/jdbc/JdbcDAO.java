@@ -43,8 +43,8 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author ruanwei
  *
  */
-public class UserJdbc /*extends JdbcDaoSupport*/{
-	private static Log log = LogFactory.getLog(UserJdbc.class);
+public class JdbcDAO{
+	private static Log log = LogFactory.getLog(JdbcDAO.class);
 	
 	private DataSource dataSource;
 	

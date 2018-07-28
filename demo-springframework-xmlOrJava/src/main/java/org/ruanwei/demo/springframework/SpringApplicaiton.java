@@ -11,7 +11,7 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbc;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -67,8 +67,8 @@ public class SpringApplicaiton {
 
 	private static void testDataAccess() {
 		log.info("1======================================================================================");
-		UserJdbc userJdbc = context.getBean("userJdbc", UserJdbc.class);
-		int count = userJdbc.countAll();
+		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
+		int count = jdbcDAO.countAll();
 		log.info("count======"+count);
 	}
 
