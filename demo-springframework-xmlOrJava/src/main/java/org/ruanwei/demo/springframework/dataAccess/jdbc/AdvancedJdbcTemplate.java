@@ -3,6 +3,8 @@ package org.ruanwei.demo.springframework.dataAccess.jdbc;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -22,10 +24,10 @@ public class AdvancedJdbcTemplate {
 	private JdbcTemplate jdbcTemplate;
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	public AdvancedJdbcTemplate(JdbcTemplate jdbcTemplate,
-			NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-		this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-		this.jdbcTemplate = jdbcTemplate;
+	public AdvancedJdbcTemplate(DataSource dataSource) {
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+		this.jdbcTemplate = new JdbcTemplate(dataSource);
+		
 	}
 
 	// ====================single row====================
