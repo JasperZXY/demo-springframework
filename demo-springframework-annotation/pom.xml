@@ -8,21 +8,20 @@
 		<version>1.0.20180111</version>
 	</parent>
 
-	<artifactId>demo-springframework-annotation</artifactId>
+	<artifactId>demo-springframework-annoConfig</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
-	
-	<name>Demo:Spring Framework(XML/Java + Annotation-Based Configuration Metadata)</name>
+
+	<name>Demo:Spring Framework(Java-based Configuration Metadata + @Component)</name>
 
 	<dependencies>
-		<!-- used for logging -->
+		<!-- 0.logging -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
 		</dependency>
 
 		<!-- A.The IoC Container -->
-		<!-- 1.used for the core container -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -32,17 +31,13 @@
 			<artifactId>spring-context-indexer</artifactId>
 			<optional>true</optional>
 		</dependency>
-
-		<!-- used for JSR-330 Dependency Injection for Java -->
+		<!-- Dependency Injection for JSR-330 -->
 		<dependency>
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 		</dependency>
 
-		<!-- 2.used for validation -->
-		<!-- JSR-303 Bean Validation 1.0 -->
-		<!-- JSR-349 Bean Validation 1.1 -->
-		<!-- JSR-380 Bean Validation 2.0 -->
+		<!-- Bean Validation with JSR-303/JSR-349/JSR-380 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -52,7 +47,7 @@
 			<artifactId>javax.el</artifactId>
 		</dependency>
 
-		<!-- 3.used for conversion service -->
+		<!-- ConversionService for joda-time -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -69,42 +64,51 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-instrument</artifactId>
 		</dependency>
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jdbc</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jms</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-oxm</artifactId> 
-			</dependency> <dependency> <groupId>org.codehaus.castor</groupId> <artifactId>castor</artifactId> 
-			</dependency> <dependency> <groupId>xerces</groupId> <artifactId>xercesImpl</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
-			</dependency> <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
-			<scope>runtime</scope> </dependency> <dependency> <groupId>org.apache.commons</groupId> 
-			<artifactId>commons-dbcp2</artifactId> </dependency> <dependency> <groupId>c3p0</groupId> 
-			<artifactId>c3p0</artifactId> </dependency> HyperSQL DB <dependency> <groupId>org.hsqldb</groupId> 
-			<artifactId>hsqldb</artifactId> </dependency> H2 DB <dependency> <groupId>com.h2database</groupId> 
-			<artifactId>h2</artifactId> </dependency> Derby DB <dependency> <groupId>org.apache.derby</groupId> 
-			<artifactId>derby</artifactId> </dependency> <dependency> <groupId>cglib</groupId> 
-			<artifactId>cglib</artifactId> </dependency> <dependency> <groupId>org.apache.activemq</groupId> 
-			<artifactId>activemq-all</artifactId> </dependency> <dependency> <groupId>org.springframework.data</groupId> 
-			<artifactId>spring-data-redis</artifactId> </dependency> <dependency> <groupId>redis.clients</groupId> 
-			<artifactId>jedis</artifactId> </dependency> <dependency> <groupId>org.quartz-scheduler</groupId> 
-			<artifactId>quartz</artifactId> </dependency> <dependency> <groupId>com.sun.mail</groupId> 
-			<artifactId>javax.mail</artifactId> </dependency> -->
 
-		<!-- 替换Spring默认的JCL为SLF4J <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-core</artifactId> <version>${spring.version}</version> 
-			<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			</exclusion> </exclusions> </dependency> <dependency> <groupId>org.slf4j</groupId> 
-			<artifactId>jcl-over-slf4j</artifactId> <version>1.5.8</version> </dependency> 
-			<dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
-			<version>1.5.8</version> </dependency> <dependency> <groupId>org.slf4j</groupId> 
-			<artifactId>slf4j-log4j12</artifactId> <version>1.5.8</version> </dependency> 
-			<dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> <version>1.2.14</version> 
-			</dependency> -->
+		<!-- C.Data Access -->
+		<!-- embedded database:H2/HSQL/DERBY -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
 
+		<!-- database:mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- data source&connection pool:dbcp2/c3p0 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+		</dependency>
+
+		<!-- jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>demo-springframework-annotation</finalName>
+		<finalName>demo-springframework-annoConfig</finalName>
 	</build>
 
 </project>

@@ -37,9 +37,8 @@
 	</properties>
 
 	<modules>
-		<module>demo-springframework-xmlOrJava</module>
-		<module>demo-springframework-annotation</module>
-		<module>demo-springframework-temp</module>
+		<module>demo-springframework-xmlConfig</module>
+		<module>demo-springframework-annoConfig</module>
 	</modules>
 
 	<dependencyManagement>

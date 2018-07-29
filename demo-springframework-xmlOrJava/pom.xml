@@ -8,11 +8,11 @@
 		<version>1.0.20180111</version>
 	</parent>
 
-	<artifactId>demo-springframework-xmlOrJava</artifactId>
+	<artifactId>demo-springframework-xmlConfig</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>Demo:Spring Framework(XML-Based/Java-Based Configuration Metadata)</name>
+	<name>Demo:Spring Framework(XML-based Configuration Metadata + Schema-style Configuration)</name>
 
 	<dependencies>
 		<!-- 0.logging -->
@@ -65,7 +65,7 @@
 			<artifactId>spring-instrument</artifactId>
 		</dependency>
 
-		<!-- C.Integration -->
+		<!-- C.Data Access -->
 		<!-- embedded database:H2/HSQL/DERBY -->
 		<dependency>
 			<groupId>org.hsqldb</groupId>
@@ -105,41 +105,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 		</dependency>
-		
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-webmvc</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jdbc</artifactId> 
-			</dependency> -->
-		<!-- <dependency> <groupId>org.springframework</groupId> <artifactId>spring-jms</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-oxm</artifactId> 
-			</dependency> <dependency> <groupId>org.codehaus.castor</groupId> <artifactId>castor</artifactId> 
-			</dependency> <dependency> <groupId>xerces</groupId> <artifactId>xercesImpl</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework</groupId> <artifactId>spring-test</artifactId> 
-			</dependency> -->
-		<!-- <dependency> <groupId>mysql</groupId> <artifactId>mysql-connector-java</artifactId> 
-			<scope>runtime</scope> </dependency> <dependency> <groupId>org.apache.commons</groupId> 
-			<artifactId>commons-dbcp2</artifactId> </dependency> <dependency> <groupId>c3p0</groupId> 
-			<artifactId>c3p0</artifactId> </dependency> -->
-		<!-- HyperSQL DB -->
-		<!-- <dependency> <groupId>org.hsqldb</groupId> <artifactId>hsqldb</artifactId> 
-			</dependency> -->
-		<!-- H2 DB -->
-		<!-- <dependency> <groupId>com.h2database</groupId> <artifactId>h2</artifactId> 
-			</dependency> -->
-		<!-- Derby DB -->
-		<!-- <dependency> <groupId>org.apache.derby</groupId> <artifactId>derby</artifactId> 
-			</dependency> <dependency> <groupId>cglib</groupId> <artifactId>cglib</artifactId> 
-			</dependency> <dependency> <groupId>org.apache.activemq</groupId> <artifactId>activemq-all</artifactId> 
-			</dependency> <dependency> <groupId>org.springframework.data</groupId> <artifactId>spring-data-redis</artifactId> 
-			</dependency> <dependency> <groupId>redis.clients</groupId> <artifactId>jedis</artifactId> 
-			</dependency> -->
-		<!-- <dependency> <groupId>org.quartz-scheduler</groupId> <artifactId>quartz</artifactId> 
-			</dependency> <dependency> <groupId>com.sun.mail</groupId> <artifactId>javax.mail</artifactId> 
-			</dependency> -->
+
 
 	</dependencies>
 
 	<build>
-		<finalName>demo-springframework-xmlOrJava</finalName>
+		<finalName>demo-springframework-xmlConfig</finalName>
 	</build>
 
 </project>
