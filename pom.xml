@@ -38,7 +38,8 @@
 
 	<modules>
 		<module>demo-springframework-xmlConfig</module>
-		<module>demo-springframework-annoConfig</module>
+		<module>demo-springframework-javaConfig</module>
+		<module>demo-springframework-temp</module>
 	</modules>
 
 	<dependencyManagement>
