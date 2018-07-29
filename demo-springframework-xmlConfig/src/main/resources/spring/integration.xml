@@ -19,10 +19,6 @@
         http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd">
 
 	<!-- ==========A.Data Access:JDBC========== -->
-	<bean id="userDAO"
-		class="org.ruanwei.demo.springframework.integration.jdbc.xml.UserDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
 
 	<!-- ==========B:Data Access:ORM:MyBatis========== -->
 	<!-- <bean id="userDao" class="org.mybatis.spring.mapper.MapperFactoryBean"> 
@@ -31,79 +27,6 @@
 		class="org.mybatis.spring.SqlSessionFactoryBean"> <property name="configLocation" 
 		value="classpath:mybatis/mybatis-config.xml" /> <property name="dataSource" 
 		ref="dataSource" /> </bean> -->
-
-	<!-- ==========C.Data Access:Transaction:DataSourceTransaction========== -->
-	<tx:advice id="txAdvice" transaction-manager="txManager">
-		<tx:attributes>
-			<!-- all methods starting with 'find' are read-only -->
-			<tx:method name="find*" read-only="true" propagation="REQUIRED"
-				isolation="DEFAULT" rollback-for="UnsupportedOperationException" />
-			<!-- other methods use the default transaction settings (see below) -->
-			<tx:method name="*" />
-		</tx:attributes>
-	</tx:advice>
-
-	<aop:config>
-		<aop:pointcut id="daoPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.integration.UserDAO.*(..))" />
-		<aop:advisor advice-ref="txAdvice" pointcut-ref="daoPointcut"
-			order="2" />
-		<!-- execute before the transactional advice (hence the lower order number) -->
-		<aop:aspect id="myAspect3" ref="myAdvice" order="1">
-			<aop:pointcut id="daoPointcut2"
-				expression="execution(* org.ruanwei.demo.springframework.integration.UserDAO.*(..)) and args(name,age)" />
-			<aop:around pointcut-ref="daoPointcut2" method="profile" />
-		</aop:aspect>
-	</aop:config>
-
-	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
-	<bean id="txManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-		<property name="url" value="${jdbc.url}" />
-		<property name="username" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-	</bean>
-
-	<bean id="dataSource2" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${jdbc.driverClassName}" />
-		<property name="jdbcUrl" value="${jdbc.url}" />
-		<property name="user" value="${jdbc.username}" />
-		<property name="password" value="${jdbc.password}" />
-		<!-- 连接池中保留的最小连接数。 -->
-		<property name="minPoolSize" value="10" />
-		<!-- 连接池中保留的最大连接数。Default:15 -->
-		<property name="maxPoolSize" value="100" />
-		<!-- 最大空闲时间,1800秒内未使用则连接被丢弃。若为0则永不丢弃。Default:0 -->
-		<property name="maxIdleTime" value="1800" />
-		<!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default:3 -->
-		<property name="acquireIncrement" value="3" />
-		<property name="maxStatements" value="1000" />
-		<property name="initialPoolSize" value="10" />
-		<!-- 每60秒检查所有连接池中的空闲连接。Default:0 -->
-		<property name="idleConnectionTestPeriod" value="60" />
-		<!-- 定义在从数据库获取新连接失败后重复尝试的次数。Default:30 -->
-		<property name="acquireRetryAttempts" value="30" />
-		<property name="breakAfterAcquireFailure" value="true" />
-		<property name="testConnectionOnCheckout" value="false" />
-	</bean>
-
-	<!-- H2/HSQL/DERBY -->
-	<jdbc:embedded-database id="dataSource3" type="H2"
-		generate-name="true">
-		<jdbc:script location="classpath:db-schema.sql" />
-		<jdbc:script location="classpath:db-test-data.sql" />
-	</jdbc:embedded-database>
-	<jdbc:initialize-database data-source="dataSource3">
-		<jdbc:script location="classpath:db-schema.sql" />
-		<jdbc:script location="classpath:db-test-data.sql" />
-	</jdbc:initialize-database>
 
 	<!-- ==========D.Data Access:OXM========== -->
 	<bean id="oxmClient"

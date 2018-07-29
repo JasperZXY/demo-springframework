@@ -65,7 +65,7 @@ public class SpringApplicaiton2 {
 
 	public static void main(String[] args) {
 		log.info("0======================================================================================");
-		getApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		getApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
 
 		// testCoreContainer();
 
