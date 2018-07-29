@@ -1,0 +1,116 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.ruanwei.demo</groupId>
+		<artifactId>demo-springframework</artifactId>
+		<version>1.0.20180111</version>
+	</parent>
+
+	<artifactId>demo-springframework-xmlConfig</artifactId>
+	<version>1.0</version>
+	<packaging>jar</packaging>
+
+	<name>Demo:Spring Framework(XML-based Configuration Metadata + Schema-style Configuration)</name>
+
+	<dependencies>
+		<!-- 0.logging -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+
+		<!-- A.The IoC Container -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-indexer</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<!-- Dependency Injection for JSR-330 -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+		</dependency>
+
+		<!-- Bean Validation with JSR-303/JSR-349/JSR-380 -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish</groupId>
+			<artifactId>javax.el</artifactId>
+		</dependency>
+
+		<!-- ConversionService for joda-time -->
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+
+		<!-- B.The AOP -->
+		<!-- 1.used for AspectJ aspect -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aspects</artifactId>
+		</dependency>
+		<!-- 2.used for java agent -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-instrument</artifactId>
+		</dependency>
+
+		<!-- C.Data Access -->
+		<!-- embedded database:H2/HSQL/DERBY -->
+		<dependency>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+			<!-- <scope>test</scope> -->
+		</dependency>
+
+		<!-- database:mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- data source&connection pool:dbcp2/c3p0 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+		</dependency>
+
+		<!-- jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+		</dependency>
+
+
+	</dependencies>
+
+	<build>
+		<finalName>demo-springframework-xmlConfig</finalName>
+	</build>
+
+</project>
