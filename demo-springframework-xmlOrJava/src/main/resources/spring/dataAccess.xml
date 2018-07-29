@@ -37,7 +37,6 @@
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 
-	<!-- DataSource:dbcp2 -->
 	<!-- polled-DataSource:dbcp2 PoolingDataSource -->
 	<bean id="dataSource2" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
@@ -45,6 +44,11 @@
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
+		
+		<property name="initialSize" value="10" />
+        <property name="maxTotal" value="100" />
+        <property name="maxIdle" value="100" />
+        <property name="maxWaitMillis" value="-1" />
 	</bean>
 
 	<!-- polled-DataSource:c3p0 -->
