@@ -1,16 +1,21 @@
 package org.ruanwei.demo.springframework;
 
+import java.sql.Date;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.aop.Good2;
-import org.ruanwei.demo.springframework.core.aop.Happy2;
+import org.ruanwei.demo.springframework.core.ioc.AbsHouse2;
 import org.ruanwei.demo.springframework.core.ioc.Family2;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
+import org.ruanwei.demo.springframework.dataAccess.User2;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -31,14 +36,43 @@ import org.springframework.core.io.ResourceLoader;
 public class SpringApplicaiton2 {
 	private static Log log = LogFactory.getLog(SpringApplicaiton2.class);
 
-	public static void main(String[] args) {
-		test1(args);
+	private static AbstractApplicationContext context;
+
+	private static final User2 paramForCreate1 = new User2("ruanwei_tmp", 35,
+			Date.valueOf("1983-07-06"));
+	private static final User2 paramForUpdate1 = new User2("ruanwei", 18,
+			Date.valueOf("1983-07-06"));
+	private static final User2 paramForUpdate2 = new User2("ruanwei_tmp", 88,
+			Date.valueOf("1983-07-06"));
+
+	private static final Map<String, Object> paramForCreate2 = new HashMap<String, Object>();
+	private static final Map<String, Object> paramForUpdate3 = new HashMap<String, Object>();
+	private static final Map<String, Object> paramForUpdate4 = new HashMap<String, Object>();
+
+	static {
+		paramForCreate2.put("name", "ruanwei_tmp");
+		paramForCreate2.put("age", 35);
+		paramForCreate2.put("birthday", Date.valueOf("1983-07-06"));
+
+		paramForUpdate3.put("name", "ruanwei");
+		paramForUpdate3.put("age", 18);
+		paramForUpdate3.put("birthday", Date.valueOf("1983-07-06"));
+
+		paramForUpdate4.put("name", "ruanwei_tmp");
+		paramForUpdate4.put("age", 88);
+		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
-	private static void test1(String[] args) {
+	public static void main(String[] args) {
 		log.info("0======================================================================================");
-		AbstractApplicationContext context = getApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
+		getApplicationContext(ApplicationContextType.CLASSPATH_XML);
 
+		// testCoreContainer();
+
+		testDataAccess();
+	}
+
+	private static void testCoreContainer() {
 		log.info("1======================================================================================");
 		testEnvironment(context);
 
@@ -61,10 +95,59 @@ public class SpringApplicaiton2 {
 		testApplicationEvent(context);
 	}
 
-	private static AbstractApplicationContext getApplicationContext(
-			ApplicationContextType type) {
-		AbstractApplicationContext context = null;
+	private static void testDataAccess() {
+		testCRUD();
+		testTransaction();
+	}
 
+	private static void testCRUD() {
+		JdbcDAO2 jdbcDAO = context.getBean("jdbcDAO", JdbcDAO2.class);
+
+		testCreate(jdbcDAO);
+		testBatchUpdate(jdbcDAO);
+		testQueryForSingleRow(jdbcDAO);
+		testQueryFormultiRow(jdbcDAO);
+		testDelete(jdbcDAO);
+	}
+
+	private static void testCreate(JdbcDAO2 jdbcDAO) {
+		jdbcDAO.createUser1(paramForCreate1);
+		jdbcDAO.createUser2(paramForCreate1);
+		jdbcDAO.createUser3(paramForCreate1);
+		jdbcDAO.createUser4(paramForCreate1);
+		jdbcDAO.createUser4(paramForCreate2);
+		jdbcDAO.createUser5(paramForCreate1);
+		jdbcDAO.createUser5(paramForCreate2);
+	}
+
+	private static void testBatchUpdate(JdbcDAO2 jdbcDAO) {
+		List<User2> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
+		jdbcDAO.batchUpdateUser1(users);
+		jdbcDAO.batchUpdateUser2(users);
+		jdbcDAO.batchUpdateUser3(users);
+		jdbcDAO.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
+	}
+
+	private static void testQueryForSingleRow(JdbcDAO2 jdbcDAO) {
+		jdbcDAO.queryForSingleColumn();
+		jdbcDAO.queryForMultiColumn();
+		jdbcDAO.queryForObject();
+	}
+
+	private static void testQueryFormultiRow(JdbcDAO2 jdbcDAO) {
+		jdbcDAO.queryForSingleColumnList();
+		jdbcDAO.queryForMultiColumnList();
+		jdbcDAO.queryForObjectList();
+	}
+
+	private static void testDelete(JdbcDAO2 jdbcDAO) {
+		jdbcDAO.deleteUser(2);
+	}
+
+	private static void testTransaction() {
+	}
+
+	private static void getApplicationContext(ApplicationContextType type) {
 		switch (type) {
 		case ANNOTATION_CONFIG: {// GenericApplicationContext
 			context = new AnnotationConfigApplicationContext(AppConfig2.class);
@@ -76,19 +159,18 @@ public class SpringApplicaiton2 {
 		}
 		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
 			context = new ClassPathXmlApplicationContext(
-					new String[] { "classpath:spring/applicationContext2.xml" });
+					new String[] { "classpath:spring/applicationContext.xml" });
 			break;
 		}
 		case FILESYSTEM_XML: {// AbstractRefreshableApplicationContext
 			context = new FileSystemXmlApplicationContext(
-					new String[] { "file:spring/applicationContext2.xml" });
+					new String[] { "file:spring/applicationContext.xml" });
 			break;
 		}
 		default:
 		}
 
 		context.registerShutdownHook();
-		return context;
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
@@ -113,12 +195,13 @@ public class SpringApplicaiton2 {
 			configEnv.setDefaultProfiles("production");
 		}
 
-		// House house = context.getBean("house", House.class);
-		// log.info("house==========" + house);
+		AbsHouse2 house = context.getBean("house", AbsHouse2.class);
+		log.info("house==========" + house);
 	}
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
 	private static void testPropertySource(Environment env) {
+		// TODO:ClassPathXmlApplicationContext不能获取到属性值，但是annotation那个项目却可以
 		String a = env.getProperty("a", "a"); // MapPropertySource(-Da=1)
 		String b = env.getProperty("family.familyCount", "2");// ResourcePropertySource(@PeopertySource("family.properties"))
 		String c = env.getProperty("guest.name"); // PropertySourcesPlaceholderConfigurer支持PropertySource参与占位符替换
@@ -155,7 +238,7 @@ public class SpringApplicaiton2 {
 	private static void testResourceLoader(ResourceLoader resourceLoader) {
 		log.info("resourceLoader==========" + resourceLoader);
 		Resource resource = resourceLoader
-				.getResource("spring/applicationContext.xml");
+				.getResource("classpath:spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 	}
 
@@ -185,9 +268,10 @@ public class SpringApplicaiton2 {
 		Family2 family = context.getBean("family", Family2.class);
 		family.sayHello("whatever");
 
+		// TODO:Java配置下还不能正常工作
 		Good2 good = (Good2) context.getBean("good");
-		Happy2 mixin = (Happy2) context.getBean("good");
-		log.info(good.good("whatever") + mixin.happy("whatever"));
+		// Happy mixin = (Happy) context.getBean("good");
+		// log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	private static void testApplicationEvent(ApplicationContext context) {

@@ -42,7 +42,7 @@ import org.springframework.stereotype.Repository;
  * @author ruanwei
  *
  */
-@Repository
+@Repository("jdbcDAO")
 public class JdbcDAO2
 {
 	private static Log log = LogFactory.getLog(JdbcDAO2.class);
