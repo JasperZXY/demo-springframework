@@ -43,7 +43,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	private People2 father;
 
 	@Valid
-	@Qualifier("first")
+	@Qualifier("somebody")
 	@Autowired
 	private People2 mother;
 
@@ -56,7 +56,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	private People2 daughter;
 	
 	@Valid
-	@Qualifier("first")
+	@Qualifier("somebody")
 	@Autowired
 	private People2 guest1;
 

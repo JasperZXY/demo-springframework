@@ -23,7 +23,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 //import org.springframework.transaction.event.TransactionalEventListener;
 
-@Qualifier("first")
+@Qualifier("somebody")
 @Primary
 @Lazy
 @Component("father")
