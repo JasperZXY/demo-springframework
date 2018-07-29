@@ -104,6 +104,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
+@PropertySource("classpath:jdbc.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
 @Configuration
 public class AppConfig2 {
