@@ -100,7 +100,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 // @Profile("development")
 // @Profile("production")
 // @ImportResource({"classpath:spring/applicationContext.xml"})
-@Import(DataConfig2.class)
+@Import(DataAccessConfig2.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
@@ -109,8 +109,8 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
 
-	private final DataConfig2 dataConfig;
-	
+	private final DataAccessConfig2 dataAccessConfig;
+
 	@Value("${family.familyCount:4}")
 	private int familyCount;
 
@@ -120,14 +120,14 @@ public class AppConfig2 {
 	private Environment env;
 
 	@Autowired
-	public AppConfig2(DataConfig2 dataConfig) {
+	public AppConfig2(DataAccessConfig2 dataAccessConfig) {
 		log.info("AppConfig()======");
-		this.dataConfig = dataConfig;
-		
-		/*if (familyCount == 0) {
-			familyCount = Integer.valueOf(env.getProperty("family.familyCount",
-					"2"));
-		}*/
+		this.dataAccessConfig = dataAccessConfig;
+
+		/*
+		 * if (familyCount == 0) { familyCount =
+		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
+		 */
 	}
 
 	@Lazy
@@ -218,7 +218,7 @@ public class AppConfig2 {
 
 		// 方式二：单个指定Formatter/AnnotationFormatterFactory String->T
 		// registerFormatters(conversionService);
-		
+
 		// 方式三：分组指定converters和formatters
 		registerFormatterRegistrars(conversionService);
 
