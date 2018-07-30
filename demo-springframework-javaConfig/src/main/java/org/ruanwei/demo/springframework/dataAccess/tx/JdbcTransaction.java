@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class JdbcTransactional {
+public class JdbcTransaction {
 
 	@Transactional
 	public void testTransaction() {
