@@ -13,13 +13,14 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @EnableTransactionManagement
 @Configuration
-public class DataAccessConfig2 {
+public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 
 	// ==========A.Data Access:JDBC==========
 	// DataSource:pure jdbc
@@ -81,7 +82,8 @@ public class DataAccessConfig2 {
 
 	// ==========A.Data Access:TransactionManager==========
 	// local transaction manager for jdbc
-	@Bean
+	@Primary
+	@Bean("txManager")
 	public PlatformTransactionManager txManager(
 			@Value("#{dataSource1}") DataSource dataSource) {
 		DataSourceTransactionManager txManager = new DataSourceTransactionManager();
@@ -91,10 +93,16 @@ public class DataAccessConfig2 {
 
 	// global transaction manager
 	@Lazy
-	@Bean
+	@Bean("globalTxManager")
 	public PlatformTransactionManager globalTxManager() {
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
+	}
+
+	// @Override
+	public PlatformTransactionManager annotationDrivenTransactionManager() {
+
+		return null;
 	}
 
 }

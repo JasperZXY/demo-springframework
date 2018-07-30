@@ -17,6 +17,7 @@ import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.ruanwei.demo.springframework.dataAccess.User;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -69,9 +70,8 @@ public class SpringApplicaiton {
 	}
 
 	public static void main(String[] args) {
-		testCoreContainer();
-		testJdbc();
-		testTransaction();
+		// testCoreContainer();
+		testDataAccess();
 	}
 
 	private static void testCoreContainer() {
@@ -214,6 +214,19 @@ public class SpringApplicaiton {
 			log.info("7.4======================================================================================");
 			absContext.close();
 		}
+	}
+
+	private static void testDataAccess() {
+		JdbcTransaction jdbcTransaction = context.getBean("jdbcTransaction",
+				JdbcTransaction.class);
+		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
+
+		testTransaction(jdbcTransaction);
+		// testJdbc(jdbcDAO);
+	}
+
+	private static void testTransaction(JdbcTransaction jdbcTransaction) {
+		jdbcTransaction.testTransaction();
 	}
 
 	private static void testJdbc() {

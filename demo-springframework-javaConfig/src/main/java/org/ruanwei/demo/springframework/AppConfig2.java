@@ -103,7 +103,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 // @ImportResource({"classpath:spring/applicationContext.xml"})
 @Import(DataAccessConfig2.class)
 @EnableAspectJAutoProxy
-@EnableTransactionManagement
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 @PropertySource("classpath:jdbc.properties")

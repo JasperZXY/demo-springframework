@@ -17,6 +17,7 @@ import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
 import org.ruanwei.demo.springframework.dataAccess.User2;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -69,9 +70,8 @@ public class SpringApplicaiton2 {
 	}
 
 	public static void main(String[] args) {
-		testCoreContainer();
-		testJdbc();
-		testTransaction();
+		//testCoreContainer();
+		testDataAccess();
 	}
 
 	private static void testCoreContainer() {
@@ -217,10 +217,20 @@ public class SpringApplicaiton2 {
 			absContext.close();
 		}
 	}
-
-	private static void testJdbc() {
+	
+	private static void testDataAccess(){
+		JdbcTransaction jdbcTransaction = context.getBean("jdbcTransaction", JdbcTransaction.class);
 		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
+		
+		testTransaction(jdbcTransaction);
+		//testJdbc(jdbcDAO);
+	}
+	
+	private static void testTransaction(JdbcTransaction jdbcTransaction){
+		jdbcTransaction.testTransaction();
+	}
 
+	private static void testJdbc(JdbcDAO jdbcDAO) {
 		testCRUD(jdbcDAO);
 	}
 
@@ -264,9 +274,6 @@ public class SpringApplicaiton2 {
 
 	private static void testDelete(JdbcDAO jdbcDAO) {
 		jdbcDAO.deleteUser(2);
-	}
-
-	private static void testTransaction() {
 	}
 
 	private static void initApplicationContext(ApplicationContextType type) {
