@@ -44,7 +44,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -114,7 +113,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 //@Profile("development")
 //@Profile("production")
 //@ImportResource({"classpath:spring/applicationContext.xml"})
-@Import(DataAcessConfig.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
@@ -122,9 +120,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @Configuration
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
-
-	@Autowired
-	private DataAcessConfig dataAcessConfig;
 
 	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
 	@Value("${family.familyCount:4}")
