@@ -24,15 +24,15 @@ public class SpringApplicaiton {
 	public static void main(String[] args) {
 		CoreService coreService = context.getBean("coreService",
 				CoreService.class);
-		coreService.testCoreContainer();
+		coreService.testCoreContainer(context);
 
 		JdbcService jdbcService = context.getBean("jdbcService",
 				JdbcService.class);
 		jdbcService.testJdbc();
 
-		TransactionalService transactionalService = context.getBean(
-				"transactionalService", TransactionalService.class);
-		transactionalService.testTransaction();
+		TransactionalService txService = context.getBean("txService",
+				TransactionalService.class);
+		txService.testTransaction();
 	}
 
 	private static void initApplicationContext(ApplicationContextType type) {

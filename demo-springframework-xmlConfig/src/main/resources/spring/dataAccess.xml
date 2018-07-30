@@ -117,7 +117,7 @@
 			/> </aop:aspect> -->
 	</aop:config>
 	
-	<bean id="transactionalService"
+	<bean id="txService"
 		class="org.ruanwei.demo.springframework.dataAccess.tx.TransactionalService">
 		<property name="jdbcDAO" ref="jdbcDAO" />
 	</bean>

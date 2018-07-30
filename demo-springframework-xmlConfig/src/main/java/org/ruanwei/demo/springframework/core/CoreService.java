@@ -13,9 +13,7 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -29,12 +27,10 @@ import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 
-public class CoreService implements ApplicationContextAware {
+public class CoreService {
 	private static Log log = LogFactory.getLog(CoreService.class);
 
-	private ApplicationContext context;
-
-	public void testCoreContainer() {
+	public void testCoreContainer(ApplicationContext context) {
 		log.info("1======================================================================================");
 		testEnvironment(context);
 
@@ -77,7 +73,7 @@ public class CoreService implements ApplicationContextAware {
 			configEnv.setActiveProfiles("development");
 			configEnv.setDefaultProfiles("production");
 		}
-		
+
 		// TODO:如果这里不生效，可能要刷新context
 		House house = context.getBean("house", House.class);
 		log.info("house==========" + house);
@@ -172,12 +168,8 @@ public class CoreService implements ApplicationContextAware {
 			}
 
 			log.info("7.4======================================================================================");
-			absContext.close();
+			// absContext.close();
 		}
 	}
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext)
-			throws BeansException {
-	}
 }

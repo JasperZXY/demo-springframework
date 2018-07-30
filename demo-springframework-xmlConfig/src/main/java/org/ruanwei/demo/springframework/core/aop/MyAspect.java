@@ -6,7 +6,6 @@ import org.springframework.util.StopWatch;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
-// TODO:更名为MyAdvice
 public class MyAspect {
 	private static Log log = LogFactory.getLog(MyAspect.class);
 
