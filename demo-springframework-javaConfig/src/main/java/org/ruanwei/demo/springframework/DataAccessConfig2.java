@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+@EnableTransactionManagement
 @Configuration
 public class DataAccessConfig2 {
 

@@ -174,5 +174,5 @@
 
 	<!-- more bean definitions for services go here -->
 
-	<!-- <import resource="integration-dataAccess2.xml" /> -->
+	<import resource="dataAccess2.xml" />
 </beans>
