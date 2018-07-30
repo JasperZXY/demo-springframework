@@ -326,8 +326,6 @@
 	<!-- this switches on the load-time weaving -->
 	<!-- <context:load-time-weaver/> -->
 
-	<bean id="coreService" class="org.ruanwei.demo.springframework.core.CoreService" />
-
 	<!-- more bean definitions go here -->
 	<import resource="dataAccess.xml" />
 

@@ -2,7 +2,7 @@ package org.ruanwei.demo.springframework.dataAccess.tx;
 
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 
-public class TransactionalService {
+public class JdbcTransaction {
 	
 	private JdbcDAO jdbcDAO;
 
