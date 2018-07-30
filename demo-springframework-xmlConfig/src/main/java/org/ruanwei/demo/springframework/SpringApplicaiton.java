@@ -94,7 +94,7 @@ public class SpringApplicaiton {
 		testAOP(context);
 
 		log.info("7======================================================================================");
-		testApplicationEvent(context);
+		// testApplicationEvent(context);
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
@@ -212,7 +212,7 @@ public class SpringApplicaiton {
 			}
 
 			log.info("7.4======================================================================================");
-			// absContext.close();
+			absContext.close();
 		}
 	}
 

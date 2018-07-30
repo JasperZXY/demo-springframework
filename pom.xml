@@ -29,7 +29,7 @@
 		<log4j.version>2.10.0</log4j.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<logback.version>1.2.3</logback.version>
-		
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -111,14 +111,14 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>6.0.1.Final</version>
 			</dependency>
-            <dependency>
+			<dependency>
 				<groupId>org.glassfish</groupId>
 				<artifactId>javax.el</artifactId>
 				<version>3.0.1-b08</version>
 			</dependency>
-			
+
 			<!-- TODO: -->
-			
+
 			<dependency>
 				<groupId>org.codehaus.castor</groupId>
 				<artifactId>castor</artifactId>
@@ -166,11 +166,18 @@
 				<artifactId>derby</artifactId>
 				<version>10.14.2.0</version>
 			</dependency>
+
 			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib</artifactId>
 				<version>3.2.4</version>
 			</dependency>
+			<dependency>
+				<groupId>org.aspectj</groupId>
+				<artifactId>aspectjrt</artifactId>
+				<version>1.9.1</version>
+			</dependency>
+
 
 			<!-- ActiveMQ -->
 			<dependency>
@@ -211,8 +218,6 @@
 				<artifactId>joda-time</artifactId>
 				<version>2.9.9</version>
 			</dependency>
-
-
 		</dependencies>
 	</dependencyManagement>
 
@@ -286,5 +291,5 @@
 		</pluginRepository>
 	</pluginRepositories>
 
-	
+
 </project>

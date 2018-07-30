@@ -54,6 +54,14 @@
 		</dependency>
 
 		<!-- B.The AOP -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+		</dependency>
 		<!-- 1.used for AspectJ AOP aspects -->
 		<dependency>
 			<groupId>org.springframework</groupId>

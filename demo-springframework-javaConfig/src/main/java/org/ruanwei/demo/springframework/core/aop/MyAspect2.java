@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.DeclareParents;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
@@ -54,9 +55,10 @@ import org.springframework.util.StopWatch;
  * @author Administrator
  *
  */
+@Order(1)
 @Aspect
-@Component
-public class MyAspect2 implements Ordered {
+@Component("myAspect")
+public class MyAspect2 /*implements Ordered*/ {
 	private static Log log = LogFactory.getLog(MyAspect2.class);
 
 	@Pointcut("within(org.ruanwei.demo.springframework.core.ioc.*)")
@@ -164,11 +166,6 @@ public class MyAspect2 implements Ordered {
 	 */
 	@Pointcut("execution(* com.xyz.someapp.dao.*.*(..))")
 	public void dataAccessOperation() {
-	}
-
-	@Override
-	public int getOrder() {
-		return 1;
 	}
 
 }
