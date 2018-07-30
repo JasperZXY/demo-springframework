@@ -14,12 +14,14 @@ public class SpringApplicaiton2 {
 	private static Log log = LogFactory.getLog(SpringApplicaiton2.class);
 
 	private static AbstractApplicationContext context;
+	
+	static {
+		log.info("0======================================================================================");
+		initApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		log.info("0======================================================================================");
+	}
 
 	public static void main(String[] args) {
-		log.info("0======================================================================================");
-
-		initApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
-
 		CoreService coreService = context.getBean("coreService",
 				CoreService.class);
 		coreService.testCoreContainer();
