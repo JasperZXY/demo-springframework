@@ -85,7 +85,7 @@
 	</jdbc:initialize-database>
 
 	<!-- ==========A.Data Access:TransactionManager========== -->
-	<tx:annotation-driven transaction-manager="transactionManager" />
+	<tx:annotation-driven transaction-manager="transactionManager" order="2" />
 
 	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
 	<!-- local transaction manager for jdbc -->
