@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.User2;
+import org.ruanwei.demo.springframework.dataAccess.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -60,9 +60,9 @@ public class JdbcDAO {
 	private SimpleJdbcCall simpleJdbcCall;// 执行存储过程或者函数
 
 	// 3.RdbmsOperation objects.
-	private SqlQuery<User2> sqlQuery;
-	private MappingSqlQuery<User2> mappingSqlQuery;
-	private UpdatableSqlQuery<User2> updatableSqlQuery;
+	private SqlQuery<User> sqlQuery;
+	private MappingSqlQuery<User> mappingSqlQuery;
+	private UpdatableSqlQuery<User> updatableSqlQuery;
 	private SqlUpdate sqlUpdate;
 	private StoredProcedure storedProcedure;
 
@@ -150,11 +150,11 @@ public class JdbcDAO {
 
 	// RowMapperResultSetExtractor & BeanPropertyRowMapper
 	public void queryForObject() {
-		User2 obj1 = advancedJdbcTemplate.queryForObject(sql_31, User2.class);
-		User2 obj2 = advancedJdbcTemplate.queryForObject(sql_32, args1,
-				User2.class);
-		User2 obj3 = advancedJdbcTemplate.queryForObject(sql_33, namedParam1,
-				User2.class);
+		User obj1 = advancedJdbcTemplate.queryForObject(sql_31, User.class);
+		User obj2 = advancedJdbcTemplate.queryForObject(sql_32, args1,
+				User.class);
+		User obj3 = advancedJdbcTemplate.queryForObject(sql_33, namedParam1,
+				User.class);
 		log.info("obj1=" + obj1 + ",obj2=" + obj2 + ",obj3=" + obj3);
 	}
 
@@ -188,14 +188,14 @@ public class JdbcDAO {
 	}
 
 	public void queryForObjectList() {
-		List<User2> objList1 = advancedJdbcTemplate.queryForObjectList(sql_61,
-				User2.class);
-		List<User2> objList2 = advancedJdbcTemplate.queryForObjectList(sql_62,
-				args0, User2.class);
-		List<User2> objList3 = advancedJdbcTemplate.queryForObjectList(sql_62,
-				pss0, User2.class);
-		List<User2> objList4 = advancedJdbcTemplate.queryForObjectList(sql_63,
-				namedParam0, User2.class);
+		List<User> objList1 = advancedJdbcTemplate.queryForObjectList(sql_61,
+				User.class);
+		List<User> objList2 = advancedJdbcTemplate.queryForObjectList(sql_62,
+				args0, User.class);
+		List<User> objList3 = advancedJdbcTemplate.queryForObjectList(sql_62,
+				pss0, User.class);
+		List<User> objList4 = advancedJdbcTemplate.queryForObjectList(sql_63,
+				namedParam0, User.class);
 		objList1.forEach(obj -> log.info("obj=" + obj));
 		objList2.forEach(obj -> log.info("obj=" + obj));
 		objList3.forEach(obj -> log.info("obj=" + obj));
@@ -204,7 +204,7 @@ public class JdbcDAO {
 
 	// ====================update====================
 	// create/update/delete都是调用update方法
-	public int createUser1(User2 user) {
+	public int createUser1(User user) {
 		log.info("createUser1(User user)" + user);
 
 		int count = jdbcTemplate.update(sql_72, user.getName(), user.getAge(),
@@ -212,7 +212,7 @@ public class JdbcDAO {
 		return count;
 	}
 
-	public int createUser2(User2 user) {
+	public int createUser2(User user) {
 		log.info("createUser2(User user)");
 
 		PreparedStatementSetter upss = buildUserPSS(user);
@@ -220,7 +220,7 @@ public class JdbcDAO {
 		return count;
 	}
 
-	public int createUser3(User2 user) {
+	public int createUser3(User user) {
 		log.info("createUser3(User user)");
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -251,7 +251,7 @@ public class JdbcDAO {
 	}
 
 	// ====================batch update====================
-	public int[] batchUpdateUser1(final List<User2> users) {
+	public int[] batchUpdateUser1(final List<User> users) {
 		log.info("batchUpdateUser1(final List<User> users)");
 
 		BatchPreparedStatementSetter ubpss = buildUserBPSS(users);
@@ -259,10 +259,10 @@ public class JdbcDAO {
 		return updateCounts;
 	}
 
-	public int[][] batchUpdateUser2(final Collection<User2> users) {
+	public int[][] batchUpdateUser2(final Collection<User> users) {
 		log.info("batchUpdateUser2(final List<User> users)");
 
-		ParameterizedPreparedStatementSetter<User2> uppss = buildUserPPSS();
+		ParameterizedPreparedStatementSetter<User> uppss = buildUserPPSS();
 		int[][] updateCounts = jdbcTemplate
 				.batchUpdate(sql_82, users, 2, uppss);
 		return updateCounts;
@@ -287,12 +287,12 @@ public class JdbcDAO {
 		return updateCounts;
 	}
 
-	public int[] batchUpdateUser5(final List<User2> users) {
+	public int[] batchUpdateUser5(final List<User> users) {
 		log.info("batchUpdateUser5(final List<User> users)");
 		if (jdbcTemplate != null) {
 			String sql = "update user set age=:age where id!=:id";
 			List<Object[]> batch = new ArrayList<Object[]>();
-			for (User2 user : users) {
+			for (User user : users) {
 				Object[] values = new Object[] { user.getAge(), 1 };
 				batch.add(values);
 			}
@@ -310,7 +310,7 @@ public class JdbcDAO {
 	}
 
 	// ====================SimpleJdbc====================
-	public void insertUser6(User2 user) {
+	public void insertUser6(User user) {
 		log.info("insertUser6(User user)");
 		Map<String, Object> parameters = new HashMap<String, Object>(3);
 		parameters.put("name", user.getName());
@@ -334,7 +334,7 @@ public class JdbcDAO {
 						new SqlOutParameter("out_last_name", Types.VARCHAR),
 						new SqlOutParameter("out_birth_date", Types.DATE));
 		Map<String, Object> out = simpleJdbcCall.execute(in);
-		User2 user = new User2();
+		User user = new User();
 		user.setName((String) out.get("out_first_name"));
 		user.setAge((int) out.get("age"));
 	}
@@ -349,7 +349,7 @@ public class JdbcDAO {
 	}
 
 	// ====================private====================
-	private PreparedStatementSetter buildUserPSS(User2 user) {
+	private PreparedStatementSetter buildUserPSS(User user) {
 		return ps -> {
 			ps.setString(1, user.getName());
 			ps.setInt(2, user.getAge());
@@ -357,7 +357,7 @@ public class JdbcDAO {
 		};
 	}
 
-	private BatchPreparedStatementSetter buildUserBPSS(List<User2> users) {
+	private BatchPreparedStatementSetter buildUserBPSS(List<User> users) {
 		return new BatchPreparedStatementSetter() {
 			@Override
 			public void setValues(PreparedStatement ps, int i)
@@ -373,14 +373,14 @@ public class JdbcDAO {
 		};
 	}
 
-	private ParameterizedPreparedStatementSetter<User2> buildUserPPSS() {
+	private ParameterizedPreparedStatementSetter<User> buildUserPPSS() {
 		return (ps, arg) -> {
 			ps.setInt(1, arg.getAge());
 			ps.setString(2, arg.getName());
 		};
 	}
 
-	private PreparedStatementCreator buildUserPSC(String sql, User2 user) {
+	private PreparedStatementCreator buildUserPSC(String sql, User user) {
 		return conn -> {
 			PreparedStatement ps = conn.prepareStatement(sql,
 					new String[] { "id" });

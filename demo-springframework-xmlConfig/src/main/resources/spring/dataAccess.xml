@@ -95,6 +95,7 @@
 		class="org.springframework.transaction.jta.JtaTransactionManager"
 		lazy-init="true" />
 
+	<!-- see TransactionProxyFactoryBean -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- all methods starting with 'test' -->

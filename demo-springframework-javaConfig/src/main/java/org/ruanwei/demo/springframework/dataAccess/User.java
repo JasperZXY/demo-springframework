@@ -2,15 +2,15 @@ package org.ruanwei.demo.springframework.dataAccess;
 
 import java.sql.Date;
 
-public class User2 {
+public class User {
 	private String name;
 	private int age;
 	private Date birthday;
 
-	public User2() {
+	public User() {
 	}
 
-	public User2(String name, int age, Date birthday) {
+	public User(String name, int age, Date birthday) {
 		this.name = name;
 		this.age = age;
 		this.birthday = birthday;

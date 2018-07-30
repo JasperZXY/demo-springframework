@@ -15,7 +15,7 @@ import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
-import org.ruanwei.demo.springframework.dataAccess.User2;
+import org.ruanwei.demo.springframework.dataAccess.User;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.context.ApplicationContext;
@@ -38,11 +38,11 @@ import org.springframework.core.io.ResourceLoader;
 public class SpringApplicaiton2 {
 	private static Log log = LogFactory.getLog(SpringApplicaiton2.class);
 
-	private static final User2 paramForCreate1 = new User2("ruanwei_tmp", 35,
+	private static final User paramForCreate1 = new User("ruanwei_tmp", 35,
 			Date.valueOf("1983-07-06"));
-	private static final User2 paramForUpdate1 = new User2("ruanwei", 18,
+	private static final User paramForUpdate1 = new User("ruanwei", 18,
 			Date.valueOf("1983-07-06"));
-	private static final User2 paramForUpdate2 = new User2("ruanwei_tmp", 88,
+	private static final User paramForUpdate2 = new User("ruanwei_tmp", 88,
 			Date.valueOf("1983-07-06"));
 
 	private static final Map<String, Object> paramForCreate2 = new HashMap<String, Object>();
@@ -65,7 +65,7 @@ public class SpringApplicaiton2 {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 
 		log.info("0======================================================================================");
-		initApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		initApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
 		log.info("0======================================================================================");
 	}
 
@@ -253,7 +253,7 @@ public class SpringApplicaiton2 {
 	}
 
 	private static void testBatchUpdate(JdbcDAO jdbcDAO) {
-		List<User2> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
+		List<User> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
 		jdbcDAO.batchUpdateUser1(users);
 		jdbcDAO.batchUpdateUser2(users);
 		jdbcDAO.batchUpdateUser3(users);
