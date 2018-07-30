@@ -22,7 +22,6 @@ public class SpringApplicaiton {
 	}
 
 	public static void main(String[] args) {
-
 		CoreService coreService = context.getBean("coreService",
 				CoreService.class);
 		coreService.testCoreContainer();

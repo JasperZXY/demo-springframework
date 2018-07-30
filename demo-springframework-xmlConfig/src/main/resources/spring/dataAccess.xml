@@ -116,11 +116,21 @@
 			and args(name,age)" /> <aop:around pointcut-ref="daoPointcut2" method="profile" 
 			/> </aop:aspect> -->
 	</aop:config>
+	
+	<bean id="transactionalService"
+		class="org.ruanwei.demo.springframework.dataAccess.tx.TransactionalService">
+		<property name="jdbcDAO" ref="jdbcDAO" />
+	</bean>
 
 	<!-- ==========A.Data Access:DAO========== -->
 	<bean id="jdbcDAO"
 		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO">
 		<property name="dataSource" ref="dataSource1" />
+	</bean>
+	
+	<bean id="jdbcService"
+		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcService">
+		<property name="jdbcDAO" ref="jdbcDAO" />
 	</bean>
 
 	<!-- more bean definitions go here -->

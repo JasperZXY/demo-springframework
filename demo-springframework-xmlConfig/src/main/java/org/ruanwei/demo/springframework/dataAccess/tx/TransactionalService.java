@@ -1,10 +1,19 @@
 package org.ruanwei.demo.springframework.dataAccess.tx;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 
 public class TransactionalService {
+	
+	private JdbcDAO jdbcDAO;
 
-	@Transactional
 	public void testTransaction() {
+	}
+
+	public JdbcDAO getJdbcDAO() {
+		return jdbcDAO;
+	}
+
+	public void setJdbcDAO(JdbcDAO jdbcDAO) {
+		this.jdbcDAO = jdbcDAO;
 	}
 }
