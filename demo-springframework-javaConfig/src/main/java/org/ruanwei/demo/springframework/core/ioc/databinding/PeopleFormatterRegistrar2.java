@@ -2,7 +2,7 @@ package org.ruanwei.demo.springframework.core.ioc.databinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.springframework.format.FormatterRegistrar;
 import org.springframework.format.FormatterRegistry;
 
@@ -19,7 +19,7 @@ public class PeopleFormatterRegistrar2 implements FormatterRegistrar {
 		registry.addConverter(new StringToPeopleConverter2());
 		registry.addConverterFactory(new StringToPeopleConverterFactory2());
 		registry.addFormatter(new PeopleFormatter2("/"));
-		registry.addFormatterForFieldType(People2.class, new PeopleFormatter2("/"));
+		registry.addFormatterForFieldType(People.class, new PeopleFormatter2("/"));
 		registry.addFormatterForFieldAnnotation(new PeopleFormatAnnotationFormatterFactory2());
 	}
 

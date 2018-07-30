@@ -9,9 +9,9 @@ import javax.validation.Validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.AbsHouse2;
-import org.ruanwei.demo.springframework.core.ioc.Family2;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
+import org.ruanwei.demo.springframework.core.ioc.Family;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.ruanwei.demo.springframework.core.ioc.databinding.validation.PeopleSpringValidator2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.validation.ValidationUtils2;
 import org.springframework.beans.BeansException;
@@ -46,19 +46,19 @@ public class MyBeanPostProcessor2 implements BeanPostProcessor {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
 		log.debug("postProcessBeforeInitialization(Object bean, String beanName) " + beanName + "=" + bean);
-		if (bean instanceof People2) {
-			People2 people = (People2) bean;
+		if (bean instanceof People) {
+			People people = (People) bean;
 			log.info("postProcessBeforeInitialization====================" + people);
 
 			ValidationUtils2.validate1(people, validator);
 			ValidationUtils2.validate2(people, validatorFactory);
 			ValidationUtils2.validateBySpring(people, messageSource,
 					springValidator, new PeopleSpringValidator2());
-		} else if (bean instanceof Family2) {
-			Family2 family = (Family2) bean;
+		} else if (bean instanceof Family) {
+			Family family = (Family) bean;
 			log.info("postProcessBeforeInitialization====================" + family);
-		} else if (bean instanceof AbsHouse2) {
-			AbsHouse2 house = (AbsHouse2) bean;
+		} else if (bean instanceof AbsHouse) {
+			AbsHouse house = (AbsHouse) bean;
 			log.info("postProcessBeforeInitialization====================" + house);
 		}
 		return bean;
@@ -67,8 +67,8 @@ public class MyBeanPostProcessor2 implements BeanPostProcessor {
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
 		log.debug("postProcessAfterInitialization(Object bean, String beanName)" + beanName + "=" + bean);
-		if (bean instanceof People2) {
-			People2 people = (People2) bean;
+		if (bean instanceof People) {
+			People people = (People) bean;
 			log.info("postProcessAfterInitialization====================" + people);
 
 			// ===========以下挪到AOP===============
@@ -100,11 +100,11 @@ public class MyBeanPostProcessor2 implements BeanPostProcessor {
 			 * violation.getMessage()); }
 			 */
 			// ===========以上挪到AOP===============
-		} else if (bean instanceof Family2) {
-			Family2 family = (Family2) bean;
+		} else if (bean instanceof Family) {
+			Family family = (Family) bean;
 			log.info("postProcessAfterInitialization====================" + family);
-		} else if (bean instanceof AbsHouse2) {
-			AbsHouse2 house = (AbsHouse2) bean;
+		} else if (bean instanceof AbsHouse) {
+			AbsHouse house = (AbsHouse) bean;
 			log.info("postProcessAfterInitialization====================" + house);
 		}
 		return bean;

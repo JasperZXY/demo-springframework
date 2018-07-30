@@ -2,7 +2,7 @@ package org.ruanwei.demo.springframework.core.ioc.databinding.validation;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -13,7 +13,7 @@ public class PeopleSpringValidator2 implements Validator {
 	@Override
 	public boolean supports(Class<?> clazz) {
 		log.info("supports(Class<?> clazz)" + clazz);
-		return People2.class.equals(clazz);
+		return People.class.equals(clazz);
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class PeopleSpringValidator2 implements Validator {
 					"The argument must not be null.");
 		}
 
-		People2 people = (People2) target;
+		People people = (People) target;
 
 		ValidationUtils.rejectIfEmpty(errors, "name", "org.ruanwei.demo.springframework.argument.empty",
 				new Object[] { "name" }, "The argument must not be empty.");

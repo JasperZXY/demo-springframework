@@ -2,7 +2,7 @@ package org.ruanwei.demo.springframework.core.ioc.databinding;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.springframework.beans.PropertyEditorRegistrar;
 import org.springframework.beans.PropertyEditorRegistry;
 
@@ -17,7 +17,7 @@ public class PeoplePropertyEditorRegistrar2 implements PropertyEditorRegistrar {
 	public void registerCustomEditors(PropertyEditorRegistry registry) {
 		log.info("registerCustomEditors(PropertyEditorRegistry registry)" + registry);
 
-		registry.registerCustomEditor(People2.class, new PeoplePropertyEditor2());
+		registry.registerCustomEditor(People.class, new PeoplePropertyEditor2());
 	}
 
 }

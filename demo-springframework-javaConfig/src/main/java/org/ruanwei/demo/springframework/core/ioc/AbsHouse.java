@@ -47,8 +47,8 @@ import org.springframework.validation.annotation.Validated;
  * @author Administrator
  *
  */
-public abstract class AbsHouse2 {
-	private static Log log = LogFactory.getLog(AbsHouse2.class);
+public abstract class AbsHouse {
+	private static Log log = LogFactory.getLog(AbsHouse.class);
 
 	@Value("${abshouse.name:abshouseName_def}")
 	private String houseName;
@@ -152,7 +152,7 @@ public abstract class AbsHouse2 {
 
 	@Override
 	public String toString() {
-		return "AbsHouse2 [houseName=" + houseName + ", someArray=" + Arrays.toString(someArray) + ", someList="
+		return "AbsHouse [houseName=" + houseName + ", someArray=" + Arrays.toString(someArray) + ", someList="
 				+ someList + ", someSet=" + someSet + ", someProperties=" + someProperties + ", someMap=" + someMap
 				+ ", someList2=" + someList2 + ", someSet2=" + someSet2 + ", someProperties2=" + someProperties2
 				+ ", someMap2=" + someMap2 + ", javaVersion=" + javaVersion + ", someList3=" + someList3 + ", someSet3="

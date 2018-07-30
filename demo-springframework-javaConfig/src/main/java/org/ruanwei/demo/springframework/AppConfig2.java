@@ -14,7 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
 import org.ruanwei.demo.springframework.core.aop.GoodImpl2;
 import org.ruanwei.demo.springframework.core.aop.MyAspect2;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter2;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegistrar2;
@@ -273,7 +273,7 @@ public class AppConfig2 {
 	private static void registerPropertyEditors(
 			CustomEditorConfigurer customEditorConfigurer) {
 		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
-		customEditors.put(People2.class, PeoplePropertyEditor2.class);
+		customEditors.put(People.class, PeoplePropertyEditor2.class);
 		customEditorConfigurer.setCustomEditors(customEditors);
 	}
 

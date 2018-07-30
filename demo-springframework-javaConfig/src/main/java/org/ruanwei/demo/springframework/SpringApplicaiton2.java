@@ -10,8 +10,8 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.aop.Good2;
-import org.ruanwei.demo.springframework.core.ioc.AbsHouse2;
-import org.ruanwei.demo.springframework.core.ioc.Family2;
+import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
+import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
 import org.ruanwei.demo.springframework.dataAccess.User2;
@@ -118,7 +118,7 @@ public class SpringApplicaiton2 {
 			configEnv.setDefaultProfiles("production");
 		}
 
-		AbsHouse2 house = context.getBean("house", AbsHouse2.class);
+		AbsHouse house = context.getBean("house", AbsHouse.class);
 		log.info("house==========" + house);
 	}
 
@@ -177,8 +177,8 @@ public class SpringApplicaiton2 {
 	}
 
 	private static void testIoC(ApplicationContext context) {
-		Family2 family = context.getBean("family", Family2.class);
-		Family2 familyx = context.getBean("familyx", Family2.class);
+		Family family = context.getBean("family", Family.class);
+		Family familyx = context.getBean("familyx", Family.class);
 		MyFamilyFactoryBean2 myFamilyFactoryBean = (MyFamilyFactoryBean2) context
 				.getBean("&familyx");
 		log.info(family);
@@ -188,7 +188,7 @@ public class SpringApplicaiton2 {
 	}
 
 	private static void testAOP(ApplicationContext context) {
-		Family2 family = context.getBean("family", Family2.class);
+		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
 
 		// TODO:Java配置下还不能正常工作

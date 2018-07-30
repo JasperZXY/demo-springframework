@@ -21,20 +21,21 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
 //import org.springframework.transaction.event.TransactionalEventListener;
 
-@Qualifier("somebody")
-@Primary
 @Lazy
+@Primary
+@Qualifier("somebody")
 @Component("father")
-public class People2 implements SmartLifecycle {
-	private static Log log = LogFactory.getLog(People2.class);
+public class People implements SmartLifecycle {
+	private static Log log = LogFactory.getLog(People.class);
 
 	private volatile boolean running = false;
 
 	// 1.Constructor-based dependency injection
 	@NotEmpty
-	@Size(min = 1, max = 10)
+	@Size(min = 1, max = 12)
 	@FamilyName2("ruan")
 	private String name;
 
@@ -43,7 +44,8 @@ public class People2 implements SmartLifecycle {
 	private int age;
 
 	// 1.Constructor-based dependency injection
-	public People2(@Value("${father.name:ruan_def}") String name, @Value("${father.age:35}") int age) {
+	public People(@Value("${father.name:ruanwei_def}") String name,
+			@Value("${father.age:35}") int age) {
 		this.name = name;
 		this.age = age;
 		log.info("People2(String name,int age)" + this);
@@ -138,7 +140,7 @@ public class People2 implements SmartLifecycle {
 
 	@Override
 	public String toString() {
-		return "People2 [name=" + name + ", age=" + age + "]";
+		return "People [name=" + name + ", age=" + age + "]";
 	}
 
 }

@@ -33,32 +33,32 @@ import org.springframework.validation.annotation.Validated;
 @Lazy
 @DependsOn("house")
 @Component("family")
-public class Family2 implements BeanNameAware, BeanClassLoaderAware,
+public class Family implements BeanNameAware, BeanClassLoaderAware,
 		LoadTimeWeaverAware {
-	private static Log log = LogFactory.getLog(Family2.class);
+	private static Log log = LogFactory.getLog(Family.class);
 
 	// 1.Constructor-based dependency injection
 	private String familyName;
 	private int familyCount;
-	private People2 father;
+	private People father;
 
 	@Valid
 	@Qualifier("somebody")
 	@Autowired
-	private People2 mother;
+	private People mother;
 
 	@Value("${son.all}")
 	@PeopleFormat2(separator = Separator.SLASH)
-	private People2 son;
+	private People son;
 
 	@Value("${daughter.all}")
 	@PeopleFormat2(separator = Separator.SLASH)
-	private People2 daughter;
+	private People daughter;
 
 	@Valid
 	@Qualifier("somebody")
 	@Autowired
-	private People2 guest1;
+	private People guest1;
 
 	// 2.Setter-based dependency injection
 	@Autowired
@@ -93,11 +93,11 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		log.info("3 + 5 = " + calc(3, 5));
 
 		// 3.Method injection: Lookup method injection
-		People2 guest = createGuest();
+		People guest = createGuest();
 		// 这里是为了兼容不适用@Lookup注解时的方法注入
-		if (guest == null) {
-			guest = new People2("ruanwei_def", 18);
-		}
+//		if (guest == null) {
+//			guest = new People2("ruanwei_def", 18);
+//		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
 
@@ -107,9 +107,9 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	// a.Bean instantiation with a constructor
 	// 1.Constructor-based dependency injection(byName with javac -g)
 	@Autowired
-	public Family2(@Value("${family.1.familyName:ruan_wei}") String familyName,
+	public Family(@Value("${family.1.familyName:ruan_def}") String familyName,
 			@Value("${family.familyCount:4}") int familyCount,
-			@Valid People2 father) {
+			@Valid People father) {
 		this.familyName = familyName;
 		this.familyCount = familyCount;
 		this.father = father;
@@ -139,7 +139,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 
 	// 3.Method injection: Lookup method injection
 	@Lookup("father")
-	protected People2 createGuest() {
+	protected People createGuest() {
 		log.info("createGuest");
 		return null;
 	}
@@ -163,7 +163,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 
 	@Override
 	public String toString() {
-		return "Family2 [familyName=" + familyName + ", familyCount="
+		return "Family [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
 				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
 				+ guest1 + "]";

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.core.ioc.People2;
+import org.ruanwei.demo.springframework.core.ioc.People;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormat2.Separator;
 import org.springframework.format.AnnotationFormatterFactory;
 import org.springframework.format.Formatter;
@@ -28,22 +28,22 @@ public final class PeopleFormatAnnotationFormatterFactory2 implements Annotation
 	@Override
 	public Set<Class<?>> getFieldTypes() {
 		log.info("getFieldTypes() ");
-		return new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { People2.class }));
+		return new HashSet<Class<?>>(Arrays.asList(new Class<?>[] { People.class }));
 	}
 
 	@Override
-	public Printer<People2> getPrinter(PeopleFormat2 annotation, Class<?> fieldType) {
+	public Printer<People> getPrinter(PeopleFormat2 annotation, Class<?> fieldType) {
 		log.info("getPrinter(MyPeopleFormat annotation, Class<?> fieldType)");
 		return configureFormatterFrom(annotation, fieldType);
 	}
 
 	@Override
-	public Parser<People2> getParser(PeopleFormat2 annotation, Class<?> fieldType) {
+	public Parser<People> getParser(PeopleFormat2 annotation, Class<?> fieldType) {
 		log.info("getParser(MyPeopleFormat annotation, Class<?> fieldType)");
 		return configureFormatterFrom(annotation, fieldType);
 	}
 
-	private Formatter<People2> configureFormatterFrom(PeopleFormat2 annotation, Class<?> fieldType) {
+	private Formatter<People> configureFormatterFrom(PeopleFormat2 annotation, Class<?> fieldType) {
 		Separator separator = annotation.separator();
 		if (separator == Separator.SLASH) {
 			return new PeopleFormatter2("/");
