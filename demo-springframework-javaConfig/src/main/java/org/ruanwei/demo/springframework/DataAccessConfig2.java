@@ -18,7 +18,7 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@EnableTransactionManagement
+@EnableTransactionManagement(order = 1)
 @Configuration
 public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 

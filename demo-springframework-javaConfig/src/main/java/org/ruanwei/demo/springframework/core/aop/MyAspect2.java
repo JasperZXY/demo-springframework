@@ -54,7 +54,7 @@ import org.springframework.util.StopWatch;
  * @author Administrator
  *
  */
-@Order(1)
+@Order(2)
 @Aspect
 @Component()
 public class MyAspect2 /*implements Ordered*/ {
