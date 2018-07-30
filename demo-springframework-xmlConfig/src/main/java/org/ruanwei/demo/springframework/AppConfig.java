@@ -118,6 +118,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @PropertySource("classpath:family.properties")
 @PropertySource("classpath:jdbc.properties")
 @Configuration
+@Deprecated
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 

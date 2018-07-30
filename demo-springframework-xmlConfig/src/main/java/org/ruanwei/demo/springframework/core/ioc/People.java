@@ -108,7 +108,7 @@ public class People implements SmartLifecycle,
 	// SmartLifecycle Shutdown callback
 	@Override
 	public boolean isAutoStartup() {
-		return false;
+		return true;
 	}
 
 	@Override

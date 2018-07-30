@@ -54,7 +54,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 	@Value("${daughter.all}")
 	@PeopleFormat2(separator = Separator.SLASH)
 	private People2 daughter;
-	
+
 	@Valid
 	@Qualifier("somebody")
 	@Autowired
@@ -100,7 +100,7 @@ public class Family2 implements BeanNameAware, BeanClassLoaderAware,
 		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
-		
+
 		return message;
 	}
 

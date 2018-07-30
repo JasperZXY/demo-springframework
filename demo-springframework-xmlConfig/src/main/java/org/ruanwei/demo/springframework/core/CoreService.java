@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.SpringApplicaiton;
 import org.ruanwei.demo.springframework.core.aop.Good;
+import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
@@ -57,15 +58,14 @@ public class CoreService implements ApplicationContextAware {
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
-	private static void testEnvironment(ApplicationContext context) {
+	private void testEnvironment(ApplicationContext context) {
 		log.info("env==========" + context.getEnvironment());
 
 		testProfile(context);
-
 		testPropertySource(context.getEnvironment());
 	}
 
-	private static void testProfile(ApplicationContext context) {
+	private void testProfile(ApplicationContext context) {
 		Environment env = context.getEnvironment();
 		log.info("profiles==========" + env.getActiveProfiles() + " "
 				+ env.getDefaultProfiles());
@@ -77,13 +77,14 @@ public class CoreService implements ApplicationContextAware {
 			configEnv.setActiveProfiles("development");
 			configEnv.setDefaultProfiles("production");
 		}
-
+		
+		// TODO:如果这里不生效，可能要刷新context
 		House house = context.getBean("house", House.class);
 		log.info("house==========" + house);
 	}
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
-	private static void testPropertySource(Environment env) {
+	private void testPropertySource(Environment env) {
 		// TODO:ClassPathXmlApplicationContext不能获取到属性值，但是annotation那个项目却可以
 		String a = env.getProperty("a", "a"); // MapPropertySource(-Da=1)
 		String b = env.getProperty("family.familyCount", "2");// ResourcePropertySource(@PeopertySource("family.properties"))
@@ -107,10 +108,9 @@ public class CoreService implements ApplicationContextAware {
 			propertySources.addLast(mapPropertySource);
 			log.info("PropertySources==========" + propertySources);
 		}
-
 	}
 
-	private static void testMessageSource(MessageSource messageSource) {
+	private void testMessageSource(MessageSource messageSource) {
 		log.info("messageSource==========" + messageSource);
 		String msg = messageSource.getMessage("my.messageSource",
 				new Object[] { "ruanwei" }, "This is my message source.",
@@ -118,14 +118,14 @@ public class CoreService implements ApplicationContextAware {
 		log.info("message==========" + msg);
 	}
 
-	private static void testResourceLoader(ResourceLoader resourceLoader) {
+	private void testResourceLoader(ResourceLoader resourceLoader) {
 		log.info("resourceLoader==========" + resourceLoader);
 		Resource resource = resourceLoader
 				.getResource("classpath:spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 	}
 
-	private static void testApplicationEventPublisher(
+	private void testApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("applicationEventPublisher=========="
 				+ applicationEventPublisher);
@@ -136,7 +136,7 @@ public class CoreService implements ApplicationContextAware {
 				"PayloadApplicationEvent<String> from SpringApplication"));
 	}
 
-	private static void testIoC(ApplicationContext context) {
+	private void testIoC(ApplicationContext context) {
 		Family family = context.getBean("family", Family.class);
 		Family familyx = context.getBean("familyx", Family.class);
 		MyFamilyFactoryBean myFamilyFactoryBean = (MyFamilyFactoryBean) context
@@ -144,20 +144,18 @@ public class CoreService implements ApplicationContextAware {
 		log.info(family);
 		log.info(familyx);
 		log.info(myFamilyFactoryBean);
-
 	}
 
-	private static void testAOP(ApplicationContext context) {
+	private void testAOP(ApplicationContext context) {
 		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
 
-		// TODO:Java配置下还不能正常工作
 		Good good = (Good) context.getBean("good");
-		// Happy mixin = (Happy) context.getBean("good");
-		// log.info(good.good("whatever") + mixin.happy("whatever"));
+		Happy mixin = (Happy) context.getBean("good");
+		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
-	private static void testApplicationEvent(ApplicationContext context) {
+	private void testApplicationEvent(ApplicationContext context) {
 		log.info("context==========" + context);
 		if (context instanceof AbstractApplicationContext) {
 			AbstractApplicationContext absContext = (AbstractApplicationContext) context;

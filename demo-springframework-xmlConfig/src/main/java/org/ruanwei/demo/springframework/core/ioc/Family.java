@@ -16,7 +16,6 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ApplicationEventPublisher;
@@ -103,19 +102,16 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	}
 
 	// 2.Setter-based dependency injection
-	@Required
 	public void setMother(People mother) {
 		log.info("setMother(People mother)" + mother);
 		this.mother = mother;
 	}
 
-	@Required
 	public void setSon(People son) {
 		log.info("setSon(People son)" + son);
 		this.son = son;
 	}
 
-	@Required
 	public void setDaughter(People daughter) {
 		log.info("setDaughter(People daughter)" + daughter);
 		this.daughter = daughter;
