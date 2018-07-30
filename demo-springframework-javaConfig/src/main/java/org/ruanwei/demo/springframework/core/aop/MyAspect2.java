@@ -12,7 +12,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.DeclareParents;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -57,7 +56,7 @@ import org.springframework.util.StopWatch;
  */
 @Order(1)
 @Aspect
-@Component("myAspect")
+@Component()
 public class MyAspect2 /*implements Ordered*/ {
 	private static Log log = LogFactory.getLog(MyAspect2.class);
 
@@ -65,7 +64,7 @@ public class MyAspect2 /*implements Ordered*/ {
 	public void myPointcut1() {
 	}
 
-	@Pointcut("execution(* *..Family2.say*(..))")
+	@Pointcut("execution(* *..Family.say*(..))")
 	public void myPointcut2() {
 	}
 

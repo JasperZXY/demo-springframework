@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.core.aop.Good2;
+import org.ruanwei.demo.springframework.core.aop.Happy2;
 import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
@@ -63,7 +64,7 @@ public class SpringApplicaiton2 {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 
 		log.info("0======================================================================================");
-		initApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
+		initApplicationContext(ApplicationContextType.CLASSPATH_XML);
 		log.info("0======================================================================================");
 	}
 
@@ -184,7 +185,6 @@ public class SpringApplicaiton2 {
 		log.info(family);
 		log.info(familyx);
 		log.info(myFamilyFactoryBean);
-
 	}
 
 	private static void testAOP(ApplicationContext context) {
@@ -193,8 +193,8 @@ public class SpringApplicaiton2 {
 
 		// TODO:Java配置下还不能正常工作
 		Good2 good = (Good2) context.getBean("good");
-		// Happy mixin = (Happy) context.getBean("good");
-		// log.info(good.good("whatever") + mixin.happy("whatever"));
+		Happy2 mixin = (Happy2) context.getBean("good");
+		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	private static void testApplicationEvent(ApplicationContext context) {
