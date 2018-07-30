@@ -45,6 +45,7 @@ import org.springframework.format.FormatterRegistrar;
 import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.BeanValidationPostProcessor;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
@@ -102,6 +103,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 // @ImportResource({"classpath:spring/applicationContext.xml"})
 @Import(DataAccessConfig2.class)
 @EnableAspectJAutoProxy
+@EnableTransactionManagement
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 @PropertySource("classpath:jdbc.properties")
@@ -110,21 +112,15 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
 
-	private final DataAccessConfig2 dataAccessConfig;
-
 	@Value("${family.familyCount:4}")
 	private int familyCount;
 
-	// @Inject
-	// @Resource
 	@Autowired
 	private Environment env;
 
 	@Autowired
-	public AppConfig2(DataAccessConfig2 dataAccessConfig) {
+	public AppConfig2() {
 		log.info("AppConfig()======");
-		this.dataAccessConfig = dataAccessConfig;
-
 		/*
 		 * if (familyCount == 0) { familyCount =
 		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
@@ -303,7 +299,7 @@ public class AppConfig2 {
 		return beanValidationPostProcessor;
 	}
 
-	// JSR-349:Bean Validation 1.1
+	// JSR-349:Bean Validation 1.1, see @Validated
 	@Bean
 	public MethodValidationPostProcessor methodValidationPostProcessor() {
 		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
@@ -326,12 +322,12 @@ public class AppConfig2 {
 	}
 
 	// A.4.Lifecycle:Initialization/Destruction/Startup/Shutdown callbacks
-	// A.4.1.Bean lifecycle callbacks
-	// A.4.2.Context lifecycle callbacks
+	// A.4.1.Bean lifecycle callbacks, see @PostConstruct/@PreDestroy
+	// A.4.2.Context lifecycle callbacks, see @Smartlifecycle
 
 	// A.5.Environment：Profile and PropertySource
-	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
-	// 方式一，通过指定@PropertySource，使得@Value支持占位符
+	// A.5.1.PropertySource：供Environment访问
+	// 方式一，通过指定@PropertySource，使得@Value能够取其值以支持占位符，
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -344,7 +340,7 @@ public class AppConfig2 {
 		return propertySourcesPlaceholderConfigurer;
 	}
 
-	// 方式二，通过指定location/properties，使得@Value支持占位符
+	// 方式二，通过指定location/properties属性，使得@Value能够取其值以支持占位符
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setLocations(
@@ -358,7 +354,7 @@ public class AppConfig2 {
 		return propertySourcesPlaceholderConfigurer;
 	}
 
-	// A.5.2.Profile：参考@Profile和@Component
+	// A.5.2.Profile：参考@Profile和@Component/@Bean
 
 	// A.6.Extension Points
 	// A.6.1.Customizing beans using a BeanPostProcessor

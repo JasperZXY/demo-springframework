@@ -15,6 +15,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.User2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -45,9 +46,8 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("jdbcDAO")
-public class JdbcDAO2
-{
-	private static Log log = LogFactory.getLog(JdbcDAO2.class);
+public class JdbcDAO {
+	private static Log log = LogFactory.getLog(JdbcDAO.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;
@@ -113,7 +113,7 @@ public class JdbcDAO2
 
 	@Required
 	@Autowired
-	public void setDataSource(DataSource dataSource) {
+	public void setDataSource(@Qualifier("firstTarget") DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);

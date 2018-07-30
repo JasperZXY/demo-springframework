@@ -214,7 +214,7 @@
 	<bean
 		class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"
 		p:validator-ref="validator" />
-	<!-- JSR-349:Bean Validation 1.1 -->
+	<!-- JSR-349:Bean Validation 1.1, see @Validated -->
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
 		p:order="0" p:validator-ref="validator" />
@@ -232,13 +232,13 @@
 	</bean>
 
 	<!-- A.4.Lifecycle:Initialization/Destruction/Startup/Shutdown callbacks -->
-	<!-- A.4.1.Bean lifecycle callbacks -->
+	<!-- A.4.1.Bean lifecycle callbacks, see InitializingBean/DisposableBean -->
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyInitializingBean" />
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyDisposableBean" />
 
-	<!-- A.4.2.Context lifecycle callbacks -->
+	<!-- A.4.2.Context lifecycle callbacks, see SmartLifecycle -->
 	<bean class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycle" />
 	<bean
 		class="org.ruanwei.demo.springframework.core.ioc.lifecycle.MySmartLifecycle" />

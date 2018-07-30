@@ -22,8 +22,8 @@
 	<!-- DataSource:HSQL/H2/DERBY -->
 	<jdbc:embedded-database id="dataSource" type="H2"
 		generate-name="true">
-		<jdbc:script location="classpath:db-schema.sql" />
-		<jdbc:script location="classpath:db-test-data.sql" />
+		<jdbc:script location="classpath:db/db-schema.sql" />
+		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:embedded-database>
 
 	<!-- DataSource:pure jdbc -->
@@ -58,6 +58,7 @@
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
+		
 		<!-- 连接池中保留的最小连接数。 -->
 		<property name="minPoolSize" value="10" />
 		<!-- 连接池中保留的最大连接数。Default:15 -->
@@ -77,13 +78,11 @@
 	</bean>
 
 	<jdbc:initialize-database data-source="dataSource">
-		<jdbc:script location="classpath:db-schema.sql" />
-		<jdbc:script location="classpath:db-test-data.sql" />
+		<jdbc:script location="classpath:db/db-schema.sql" />
+		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
 
 	<!-- ==========A.Data Access:TransactionManager========== -->
-	<tx:annotation-driven transaction-manager="txManager" />
-
 	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
 	<!-- local transaction manager -->
 	<bean id="txManager"

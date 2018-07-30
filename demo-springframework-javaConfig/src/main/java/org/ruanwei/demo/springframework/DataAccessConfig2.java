@@ -3,11 +3,12 @@ package org.ruanwei.demo.springframework;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -20,6 +21,12 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @Configuration
 public class DataAccessConfig2 {
 
+	// ==========A.Data Access:JDBC==========
+	// DataSource:pure jdbc
+	// should only be used for testing purposes since it does not provide
+	// pooling.
+	@Primary
+	@Qualifier("firstTarget")
 	@Bean
 	public DataSource dataSource1(
 			@Value("${jdbc.driverClassName}") String driverClassName,
@@ -34,7 +41,7 @@ public class DataAccessConfig2 {
 		return dataSource;
 	}
 
-	// PoolingDataSource
+	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Bean
 	public DataSource dataSource2(
 			@Value("${jdbc.driverClassName}") String driverClassName,
@@ -54,6 +61,7 @@ public class DataAccessConfig2 {
 		return dataSource;
 	}
 
+	// polled-DataSource:c3p0
 	@Bean
 	public DataSource dataSource3(
 			@Value("${jdbc.driverClassName}") String driverClassName,
@@ -71,6 +79,8 @@ public class DataAccessConfig2 {
 		return dataSource;
 	}
 
+	// ==========A.Data Access:TransactionManager==========
+	// local transaction manager for jdbc
 	@Bean
 	public PlatformTransactionManager txManager(
 			@Value("#{dataSource1}") DataSource dataSource) {
@@ -78,18 +88,13 @@ public class DataAccessConfig2 {
 		txManager.setDataSource(dataSource);
 		return txManager;
 	}
-	
+
+	// global transaction manager
 	@Lazy
 	@Bean
 	public PlatformTransactionManager globalTxManager() {
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
 	}
-	
-	@Bean
-	public JdbcDAO2 jdbcDAO(@Value("#{dataSource1}") DataSource dataSource) {
-		JdbcDAO2 jdbcDAO = new JdbcDAO2();
-		jdbcDAO.setDataSource(dataSource);
-		return jdbcDAO;
-	}
+
 }

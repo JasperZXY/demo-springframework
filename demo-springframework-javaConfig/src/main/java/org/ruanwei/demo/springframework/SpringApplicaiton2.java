@@ -15,7 +15,7 @@ import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
 import org.ruanwei.demo.springframework.dataAccess.User2;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO2;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -63,7 +63,7 @@ public class SpringApplicaiton2 {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 
 		log.info("0======================================================================================");
-		initApplicationContext(ApplicationContextType.CLASSPATH_XML);
+		initApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
 		log.info("0======================================================================================");
 	}
 
@@ -214,17 +214,17 @@ public class SpringApplicaiton2 {
 			}
 
 			log.info("7.4======================================================================================");
-			absContext.close();
+			// absContext.close();
 		}
 	}
 
 	private static void testJdbc() {
-		JdbcDAO2 jdbcDAO = context.getBean("jdbcDAO", JdbcDAO2.class);
+		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
 
 		testCRUD(jdbcDAO);
 	}
 
-	private static void testCRUD(JdbcDAO2 jdbcDAO) {
+	private static void testCRUD(JdbcDAO jdbcDAO) {
 		testCreate(jdbcDAO);
 		testBatchUpdate(jdbcDAO);
 		testQueryForSingleRow(jdbcDAO);
@@ -232,7 +232,7 @@ public class SpringApplicaiton2 {
 		testDelete(jdbcDAO);
 	}
 
-	private static void testCreate(JdbcDAO2 jdbcDAO) {
+	private static void testCreate(JdbcDAO jdbcDAO) {
 		jdbcDAO.createUser1(paramForCreate1);
 		jdbcDAO.createUser2(paramForCreate1);
 		jdbcDAO.createUser3(paramForCreate1);
@@ -242,7 +242,7 @@ public class SpringApplicaiton2 {
 		jdbcDAO.createUser5(paramForCreate2);
 	}
 
-	private static void testBatchUpdate(JdbcDAO2 jdbcDAO) {
+	private static void testBatchUpdate(JdbcDAO jdbcDAO) {
 		List<User2> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
 		jdbcDAO.batchUpdateUser1(users);
 		jdbcDAO.batchUpdateUser2(users);
@@ -250,19 +250,19 @@ public class SpringApplicaiton2 {
 		jdbcDAO.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
 	}
 
-	private static void testQueryForSingleRow(JdbcDAO2 jdbcDAO) {
+	private static void testQueryForSingleRow(JdbcDAO jdbcDAO) {
 		jdbcDAO.queryForSingleColumn();
 		jdbcDAO.queryForMultiColumn();
 		jdbcDAO.queryForObject();
 	}
 
-	private static void testQueryFormultiRow(JdbcDAO2 jdbcDAO) {
+	private static void testQueryFormultiRow(JdbcDAO jdbcDAO) {
 		jdbcDAO.queryForSingleColumnList();
 		jdbcDAO.queryForMultiColumnList();
 		jdbcDAO.queryForObjectList();
 	}
 
-	private static void testDelete(JdbcDAO2 jdbcDAO) {
+	private static void testDelete(JdbcDAO jdbcDAO) {
 		jdbcDAO.deleteUser(2);
 	}
 
@@ -281,7 +281,7 @@ public class SpringApplicaiton2 {
 		}
 		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
 			context = new ClassPathXmlApplicationContext(
-					new String[] { "classpath:spring/applicationContext.xml" });
+					new String[] { "classpath:spring/applicationContext2.xml" });
 			break;
 		}
 		case FILESYSTEM_XML: {// AbstractRefreshableApplicationContext

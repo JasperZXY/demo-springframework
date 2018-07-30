@@ -30,8 +30,9 @@
 	<!-- org.springframework.context.event.EventListenerMethodProcessor process 
 		@EventListener -->
 	<!-- <context:annotation-config /> registers the above 6 BeanPostProcessor 
-		default. -->
-	<!-- <context:component-scan> implicitly enables the functionality of <context:annotation-config>. -->
+		by default. -->
+
+	<!-- <context:component-scan> implicitly enables the <context:annotation-config>. -->
 	<context:component-scan base-package="org.ruanwei.demo.springframework">
 		<!-- <context:exclude-filter/> <context:include-filter/> -->
 	</context:component-scan>
@@ -80,10 +81,10 @@
 
 	<!-- A.2.Data Binding -->
 	<!-- A.2.1.ConversionService-based Type Conversion and Formatting -->
+	<!-- 一共有五种方式，参考xmlConfig项目 -->
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="registerDefaultFormatters" value="true" />
-		<!-- 一共有五种方式，参考xmlOrJava项目 -->
 		<property name="formatterRegistrars">
 			<set>
 				<bean
@@ -91,7 +92,7 @@
 			</set>
 		</property>
 	</bean>
-	
+
 	<!-- A.2.2.PropertyEditor-based Conversion -->
 
 	<!-- A.2.3.Validation JSR-303/JSR-349/JSR-380 -->
@@ -106,7 +107,7 @@
 		class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"
 		p:validator-ref="validator" />
 
-	<!-- JSR-349:Bean Validation 1.1 -->
+	<!-- JSR-349:Bean Validation 1.1, see @Validated -->
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
 		p:order="0" p:validator-ref="validator" />
@@ -124,14 +125,11 @@
 	</bean>
 
 	<!-- A.4.Lifecycle:Initialization/Destruction/Startup/Shutdown callbacks -->
-	<!-- A.4.1.Bean lifecycle callbacks -->
-	<!-- 参考 @PostConstruct/@PreDestroy -->
-
-	<!-- A.4.2.Context lifecycle callbacks -->
-	<!-- 参考 @Component/@Order -->
+	<!-- A.4.1.Bean lifecycle callbacks, see @PostConstruct/@PreDestroy -->
+	<!-- A.4.2.Context lifecycle callbacks, see @SmartLifecycle/@Order -->
 
 	<!-- A.5.Environment：Profile and PropertySource -->
-	<!-- A.5.1.PropertySource：参考@PropertySource和@Configueration -->
+	<!-- A.5.1.PropertySource：供Environment访问 -->
 	<!-- A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问. -->
 	<!-- versions <= 3.0 default to org.springframework.beans.factory.config.PropertyPlaceholderConfigurer. -->
 	<!-- versions >= 3.1 default to org.springframework.context.support.PropertySourcesPlaceholderConfigurer. -->
@@ -140,8 +138,8 @@
 		file-encoding="UTF-8" order="0" />
 	<!-- see org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
 	<!-- <context:property-override /> -->
-	
-	<!-- A.5.2.Profile：参考 @Profile和@Component -->	
+
+	<!-- A.5.2.Profile：参考 @Profile和@Component/@Bean -->
 
 	<!-- A.6.Extension Points -->
 	<!-- A.6.1.Customizing beans using a BeanPostProcessor -->
