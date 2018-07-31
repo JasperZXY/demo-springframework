@@ -13,14 +13,22 @@ public class JdbcTransaction {
 			Date.valueOf("1983-07-06"));
 
 	private JdbcDAO jdbcDAO;
+	private JdbcTransaction2 jdbcTransaction2;
 
 	public void testTransaction() {
 		jdbcDAO.createUser1(paramForCreate1);
 		jdbcDAO.createUser1(paramForCreate2);
+		
+		jdbcTransaction2.testTransaction2();
+		
 		int i = 1/0;
 	}
 
 	public void setJdbcDAO(JdbcDAO jdbcDAO) {
 		this.jdbcDAO = jdbcDAO;
+	}
+	
+	public void setJdbcTransaction2(JdbcTransaction2 jdbcTransaction2) {
+		this.jdbcTransaction2 = jdbcTransaction2;
 	}
 }

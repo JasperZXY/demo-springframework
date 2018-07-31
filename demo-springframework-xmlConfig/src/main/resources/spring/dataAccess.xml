@@ -99,15 +99,16 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- all methods starting with 'test' -->
-			<tx:method name="test*" rollback-for="java.lang.Throwable" />
+			<tx:method name="testTransaction" rollback-for="java.lang.Throwable" />
+			<tx:method name="testTransaction2" propagation="REQUIRES_NEW" rollback-for="java.lang.Throwable" />
 			<!-- other methods use the default transaction settings (see below) -->
-			<!-- <tx:method name="*" /> -->
+			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>
 
 	<aop:config>
 		<aop:pointcut id="txPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction.*(..))" />
+			expression="execution(* org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"
 			order="2" />
 		<!-- execute before the transactional advice (hence the lower order number) -->
@@ -119,6 +120,12 @@
 
 	<bean id="jdbcTransaction"
 		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction">
+		<property name="jdbcDAO" ref="jdbcDAO" />
+		<property name="jdbcTransaction2" ref="jdbcTransaction2" />
+	</bean>
+	
+	<bean id="jdbcTransaction2"
+		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction2">
 		<property name="jdbcDAO" ref="jdbcDAO" />
 	</bean>
 

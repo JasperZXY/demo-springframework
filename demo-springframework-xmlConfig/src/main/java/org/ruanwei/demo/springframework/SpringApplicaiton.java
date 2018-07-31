@@ -219,9 +219,13 @@ public class SpringApplicaiton {
 	private static void testDataAccess() {
 		JdbcTransaction jdbcTransaction = context.getBean("jdbcTransaction",
 				JdbcTransaction.class);
+		try {
+			testTransaction(jdbcTransaction);
+		} catch (Exception e) {
+			log.error("transaction rolled back", e);
+		}
+		
 		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
-
-		testTransaction(jdbcTransaction);
 		// testJdbc(jdbcDAO);
 	}
 

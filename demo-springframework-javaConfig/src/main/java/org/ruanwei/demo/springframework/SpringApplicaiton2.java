@@ -65,12 +65,12 @@ public class SpringApplicaiton2 {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 
 		log.info("0======================================================================================");
-		initApplicationContext(ApplicationContextType.ANNOTATION_CONFIG);
+		initApplicationContext(ApplicationContextType.CLASSPATH_XML);
 		log.info("0======================================================================================");
 	}
 
 	public static void main(String[] args) {
-		//testCoreContainer();
+		// testCoreContainer();
 		testDataAccess();
 	}
 
@@ -217,16 +217,21 @@ public class SpringApplicaiton2 {
 			absContext.close();
 		}
 	}
-	
-	private static void testDataAccess(){
-		JdbcTransaction jdbcTransaction = context.getBean("jdbcTransaction", JdbcTransaction.class);
-		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
+
+	private static void testDataAccess() {
+		JdbcTransaction jdbcTransaction = context.getBean("jdbcTransaction",
+				JdbcTransaction.class);
+		try {
+			testTransaction(jdbcTransaction);
+		} catch (Exception e) {
+			log.error("transaction rolled back", e);
+		}
 		
-		testTransaction(jdbcTransaction);
-		//testJdbc(jdbcDAO);
+		JdbcDAO jdbcDAO = context.getBean("jdbcDAO", JdbcDAO.class);
+		// testJdbc(jdbcDAO);
 	}
-	
-	private static void testTransaction(JdbcTransaction jdbcTransaction){
+
+	private static void testTransaction(JdbcTransaction jdbcTransaction) {
 		jdbcTransaction.testTransaction();
 	}
 

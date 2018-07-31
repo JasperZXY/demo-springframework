@@ -24,8 +24,7 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 
 	// ==========A.Data Access:JDBC==========
 	// DataSource:pure jdbc
-	// should only be used for testing purposes since it does not provide
-	// pooling.
+	// should only be used for testing purposes since no pooling.
 	@Primary
 	@Qualifier("firstTarget")
 	@Bean
