@@ -36,7 +36,7 @@ public class SpringTransactionService {
 		jdbcDAO.createUser1(paramForCreate1);
 		jdbcDAO.createUser1(paramForCreate2);
 
-		jdbcTransaction.testJdbcTransaction();
+		jdbcTransaction.testJdbcTransaction2();
 
 		int i = 1 / 0;
 	}

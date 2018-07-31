@@ -58,7 +58,7 @@
 		<property name="jdbcUrl" value="${jdbc.url}" />
 		<property name="user" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
-		
+
 		<!-- 连接池中保留的最小连接数。 -->
 		<property name="minPoolSize" value="10" />
 		<!-- 连接池中保留的最大连接数。Default:15 -->
@@ -99,8 +99,9 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- all methods starting with 'test' -->
-			<tx:method name="testTransaction" rollback-for="java.lang.Throwable" />
-			<tx:method name="testTransaction2" propagation="REQUIRES_NEW" rollback-for="java.lang.Throwable" />
+			<tx:method name="testJdbcTransaction" rollback-for="java.lang.Throwable" />
+			<tx:method name="testJdbcTransaction" propagation="REQUIRES_NEW"
+				rollback-for="java.lang.Throwable" />
 			<!-- other methods use the default transaction settings (see below) -->
 			<tx:method name="*" />
 		</tx:attributes>
@@ -108,9 +109,10 @@
 
 	<aop:config>
 		<aop:pointcut id="txPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction*.*(..))" />
+			expression="execution(* org.ruanwei.demo.springframework.dataAccess.tx.*Transaction*.*(..))" />
 		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"
 			order="2" />
+
 		<!-- execute before the transactional advice (hence the lower order number) -->
 		<!-- <aop:aspect id="myAspect3" ref="myAdvice" order="1"> <aop:pointcut 
 			id="daoPointcut2" expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO.*(..)) 
@@ -118,14 +120,14 @@
 			/> </aop:aspect> -->
 	</aop:config>
 
+	<bean id="springTransactionService"
+		class="org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService">
+		<property name="jdbcDAO" ref="jdbcDAO" />
+		<property name="jdbcTransaction" ref="jdbcTransaction" />
+	</bean>
+
 	<bean id="jdbcTransaction"
 		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction">
-		<property name="jdbcDAO" ref="jdbcDAO" />
-		<property name="jdbcTransaction2" ref="jdbcTransaction2" />
-	</bean>
-	
-	<bean id="jdbcTransaction2"
-		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction2">
 		<property name="jdbcDAO" ref="jdbcDAO" />
 	</bean>
 
@@ -133,6 +135,16 @@
 	<bean id="jdbcDAO"
 		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO">
 		<property name="dataSource" ref="dataSource1" />
+	</bean>
+
+	<bean id="springJdbcService"
+		class="org.ruanwei.demo.springframework.dataAccess.jdbc.SpringJdbcService">
+		<property name="jdbcDAO" ref="jdbcDAO" />
+	</bean>
+
+	<bean id="springDataService"
+		class="org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService">
+		<!-- <property name="jdbcRepository" ref="jdbcRepository" /> -->
 	</bean>
 
 	<!-- more bean definitions go here -->

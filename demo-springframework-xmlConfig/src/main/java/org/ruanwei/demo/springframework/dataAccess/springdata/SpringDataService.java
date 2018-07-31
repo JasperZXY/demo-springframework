@@ -17,7 +17,7 @@ public class SpringDataService {
 	private JdbcRepository jdbcRepository;
 
 	public void testSpringData() {
-		testSpringDataJdbc();
+		// testSpringDataJdbc();
 		testSpringDataRedis();
 	}
 

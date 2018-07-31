@@ -26,7 +26,7 @@ public class JdbcTransaction {
 
 	// 不能在这一层进行try-catch
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { ArithmeticException.class })
-	public void testJdbcTransaction() {
+	public void testJdbcTransaction2() {
 		jdbcDAO.createUser1(paramForCreate3);
 		jdbcDAO.createUser1(paramForCreate4);
 	}

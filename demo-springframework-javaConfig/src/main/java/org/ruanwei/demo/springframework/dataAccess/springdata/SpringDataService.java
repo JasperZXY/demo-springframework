@@ -22,7 +22,7 @@ public class SpringDataService {
 
 	public void testSpringData() {
 		testSpringDataJdbc();
-		testSpringDataRedis();
+		//testSpringDataRedis();
 	}
 
 	public void testSpringDataJdbc() {
