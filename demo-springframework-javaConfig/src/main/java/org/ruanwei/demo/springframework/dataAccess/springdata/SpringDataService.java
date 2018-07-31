@@ -13,16 +13,16 @@ import org.springframework.stereotype.Service;
 public class SpringDataService {
 	private static Log log = LogFactory.getLog(SpringDataService.class);
 	
-	private static final User2 paramForCreate = new User2("ruanwei_tmp", 35,
+	private static final User2 paramForCreate = new User2("ruanwei_tmp88", 35,
 			Date.valueOf("1983-07-06"));
 
 	// TODO:无法获取实例
-	// @Autowired
+	@Autowired
 	private JdbcRepository jdbcRepository;
 
 	public void testSpringData() {
 		testSpringDataJdbc();
-		//testSpringDataRedis();
+		testSpringDataRedis();
 	}
 
 	public void testSpringDataJdbc() {

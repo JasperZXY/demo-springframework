@@ -22,7 +22,7 @@ public class SpringApplicaiton2 {
 	}
 
 	public static void main(String[] args) {
-		testApplicationContext();
+		// testApplicationContext();
 		testDataAccess();
 	}
 
@@ -34,8 +34,8 @@ public class SpringApplicaiton2 {
 	}
 
 	private static void testDataAccess() {
-		testSpringJdbcService();
-		testJdbcTransactionService();
+		// testSpringJdbcService();
+		// testJdbcTransactionService();
 		testSpringDataService();
 	}
 

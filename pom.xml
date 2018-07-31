@@ -25,8 +25,8 @@
 	</developers>
 
 	<properties>
-		<spring.version>5.0.7.RELEASE</spring.version>
-		<spring-data.version>Kay-SR2</spring-data.version>
+		<spring.version>5.0.8.RELEASE</spring.version>
+		<spring-data-releasetrain.version>Kay-SR9</spring-data-releasetrain.version>
 		<spring-data-jdbc.version>1.0.0.BUILD-SNAPSHOT</spring-data-jdbc.version>
 		<log4j.version>2.10.0</log4j.version>
 		<slf4j.version>1.7.25</slf4j.version>
@@ -60,7 +60,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-releasetrain</artifactId>
-				<version>${spring-data.version}</version>
+				<version>${spring-data-releasetrain.version}</version>
 				<scope>import</scope>
 				<type>pom</type>
 			</dependency>

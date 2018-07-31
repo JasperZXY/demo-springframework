@@ -3,13 +3,22 @@ package org.ruanwei.demo.springframework;
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.User2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
+import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
+import org.springframework.data.relational.core.mapping.event.RelationalEvent;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -19,10 +28,12 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-//@EnableJdbcRepositories
+@Import(JdbcConfiguration.class)
+@EnableJdbcRepositories
 @EnableTransactionManagement(order = 1)
 @Configuration
 public class DataAccessConfig2 implements TransactionManagementConfigurer {
+	private static Log log = LogFactory.getLog(DataAccessConfig2.class);
 
 	@Value("${jdbc.driverClassName}")
 	private String driverClassName;
@@ -94,6 +105,30 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 	public PlatformTransactionManager globalTxManager() {
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
+	}
+
+	@Bean
+	public ApplicationListener<?> loggingListener() {
+
+		return (ApplicationListener<ApplicationEvent>) event -> {
+			if (event instanceof RelationalEvent) {
+				log.info("Received an event: " + event);
+			}
+		};
+	}
+
+	@Bean
+	public ApplicationListener<BeforeSaveEvent> timeStampingSaveTime() {
+
+		return event -> {
+
+			Object entity = event.getEntity();
+
+			if (entity instanceof User2) {
+				User2 user = (User2) entity;
+				log.info("user=====" + user);
+			}
+		};
 	}
 
 	@Override
