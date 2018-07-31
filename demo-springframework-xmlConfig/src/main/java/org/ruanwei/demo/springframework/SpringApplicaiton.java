@@ -63,14 +63,6 @@ public class SpringApplicaiton {
 
 	private static void initApplicationContext(ApplicationContextType type) {
 		switch (type) {
-		case ANNOTATION_CONFIG: {// GenericApplicationContext
-			context = new AnnotationConfigApplicationContext(AppConfig.class);
-			// 要在getBean之前进行设置并刷新
-			// context.setConfigLocation("spring/applicationContext.xml");
-			// context.register(AppConfig.class);
-			// context.refresh();
-			break;
-		}
 		case CLASSPATH_XML: {// AbstractRefreshableApplicationContext
 			context = new ClassPathXmlApplicationContext(
 					new String[] { "classpath:spring/applicationContext.xml" });
