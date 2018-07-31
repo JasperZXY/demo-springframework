@@ -20,7 +20,16 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 @EnableTransactionManagement(order = 1)
 @Configuration
-public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
+public class DataAccessConfig2 implements TransactionManagementConfigurer {
+
+	@Value("${jdbc.driverClassName}")
+	private String driverClassName;
+	@Value("${jdbc.url}")
+	private String url;
+	@Value("${jdbc.username}")
+	private String username;
+	@Value("${jdbc.password}")
+	private String password;
 
 	// ==========A.Data Access:JDBC==========
 	// DataSource:pure jdbc
@@ -28,11 +37,7 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 	@Primary
 	@Qualifier("firstTarget")
 	@Bean
-	public DataSource dataSource1(
-			@Value("${jdbc.driverClassName}") String driverClassName,
-			@Value("${jdbc.url}") String url,
-			@Value("${jdbc.username}") String username,
-			@Value("${jdbc.password}") String password) {
+	public DataSource dataSource1() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUrl(url);
@@ -43,11 +48,7 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Bean
-	public DataSource dataSource2(
-			@Value("${jdbc.driverClassName}") String driverClassName,
-			@Value("${jdbc.url}") String url,
-			@Value("${jdbc.username}") String username,
-			@Value("${jdbc.password}") String password) {
+	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClassName);
 		dataSource.setUrl(url);
@@ -63,11 +64,7 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 
 	// polled-DataSource:c3p0
 	@Bean
-	public DataSource dataSource3(
-			@Value("${jdbc.driverClassName}") String driverClassName,
-			@Value("${jdbc.url}") String url,
-			@Value("${jdbc.username}") String username,
-			@Value("${jdbc.password}") String password) throws Exception {
+	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(driverClassName);
 		dataSource.setJdbcUrl(url);
@@ -83,10 +80,9 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 	// local transaction manager for jdbc
 	@Primary
 	@Bean("txManager")
-	public PlatformTransactionManager txManager(
-			@Value("#{dataSource1}") DataSource dataSource) {
+	public PlatformTransactionManager txManager() {
 		DataSourceTransactionManager txManager = new DataSourceTransactionManager();
-		txManager.setDataSource(dataSource);
+		txManager.setDataSource(dataSource1());
 		return txManager;
 	}
 
@@ -98,10 +94,9 @@ public class DataAccessConfig2 /* implements TransactionManagementConfigurer */{
 		return txManager;
 	}
 
-	// @Override
+	@Override
 	public PlatformTransactionManager annotationDrivenTransactionManager() {
-
-		return null;
+		return txManager();
 	}
 
 }

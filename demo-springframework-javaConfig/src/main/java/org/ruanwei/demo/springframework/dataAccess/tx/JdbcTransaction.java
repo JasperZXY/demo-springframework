@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional("transactionManager")
+@Transactional()
 @Service("jdbcTransaction")
 public class JdbcTransaction {
 	private static Log log = LogFactory.getLog(JdbcTransaction.class);

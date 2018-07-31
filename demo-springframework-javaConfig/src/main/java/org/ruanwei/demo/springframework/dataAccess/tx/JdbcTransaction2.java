@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional("transactionManager")
+@Transactional()
 @Service("jdbcTransaction2")
 public class JdbcTransaction2 {
 	private static Log log = LogFactory.getLog(JdbcTransaction2.class);
