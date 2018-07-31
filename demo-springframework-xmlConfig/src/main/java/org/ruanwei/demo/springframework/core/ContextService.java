@@ -6,13 +6,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.SpringApplicaiton2;
-import org.ruanwei.demo.springframework.core.aop.Good2;
-import org.ruanwei.demo.springframework.core.aop.Happy2;
-import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
+import org.ruanwei.demo.springframework.SpringApplicaiton;
+import org.ruanwei.demo.springframework.core.aop.Good;
+import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
-import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
-import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
+import org.ruanwei.demo.springframework.core.ioc.House;
+import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
+import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
@@ -26,15 +26,13 @@ import org.springframework.core.env.PropertySource;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.stereotype.Service;
 
-@Service("contextService")
 public class ContextService {
 	private static Log log = LogFactory.getLog(ContextService.class);
-	
+
 	private ApplicationContext context;
 
-	public  void testApplicationContext() {
+	public void testApplicationContext() {
 		log.info("1======================================================================================");
 		testEnvironment(context);
 
@@ -58,7 +56,7 @@ public class ContextService {
 	}
 
 	// StandardEnvironment/StandardServletEnvironment(spring-web)
-	private  void testEnvironment(ApplicationContext context) {
+	private void testEnvironment(ApplicationContext context) {
 		log.info("env==========" + context.getEnvironment());
 
 		testProfile(context);
@@ -66,7 +64,7 @@ public class ContextService {
 		testPropertySource(context.getEnvironment());
 	}
 
-	private  void testProfile(ApplicationContext context) {
+	private void testProfile(ApplicationContext context) {
 		Environment env = context.getEnvironment();
 		log.info("profiles==========" + env.getActiveProfiles() + " "
 				+ env.getDefaultProfiles());
@@ -79,12 +77,12 @@ public class ContextService {
 			configEnv.setDefaultProfiles("production");
 		}
 
-		AbsHouse house = context.getBean("house", AbsHouse.class);
+		House house = context.getBean("house", House.class);
 		log.info("house==========" + house);
 	}
 
 	// StandardEnvironment:MapPropertySource(systemProperties)/SystemEnvironmentPropertySource(systemEnvironment)
-	private  void testPropertySource(Environment env) {
+	private void testPropertySource(Environment env) {
 		// TODO:ClassPathXmlApplicationContext不能获取到属性值，但是annotation那个项目却可以
 		String a = env.getProperty("a", "a"); // MapPropertySource(-Da=1)
 		String b = env.getProperty("family.familyCount", "2");// ResourcePropertySource(@PeopertySource("family.properties"))
@@ -111,7 +109,7 @@ public class ContextService {
 
 	}
 
-	private  void testMessageSource(MessageSource messageSource) {
+	private void testMessageSource(MessageSource messageSource) {
 		log.info("messageSource==========" + messageSource);
 		String msg = messageSource.getMessage("my.messageSource",
 				new Object[] { "ruanwei" }, "This is my message source.",
@@ -119,44 +117,44 @@ public class ContextService {
 		log.info("message==========" + msg);
 	}
 
-	private  void testResourceLoader(ResourceLoader resourceLoader) {
+	private void testResourceLoader(ResourceLoader resourceLoader) {
 		log.info("resourceLoader==========" + resourceLoader);
 		Resource resource = resourceLoader
 				.getResource("classpath:spring/applicationContext.xml");
 		log.info("resource==========" + resource);
 	}
 
-	private  void testApplicationEventPublisher(
+	private void testApplicationEventPublisher(
 			ApplicationEventPublisher applicationEventPublisher) {
 		log.info("applicationEventPublisher=========="
 				+ applicationEventPublisher);
-		applicationEventPublisher.publishEvent(new MyApplicationEvent2(
-				SpringApplicaiton2.class,
+		applicationEventPublisher.publishEvent(new MyApplicationEvent(
+				SpringApplicaiton.class,
 				"custom ApplicationEvent from SpringApplication"));
 		applicationEventPublisher.publishEvent(new String(
 				"PayloadApplicationEvent<String> from SpringApplication"));
 	}
 
-	private  void testIoC(ApplicationContext context) {
+	private void testIoC(ApplicationContext context) {
 		Family family = context.getBean("family", Family.class);
 		Family familyx = context.getBean("familyx", Family.class);
-		MyFamilyFactoryBean2 myFamilyFactoryBean = (MyFamilyFactoryBean2) context
+		MyFamilyFactoryBean myFamilyFactoryBean = (MyFamilyFactoryBean) context
 				.getBean("&familyx");
 		log.info(family);
 		log.info(familyx);
 		log.info(myFamilyFactoryBean);
 	}
 
-	private  void testAOP(ApplicationContext context) {
+	private void testAOP(ApplicationContext context) {
 		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
 
-		Good2 good = (Good2) context.getBean("good");
-		Happy2 mixin = (Happy2) context.getBean("good");
+		Good good = (Good) context.getBean("good");
+		Happy mixin = (Happy) context.getBean("good");
 		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
-	private  void testApplicationEvent(ApplicationContext context) {
+	private void testApplicationEvent(ApplicationContext context) {
 		log.info("context==========" + context);
 		if (context instanceof AbstractApplicationContext) {
 			AbstractApplicationContext absContext = (AbstractApplicationContext) context;
@@ -177,8 +175,6 @@ public class ContextService {
 		}
 	}
 
-	
-	
 	public void setContext(ApplicationContext context) {
 		this.context = context;
 	}

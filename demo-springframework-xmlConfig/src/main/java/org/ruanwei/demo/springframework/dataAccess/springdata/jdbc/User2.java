@@ -1,16 +1,20 @@
-package org.ruanwei.demo.springframework.dataAccess;
+package org.ruanwei.demo.springframework.dataAccess.springdata.jdbc;
 
 import java.sql.Date;
 
-public class User {
+import org.springframework.data.annotation.Id;
+
+public class User2 {
+	@Id
+	private int id;
 	private String name;
 	private int age;
 	private Date birthday;
 
-	public User() {
+	public User2() {
 	}
 
-	public User(String name, int age, Date birthday) {
+	public User2(String name, int age, Date birthday) {
 		this.name = name;
 		this.age = age;
 		this.birthday = birthday;
@@ -42,8 +46,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday
-				+ "]";
+		return "User2 [id=" + id + "name=" + name + ", age=" + age
+				+ ", birthday=" + birthday + "]";
 	}
 
 }

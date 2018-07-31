@@ -2,33 +2,25 @@ package org.ruanwei.demo.springframework.dataAccess.tx;
 
 import java.sql.Date;
 
-import org.ruanwei.demo.springframework.dataAccess.User;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class JdbcTransaction {
-	
-	private static final User paramForCreate1 = new User("ruanwei_tmp1", 35,
+	private static Log log = LogFactory.getLog(JdbcTransaction.class);
+
+	private static final User paramForCreate3 = new User("ruanwei_tmp3", 35,
 			Date.valueOf("1983-07-06"));
-	private static final User paramForCreate2 = new User("ruanwei_tmp2", 35,
+	private static final User paramForCreate4 = new User("ruanwei_tmp4", 35,
 			Date.valueOf("1983-07-06"));
 
+	@Autowired
 	private JdbcDAO jdbcDAO;
-	private JdbcTransaction2 jdbcTransaction2;
 
-	public void testTransaction() {
-		jdbcDAO.createUser1(paramForCreate1);
-		jdbcDAO.createUser1(paramForCreate2);
-		
-		jdbcTransaction2.testTransaction2();
-		
-		int i = 1/0;
-	}
-
-	public void setJdbcDAO(JdbcDAO jdbcDAO) {
-		this.jdbcDAO = jdbcDAO;
-	}
-	
-	public void setJdbcTransaction2(JdbcTransaction2 jdbcTransaction2) {
-		this.jdbcTransaction2 = jdbcTransaction2;
+	public void testJdbcTransaction() {
+		jdbcDAO.createUser1(paramForCreate3);
+		jdbcDAO.createUser1(paramForCreate4);
 	}
 }
