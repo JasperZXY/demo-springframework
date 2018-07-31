@@ -99,9 +99,9 @@
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- all methods starting with 'test' -->
-			<tx:method name="test*" rollback-for="ArithmeticException" />
+			<tx:method name="test*" rollback-for="java.lang.Throwable" />
 			<!-- other methods use the default transaction settings (see below) -->
-			<tx:method name="*" />
+			<!-- <tx:method name="*" /> -->
 		</tx:attributes>
 	</tx:advice>
 

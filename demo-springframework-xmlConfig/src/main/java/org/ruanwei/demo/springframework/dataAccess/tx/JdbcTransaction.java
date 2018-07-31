@@ -20,10 +20,6 @@ public class JdbcTransaction {
 		int i = 1/0;
 	}
 
-	public JdbcDAO getJdbcDAO() {
-		return jdbcDAO;
-	}
-
 	public void setJdbcDAO(JdbcDAO jdbcDAO) {
 		this.jdbcDAO = jdbcDAO;
 	}

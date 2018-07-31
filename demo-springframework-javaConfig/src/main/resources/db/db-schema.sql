@@ -13,4 +13,6 @@ CREATE TABLE  IF NOT EXISTS user(
     hobby int(4) not null default 0 COMMENT '爱好', 
     intro varchar(256) not null default '' COMMENT '简介', 
     lastUpdTime timestamp not null default now() COMMENT '更新时间', 
-    primary key(id))ENGINE=MyISAM DEFAULT CHARSET=utf8;
+    primary key(id))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    
+-- MyISAM不支持事务
