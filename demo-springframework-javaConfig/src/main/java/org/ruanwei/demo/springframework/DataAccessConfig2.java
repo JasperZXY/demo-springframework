@@ -44,7 +44,8 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 	private String password;
 
 	// ==========A.Data Access:JDBC==========
-	@Bean("dataSource")
+	@Qualifier("embeddedTarget")
+	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
 				.setType(EmbeddedDatabaseType.H2).setScriptEncoding("UTF-8")
