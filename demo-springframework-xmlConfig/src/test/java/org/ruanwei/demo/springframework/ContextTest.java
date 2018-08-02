@@ -9,10 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.SpringJdbcService;
-import org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService;
-import org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService;
+import org.ruanwei.demo.springframework.core.ContextService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ActiveProfiles;
@@ -27,18 +26,16 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @author ruanwei
  *
  */
-//@Transactional("txManager")
 @ActiveProfiles("development")
-@SpringJUnitConfig(AppConfig2.class)
-public class DataAccessTest {
-	private static Log log = LogFactory.getLog(DataAccessTest.class);
+@SpringJUnitConfig()
+public class ContextTest {
+	private static Log log = LogFactory.getLog(ContextTest.class);
 
 	@Autowired
-	private SpringJdbcService springJdbcService;
+	private ContextService contextService;
+
 	@Autowired
-	private SpringTransactionService springTransactionService;
-	@Autowired
-	private SpringDataService springDataService;
+	private ApplicationContext context;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -59,33 +56,11 @@ public class DataAccessTest {
 	}
 
 	@Test
-	void testDataAccess() {
-		testSpringJdbcService();
-		testJdbcTransactionService();
-		testSpringDataService();
+	void testApplicationContext() {
+		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
+		contextService.setContext(context);
+		contextService.testApplicationContext();
 		assertNotNull(null,"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-	}
-
-	private void testSpringJdbcService() {
-		assertNotNull(springJdbcService,
-				"springJdbcService is null++++++++++++++++++++++++++++");
-		springJdbcService.testSpringJdbc();
-	}
-
-	private void testJdbcTransactionService() {
-		assertNotNull(springTransactionService,
-				"springTransactionService is null++++++++++++++++++++++++++++");
-		try {
-			springTransactionService.testJdbcTransaction();
-		} catch (Exception e) {
-			log.error("transaction rolled back", e);
-		}
-	}
-
-	private void testSpringDataService() {
-		assertNotNull(springDataService,
-				"springDataService is null++++++++++++++++++++++++++++");
-		springDataService.testSpringData();
 	}
 
 	@AfterEach

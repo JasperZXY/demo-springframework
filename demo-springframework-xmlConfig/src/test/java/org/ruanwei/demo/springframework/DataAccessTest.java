@@ -27,9 +27,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @author ruanwei
  *
  */
-//@Transactional("txManager")
+//@Transactional("transactionManager")
 @ActiveProfiles("development")
-@SpringJUnitConfig(AppConfig2.class)
+@SpringJUnitConfig(locations="classpath:spring/applicationContext.xml")
 public class DataAccessTest {
 	private static Log log = LogFactory.getLog(DataAccessTest.class);
 

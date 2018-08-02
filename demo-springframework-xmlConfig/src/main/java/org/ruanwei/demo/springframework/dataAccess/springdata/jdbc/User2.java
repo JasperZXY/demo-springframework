@@ -2,8 +2,11 @@ package org.ruanwei.demo.springframework.dataAccess.springdata.jdbc;
 
 import java.sql.Date;
 
+import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 
+@Data
 public class User2 {
 	@Id
 	private int id;
@@ -20,7 +23,7 @@ public class User2 {
 		this.birthday = birthday;
 	}
 
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 
@@ -48,6 +51,6 @@ public class User2 {
 	public String toString() {
 		return "User2 [id=" + id + "name=" + name + ", age=" + age
 				+ ", birthday=" + birthday + "]";
-	}
+	}*/
 
 }

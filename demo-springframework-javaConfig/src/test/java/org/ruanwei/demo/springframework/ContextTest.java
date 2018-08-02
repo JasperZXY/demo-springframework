@@ -16,7 +16,6 @@ import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -27,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ruanwei
  *
  */
-@Transactional("txManager")
 @ActiveProfiles("development")
 @SpringJUnitConfig(AppConfig2.class)
 public class ContextTest {
