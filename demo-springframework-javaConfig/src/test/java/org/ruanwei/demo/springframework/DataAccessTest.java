@@ -24,6 +24,11 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @ExtendWith(SpringExtension.class) and ContextConfiguration(classes =
  *                                    AppConfig.class).
  * @SpringJUnitWebConfig also.
+ * 
+ * 1.避免手动初始化ApplicationContext
+ * 2.避免手动获取bean实例
+ * 3.避免手动数据库清理
+ * 
  * @author ruanwei
  *
  */
