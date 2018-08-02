@@ -63,7 +63,6 @@ public class DataAccessTest {
 		testSpringJdbcService();
 		testJdbcTransactionService();
 		testSpringDataService();
-		assertNotNull(null,"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	}
 
 	private void testSpringJdbcService() {

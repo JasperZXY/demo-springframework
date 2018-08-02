@@ -60,7 +60,6 @@ public class ContextTest {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
 		contextService.setContext(context);
 		contextService.testApplicationContext();
-		assertNotNull(null,"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 	}
 
 	@AfterEach
