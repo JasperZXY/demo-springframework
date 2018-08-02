@@ -2,6 +2,9 @@ package org.ruanwei.demo.springframework.dataAccess.jdbc;
 
 import java.sql.Date;
 
+import lombok.Data;
+
+@Data
 public class User {
 	private String name;
 	private int age;
@@ -16,7 +19,7 @@ public class User {
 		this.birthday = birthday;
 	}
 
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 
@@ -44,6 +47,6 @@ public class User {
 	public String toString() {
 		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday
 				+ "]";
-	}
+	}*/
 
 }

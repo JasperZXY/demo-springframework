@@ -17,7 +17,7 @@ public class SpringDataService {
 			Date.valueOf("1983-07-06"));
 
 	// TODO:无法获取实例
-	@Autowired
+	// @Autowired
 	private JdbcRepository jdbcRepository;
 
 	public void testSpringData() {
