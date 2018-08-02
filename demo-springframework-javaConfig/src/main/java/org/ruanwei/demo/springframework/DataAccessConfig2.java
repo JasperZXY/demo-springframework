@@ -12,15 +12,14 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.data.relational.core.mapping.event.RelationalEvent;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.TransactionManagementConfigurer;
@@ -45,6 +44,15 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 	private String password;
 
 	// ==========A.Data Access:JDBC==========
+	@Bean("dataSource")
+	public DataSource dataSource() {
+		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
+				.setType(EmbeddedDatabaseType.H2).setScriptEncoding("UTF-8")
+				.ignoreFailedDrops(true)
+				.addScript("classpath:db/db-schema.sql")
+				.addScripts("classpath:db/db-test-data.sql").build();
+	}
+
 	// DataSource:pure jdbc
 	// should only be used for testing purposes since no pooling.
 	@Primary

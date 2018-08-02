@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.SpringJdbcService;
 import org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService;
@@ -15,6 +16,8 @@ import org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -32,7 +35,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  * @author ruanwei
  *
  */
-//@Transactional("txManager")
+// @DirtiesContext
+// @Transactional("txManager")
+// @Rollback
+// @Commit
 @ActiveProfiles("development")
 @SpringJUnitConfig(AppConfig2.class)
 public class DataAccessTest {
@@ -63,6 +69,7 @@ public class DataAccessTest {
 		log.info("beforeEach()");
 	}
 
+	@Disabled
 	@Test
 	void testDataAccess() {
 		testSpringJdbcService();
