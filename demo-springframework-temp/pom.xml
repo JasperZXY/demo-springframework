@@ -44,7 +44,7 @@
 		<!-- JSR-349 Bean Validation 1.1 -->
 		<!-- JSR-380 Bean Validation 2.0 -->
 		<dependency>
-			<groupId>org.hibernate</groupId>
+			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 		<dependency>
