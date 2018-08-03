@@ -15,14 +15,7 @@
 	<name>Demo:Spring Framework(Temp)</name>
 
 	<dependencies>
-	<!-- used for logging -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
 
-		<!-- A.The IoC Container -->
-		<!-- 1.used for the core container -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -33,51 +26,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- used for JSR-330 Dependency Injection for Java -->
-		<dependency>
-			<groupId>javax.inject</groupId>
-			<artifactId>javax.inject</artifactId>
-		</dependency>
-
-		<!-- 2.used for validation -->
-		<!-- JSR-303 Bean Validation 1.0 -->
-		<!-- JSR-349 Bean Validation 1.1 -->
-		<!-- JSR-380 Bean Validation 2.0 -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish</groupId>
-			<artifactId>javax.el</artifactId>
-		</dependency>
-
-		<!-- 3.used for conversion service -->
-		<!-- <dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency> -->
-
-		<!-- B.The AOP -->
-		<!-- 1.used for AspectJ AOP aspects -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-		</dependency>
-		<!-- 2.used for LTW -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-instrument</artifactId>
-		</dependency>
-	
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-instrument</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -107,34 +55,6 @@
 			<artifactId>spring-test</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.mchange</groupId>
-			<artifactId>c3p0</artifactId>
-		</dependency>
-		<!-- HyperSQL DB -->
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-		</dependency>
-		<!-- H2 DB -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-		</dependency>
-		<!-- Derby DB -->
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>
@@ -158,26 +78,10 @@
 			<groupId>com.sun.mail</groupId>
 			<artifactId>javax.mail</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-
-		<!-- 替换Spring默认的JCL为SLF4J <dependency> <groupId>org.springframework</groupId> 
-			<artifactId>spring-core</artifactId> <version>${spring.version}</version> 
-			<exclusions> <exclusion> <groupId>commons-logging</groupId> <artifactId>commons-logging</artifactId> 
-			</exclusion> </exclusions> </dependency> <dependency> <groupId>org.slf4j</groupId> 
-			<artifactId>jcl-over-slf4j</artifactId> <version>1.5.8</version> </dependency> 
-			<dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-api</artifactId> 
-			<version>1.5.8</version> </dependency> <dependency> <groupId>org.slf4j</groupId> 
-			<artifactId>slf4j-log4j12</artifactId> <version>1.5.8</version> </dependency> 
-			<dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> <version>1.2.14</version> 
-			</dependency> -->
-
 	</dependencies>
 
 	<build>
 		<finalName>demo-springframework-temp</finalName>
 	</build>
-	
+
 </project>
