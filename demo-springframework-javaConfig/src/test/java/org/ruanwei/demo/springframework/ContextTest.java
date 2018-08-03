@@ -61,7 +61,7 @@ public class ContextTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testApplicationContext() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");

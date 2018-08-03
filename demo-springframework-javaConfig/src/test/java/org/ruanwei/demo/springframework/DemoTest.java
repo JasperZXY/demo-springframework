@@ -61,15 +61,6 @@ public class DemoTest {
 		assertEquals(5, count, "count is not equal++++++++++++++++++++++++++++");
 	}
 
-	@Test
-	void testEmbeddedDatabase2() {
-		assertNotNull(db, "db is null++++++++++++++++++++++++++++");
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(db);
-		int count = jdbcTemplate.queryForObject("select count(*) from user",
-				Integer.class);
-		assertEquals(5, count, "count is not equal++++++++++++++++++++++++++++");
-	}
-
 	@AfterEach
 	void afterEach() {
 		log.info("afterEach()");
