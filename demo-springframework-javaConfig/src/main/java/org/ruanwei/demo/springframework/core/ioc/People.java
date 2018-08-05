@@ -35,7 +35,7 @@ public class People implements SmartLifecycle {
 
 	// 1.Constructor-based dependency injection
 	@NotEmpty
-	@Size(min = 1, max = 1)
+	@Size(min = 1, max = 12)
 	@FamilyName2("ruan")
 	private String name;
 
