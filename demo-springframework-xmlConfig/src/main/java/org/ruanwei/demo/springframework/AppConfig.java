@@ -24,8 +24,8 @@ import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegi
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar;
 import org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter;
-import org.ruanwei.demo.springframework.core.ioc.extension.MyBeanFactoryPostProcessor;
-import org.ruanwei.demo.springframework.core.ioc.extension.MyBeanPostProcessor;
+import org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanFactoryPostProcessor;
+import org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanPostProcessor;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyDisposableBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyInitializingBean;
@@ -430,7 +430,7 @@ public class AppConfig {
 		return validator;
 	}
 
-	// JSR-303:Bean Validation 1.0
+	// JSR-303:Bean Validation 1.0, see ValidationUtils in share-commons.jar
 	@Bean
 	public BeanValidationPostProcessor beanValidationPostProcessor() {
 		BeanValidationPostProcessor beanValidationPostProcessor = new BeanValidationPostProcessor();
@@ -440,7 +440,7 @@ public class AppConfig {
 		return beanValidationPostProcessor;
 	}
 
-	// JSR-349:Bean Validation 1.1
+	// JSR-349:Bean Validation 1.1, see @Validated
 	@Bean
 	public MethodValidationPostProcessor methodValidationPostProcessor() {
 		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
@@ -546,12 +546,9 @@ public class AppConfig {
 	// A.6.1.Customizing beans using a BeanPostProcessor
 	@Order(1)
 	@Bean
-	public MyBeanPostProcessor myBeanPostProcessor() {
-		MyBeanPostProcessor myBeanPostProcessor = new MyBeanPostProcessor();
-		myBeanPostProcessor.setValidator(validator());
-		myBeanPostProcessor.setValidatorFactory(validator());
-		myBeanPostProcessor.setSpringValidator(validator());
-		return myBeanPostProcessor;
+	public TraceBeanPostProcessor traceBeanPostProcessor() {
+		TraceBeanPostProcessor traceBeanPostProcessor = new TraceBeanPostProcessor();
+		return traceBeanPostProcessor;
 	}
 
 	// A.6.2.Customizing configuration metadata with a BeanFactoryPostProcessor
@@ -562,8 +559,8 @@ public class AppConfig {
 	// BeanFactoryPostProcessor
 	@Order(1)
 	@Bean
-	public static MyBeanFactoryPostProcessor myBeanFactoryPostProcessor() {
-		return new MyBeanFactoryPostProcessor();
+	public static TraceBeanFactoryPostProcessor traceBeanFactoryPostProcessor() {
+		return new TraceBeanFactoryPostProcessor();
 	}
 
 	// A.6.3.Customizing instantiation logic with a FactoryBean

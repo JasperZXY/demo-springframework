@@ -9,12 +9,13 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.Ordered;
-import org.springframework.core.PriorityOrdered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor, PriorityOrdered {
-	private static Log log = LogFactory.getLog(MyBeanFactoryPostProcessor.class);
-
-	private int order = Ordered.LOWEST_PRECEDENCE;
+@Order(Ordered.LOWEST_PRECEDENCE)
+@Component
+public class TraceBeanFactoryPostProcessor2 implements BeanFactoryPostProcessor {
+	private static Log log = LogFactory.getLog(TraceBeanFactoryPostProcessor2.class);
 
 	@Override
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -31,12 +32,4 @@ public class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor, Pri
 		}
 	}
 
-	@Override
-	public int getOrder() {
-		return this.order;
-	}
-
-	public void setOrder(int order) {
-		this.order = order;
-	}
 }

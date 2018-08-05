@@ -288,7 +288,7 @@ public class AppConfig2 {
 		return validator;
 	}
 
-	// JSR-303:Bean Validation 1.0
+	// JSR-303:Bean Validation 1.0, see ValidationUtils in share-commons.jar
 	@Bean
 	public BeanValidationPostProcessor beanValidationPostProcessor() {
 		BeanValidationPostProcessor beanValidationPostProcessor = new BeanValidationPostProcessor();

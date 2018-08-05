@@ -210,7 +210,7 @@
 		<property name="validationMessageSource" ref="messageSource" />
 	</bean>
 
-	<!-- JSR-303:Bean Validation 1.0 -->
+	<!-- JSR-303:Bean Validation 1.0, see ValidationUtils in share-commons.jar -->
 	<bean
 		class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor"
 		p:validator-ref="validator" />
@@ -261,16 +261,15 @@
 	<!-- CommonAnnotationBeanPostProcessor/RequiredAnnotationBeanPostProcessor 
 		etc. -->
 	<bean
-		class="org.ruanwei.demo.springframework.core.ioc.extension.MyBeanPostProcessor"
-		p:order="0" p:validator-ref="validator" p:validatorFactory-ref="validator"
-		p:springValidator-ref="validator" />
+		class="org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanPostProcessor"
+		p:order="0" />
 
 	<!-- A.6.2.Customizing configuration metadata with a BeanFactoryPostProcessor -->
 	<!-- include:PropertyPlaceholderConfigurer/PropertyOverrideConfigurer/PropertySourcesPlaceholderConfigurer -->
 	<!-- PreferencesPlaceholderConfigurer/CustomEditorConfigurer/CustomScopeConfigurer/CustomAutowireConfigurer 
 		etc. -->
 	<bean
-		class="org.ruanwei.demo.springframework.core.ioc.extension.MyBeanFactoryPostProcessor"
+		class="org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanFactoryPostProcessor"
 		p:order="0" />
 
 	<!-- A.6.3.Customizing instantiation logic with a FactoryBean -->
