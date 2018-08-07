@@ -12,7 +12,7 @@
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>Demo:Spring Framework(XML-based Configuration Metadata + Schema-style Configuration)</name>
+	<name>Demo:Spring Framework(NonAnnotation-based Configuration Metadata)</name>
 
 	<dependencies>
 	</dependencies>
