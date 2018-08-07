@@ -27,6 +27,7 @@ import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.beans.factory.config.PropertyPathFactoryBean;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -45,7 +46,6 @@ import org.springframework.format.FormatterRegistrar;
 import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.BeanValidationPostProcessor;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
@@ -325,8 +325,13 @@ public class AppConfig2 {
 	// A.4.2.Context lifecycle callbacks, see @Smartlifecycle
 
 	// A.5.Environment：Profile and PropertySource
-	// A.5.1.PropertySource：供Environment访问
-	// 方式一，通过指定@PropertySource，使得@Value能够取其值以支持占位符，
+	// A.5.1.PropertySource：供Environment访问，参考@PropertySource
+	// A.5.2.Profile：参考@Profile和<beans profile="">
+
+	// A.6.Extension Points
+	// A.6.1.Customizing beans using a BeanPostProcessor
+	// A.6.2.Customizing configuration metadata with a BeanFactoryPostProcessor
+	// PropertySourcesPlaceholderConfigurer通过将@PropertySource加入到属性，以替换@Value中的占位符
 	@Order(Ordered.HIGHEST_PRECEDENCE)
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -339,25 +344,18 @@ public class AppConfig2 {
 		return propertySourcesPlaceholderConfigurer;
 	}
 
-	// 方式二，通过指定location/properties属性，使得@Value能够取其值以支持占位符
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
-		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-		propertySourcesPlaceholderConfigurer.setLocations(
-				new ClassPathResource("family.properties"),
-				new ClassPathResource("jdbc.properties"));
-		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer
-				.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertySourcesPlaceholderConfigurer2=========="
-				+ propertySourcesPlaceholderConfigurer);
-		return propertySourcesPlaceholderConfigurer;
+	// PropertyPlaceholderConfigurer通过指定location/properties属性，以替换@Value中的占位符
+	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+		propertyPlaceholderConfigurer.setLocations(new ClassPathResource(
+				"family.properties"), new ClassPathResource("jdbc.properties"));
+		propertyPlaceholderConfigurer.setFileEncoding("UTF-8");
+		propertyPlaceholderConfigurer.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertyPlaceholderConfigurer=========="
+				+ propertyPlaceholderConfigurer);
+		return propertyPlaceholderConfigurer;
 	}
 
-	// A.5.2.Profile：参考@Profile和@Component/@Bean
-
-	// A.6.Extension Points
-	// A.6.1.Customizing beans using a BeanPostProcessor
-	// A.6.2.Customizing configuration metadata with a BeanFactoryPostProcessor
 	// A.6.3.Customizing instantiation logic with a FactoryBean
 
 	// ==========B.AOP and Instrumentation==========

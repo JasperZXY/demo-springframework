@@ -39,6 +39,7 @@ import org.springframework.beans.factory.config.CustomEditorConfigurer;
 import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.beans.factory.config.PropertyPathFactoryBean;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
@@ -110,9 +111,9 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  * @author ruanwei
  *
  */
-//@Profile("development")
-//@Profile("production")
-//@ImportResource({"classpath:spring/applicationContext.xml"})
+// @Profile("development")
+// @Profile("production")
+// @ImportResource({"classpath:spring/applicationContext.xml"})
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
@@ -489,38 +490,10 @@ public class AppConfig {
 	public MyLifecycleProcessor myLifecycleProcessor() {
 		return new MyLifecycleProcessor();
 	}
-
+	
 	// A.5.Environment：Profile and PropertySource
-
-	// A.5.1.PropertySource：将@PropertySource加入到PropertyPlaceholderConfigurer，并同时可以被@Value和Environment访问
-	// 方式一，通过指定@PropertySource，使得@Value支持占位符
-	@Order(Ordered.HIGHEST_PRECEDENCE)
-	@Bean
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
-		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer
-				.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertySourcesPlaceholderConfigurer=========="
-				+ propertySourcesPlaceholderConfigurer);
-		return propertySourcesPlaceholderConfigurer;
-	}
-
-	// 方式二，通过指定location/properties，使得@Value支持占位符
-	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer2() {
-		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
-		propertySourcesPlaceholderConfigurer.setLocations(
-				new ClassPathResource("family.properties"),
-				new ClassPathResource("jdbc.properties"));
-		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer
-				.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertySourcesPlaceholderConfigurer2=========="
-				+ propertySourcesPlaceholderConfigurer);
-		return propertySourcesPlaceholderConfigurer;
-	}
-
-	// A.5.2.Profile：@Profile和@Bean
+	// A.5.1.PropertySource：供Environment访问，参考@PropertySource
+	// A.5.2.Profile：参考@Profile和<beans profile="">
 	@Profile("development")
 	@Bean("house")
 	public House house1(
@@ -561,6 +534,31 @@ public class AppConfig {
 	@Bean
 	public static TraceBeanFactoryPostProcessor traceBeanFactoryPostProcessor() {
 		return new TraceBeanFactoryPostProcessor();
+	}
+
+	// PropertySourcesPlaceholderConfigurer通过将@PropertySource加入到属性，以替换@Value中的占位符
+	@Order(Ordered.HIGHEST_PRECEDENCE)
+	@Bean
+	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
+		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
+		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
+		propertySourcesPlaceholderConfigurer
+				.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertySourcesPlaceholderConfigurer=========="
+				+ propertySourcesPlaceholderConfigurer);
+		return propertySourcesPlaceholderConfigurer;
+	}
+
+	// PropertyPlaceholderConfigurer通过指定location/properties属性，以替换@Value中的占位符
+	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+		PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+		propertyPlaceholderConfigurer.setLocations(new ClassPathResource(
+				"family.properties"), new ClassPathResource("jdbc.properties"));
+		propertyPlaceholderConfigurer.setFileEncoding("UTF-8");
+		propertyPlaceholderConfigurer.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertyPlaceholderConfigurer=========="
+				+ propertyPlaceholderConfigurer);
+		return propertyPlaceholderConfigurer;
 	}
 
 	// A.6.3.Customizing instantiation logic with a FactoryBean
