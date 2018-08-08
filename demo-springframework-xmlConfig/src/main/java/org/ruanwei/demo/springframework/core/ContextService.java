@@ -15,6 +15,7 @@ import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
@@ -73,8 +74,13 @@ public class ContextService {
 			ConfigurableEnvironment configEnv = (StandardEnvironment) env;
 			// -Dspring.profiles.active="production"
 			// -Dspring.profiles.default="development"
-			configEnv.setActiveProfiles("development");
-			configEnv.setDefaultProfiles("production");
+			configEnv.setActiveProfiles("production");
+			configEnv.setDefaultProfiles("development");
+
+			if (context instanceof ConfigurableApplicationContext) {
+				ConfigurableApplicationContext ctx = (ConfigurableApplicationContext) context;
+				// ctx.refresh();
+			}
 		}
 
 		House house = context.getBean("house", House.class);

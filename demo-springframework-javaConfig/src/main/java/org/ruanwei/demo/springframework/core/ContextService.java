@@ -15,6 +15,7 @@ import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
@@ -77,8 +78,13 @@ public class ContextService {
 			// -Dspring.profiles.default="development"
 			configEnv.setActiveProfiles("development");
 			configEnv.setDefaultProfiles("production");
+			
+			if (context instanceof ConfigurableApplicationContext) {
+				ConfigurableApplicationContext ctx = (ConfigurableApplicationContext) context;
+				// ctx.refresh();
+			}
 		}
-
+		
 		AbsHouse house = context.getBean("house", AbsHouse.class);
 		log.info("house==========" + house);
 	}

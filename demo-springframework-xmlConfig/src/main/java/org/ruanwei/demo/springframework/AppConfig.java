@@ -24,9 +24,9 @@ import org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatterRegi
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor;
 import org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar;
 import org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter;
+import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanFactoryPostProcessor;
 import org.ruanwei.demo.springframework.core.ioc.extension.TraceBeanPostProcessor;
-import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyDisposableBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyInitializingBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycle;
@@ -119,7 +119,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @PropertySource("classpath:family.properties")
 @PropertySource("classpath:jdbc.properties")
 @Configuration
-@Deprecated
 public class AppConfig {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 
