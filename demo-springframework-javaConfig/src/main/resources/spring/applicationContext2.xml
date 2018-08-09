@@ -111,6 +111,10 @@
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
 		p:order="0" p:validator-ref="validator" />
+	
+	<!-- building message codes from validation error codes,used by DataBinder -->
+	<bean id="messageCodesResolver"
+		class="org.springframework.validation.DefaultMessageCodesResolver" />
 
 	<!-- A.3.Internationalization:MessageSource/ResourceBundleMessageSource -->
 	<bean id="messageSource"
@@ -137,7 +141,7 @@
 	<!-- include:BeanValidationPostProcessor/MethodValidationPostProcessor/AutowiredAnnotationBeanPostProcessor -->
 	<!-- CommonAnnotationBeanPostProcessor/RequiredAnnotationBeanPostProcessor 
 		etc. -->
-		
+
 	<!-- A.6.2.Customizing configuration metadata with a BeanFactoryPostProcessor -->
 	<!-- include:PropertySourcesPlaceholderConfigurer/PropertyPlaceholderConfigurer/PropertyOverrideConfigurer -->
 	<!-- PreferencesPlaceholderConfigurer/CustomEditorConfigurer/CustomScopeConfigurer/CustomAutowireConfigurer 
@@ -150,7 +154,7 @@
 		file-encoding="UTF-8" order="0" />
 	<!-- see org.springframework.beans.factory.config.PropertyOverrideConfigurer -->
 	<!-- <context:property-override /> -->
-		
+
 	<!-- A.6.3.Customizing instantiation logic with a FactoryBean -->
 	<!-- include:ListFactoryBean/SetFactoryBean/PropertiesFactoryBean/MapFactoryBean -->
 	<!-- FieldRetrievingFactoryBean/PropertyPathFactoryBean/MethodInvokingFactoryBean -->
@@ -158,7 +162,7 @@
 	<!-- FreeMarkerConfigurationFactoryBean/ContentNegotiationManagerFactoryBean/ProxyFactoryBean 
 		etc. -->
 	<!-- 参考 @Component/@Order -->
-	
+
 
 	<!-- ==========B.AOP and Instrumentation========== -->
 	<!-- Enabling @AspectJ Support with XML configuration -->

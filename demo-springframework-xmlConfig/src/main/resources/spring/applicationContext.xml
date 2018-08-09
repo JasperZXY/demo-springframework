@@ -219,6 +219,10 @@
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
 		p:order="0" p:validator-ref="validator" />
 
+	<!-- building message codes from validation error codes,used by DataBinder -->
+	<bean id="messageCodesResolver"
+		class="org.springframework.validation.DefaultMessageCodesResolver" />
+
 	<!-- A.3.Internationalization:MessageSource/ResourceBundleMessageSource -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
