@@ -76,7 +76,8 @@
 		lazy-init="true" c:name="${mother.name}" c:age="${mother.age}" />
 
 	<bean id="guest1" class="org.ruanwei.demo.springframework.core.ioc.People"
-		lazy-init="true" c:_0="${guest.name}" c:_1="${guest.age}" scope="prototype">
+		lazy-init="true" c:_0="${guest.name}" c:_1="#{(new java.util.Random()).nextInt(100)}"
+		scope="prototype">
 		<aop:scoped-proxy />
 	</bean>
 

@@ -236,7 +236,7 @@ public class AppConfig {
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	@Bean("guest1")
 	public People guest1(@Value("${guest.name:ruan_def}") String name,
-			@Value("${guest.age:100}") int age) {
+			@Value("#{(new java.util.Random()).nextInt(100)}") int age) {
 		return new People(name, age);
 	}
 
