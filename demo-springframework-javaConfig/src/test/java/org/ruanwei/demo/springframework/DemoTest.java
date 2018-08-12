@@ -1,19 +1,11 @@
 package org.ruanwei.demo.springframework;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import javax.annotation.Resource;
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
@@ -21,6 +13,13 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 @ActiveProfiles("development")
 @SpringJUnitConfig(AppConfig2.class)
@@ -40,7 +39,7 @@ public class DemoTest {
 		// classpath:schema.sql and classpath:data.sql
 		db = new EmbeddedDatabaseBuilder().generateUniqueName(true).setType(EmbeddedDatabaseType.H2).setScriptEncoding("UTF-8")
 				.ignoreFailedDrops(true)
-				.addScript("classpath:db/db-schema.sql")
+				.addScript("classpath:db/db-schema-hsql.sql")
 				.addScripts("classpath:db/db-test-data.sql").build();
 	}
 
@@ -49,7 +48,7 @@ public class DemoTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testEmbeddedDatabase() {
 		log.info("dataSource++++++++++++++++++++++++++++" + dataSource);
@@ -58,7 +57,7 @@ public class DemoTest {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		int count = jdbcTemplate.queryForObject("select count(*) from user",
 				Integer.class);
-		assertEquals(5, count, "count is not equal++++++++++++++++++++++++++++");
+		assertEquals(1, count, "count is not equal++++++++++++++++++++++++++++");
 	}
 
 	@AfterEach

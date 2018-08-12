@@ -48,9 +48,9 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
-				.setType(EmbeddedDatabaseType.H2).setScriptEncoding("UTF-8")
+				.setType(EmbeddedDatabaseType.HSQL).setScriptEncoding("UTF-8")
 				.ignoreFailedDrops(true)
-				.addScript("classpath:db/db-schema.sql")
+				.addScript("classpath:db/db-schema-hsql.sql")
 				.addScripts("classpath:db/db-test-data.sql").build();
 	}
 

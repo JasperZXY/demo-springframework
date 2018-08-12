@@ -20,9 +20,9 @@
 
 	<!-- ==========A.Data Access:JDBC========== -->
 	<!-- DataSource:HSQL/H2/DERBY -->
-	<jdbc:embedded-database id="dataSource" type="H2"
+	<jdbc:embedded-database id="dataSource" type="HSQL"
 		generate-name="true">
-		<jdbc:script location="classpath:db/db-schema.sql" />
+		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:embedded-database>
 
@@ -80,7 +80,7 @@
 	</bean>
 
 	<jdbc:initialize-database data-source="dataSource">
-		<jdbc:script location="classpath:db/db-schema.sql" />
+		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
 
