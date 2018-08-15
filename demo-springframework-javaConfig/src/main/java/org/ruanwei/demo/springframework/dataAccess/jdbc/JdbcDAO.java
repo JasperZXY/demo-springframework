@@ -64,7 +64,7 @@ public class JdbcDAO {
 	private UpdatableSqlQuery<User> updatableSqlQuery;
 	private SqlUpdate sqlUpdate;
 	private StoredProcedure storedProcedure;
-
+	
 	private static final String sql_11 = "select name from user where id = 1";
 	private static final String sql_12 = "select name from user where id = ?";
 	private static final String sql_13 = "select name from user where id = :id";

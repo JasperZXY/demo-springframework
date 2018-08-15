@@ -2,8 +2,11 @@ package org.ruanwei.demo.springframework.dataAccess.springdata.jdbc;
 
 import java.sql.Date;
 
+import lombok.Data;
+
 import org.springframework.data.annotation.Id;
 
+@Data
 public class User2 {
 	@Id
 	private int id;

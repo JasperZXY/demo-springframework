@@ -69,12 +69,17 @@ public class DataAccessTest {
 		log.info("beforeEach()");
 	}
 
-	//@Disabled
+	@Disabled
 	@Test
 	void testDataAccess() {
 		testSpringJdbcService();
 		testJdbcTransactionService();
-		// testSpringDataService();
+		testSpringDataService();
+	}
+	
+	@Test
+	void testDataAccess2() {
+		testSpringDataService();
 	}
 
 	private void testSpringJdbcService() {
