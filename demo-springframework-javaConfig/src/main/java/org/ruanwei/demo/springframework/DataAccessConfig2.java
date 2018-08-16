@@ -26,7 +26,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.TransactionManagementConfigurer;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
@@ -35,7 +34,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 @EnableJdbcRepositories
 @EnableTransactionManagement
 @Configuration
-public class DataAccessConfig2 implements TransactionManagementConfigurer {
+public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	private static Log log = LogFactory.getLog(DataAccessConfig2.class);
 
 	@Value("${jdbc.driverClassName}")
@@ -130,9 +129,9 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 		};
 	}
 
-	// @Bean
+	@Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		return new NamedParameterJdbcTemplate(dataSource1());
+		return new NamedParameterJdbcTemplate(dataSource());
 	}
 
 	@Bean
@@ -149,7 +148,7 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 		};
 	}
 
-	@Override
+	// @Override
 	public PlatformTransactionManager annotationDrivenTransactionManager() {
 		return txManager();
 	}

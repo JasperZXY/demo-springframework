@@ -29,7 +29,7 @@ public class SpringDataService {
 
 	public void testSpringDataJdbc() {
 		Iterable<User2> users = userJdbcRepository.findAll();
-		users.forEach(u -> log.info("user2=" + u));
+		users.forEach(u -> log.info("user2========" + u));
 		//Iterable<User2> users2 = simpleJdbcRepository.findAll();
 		//users2.forEach(u -> log.info("user2=" + u));
 		//userJdbcRepository.save(paramForCreate);
