@@ -60,7 +60,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	// DataSource:pure jdbc
 	// should only be used for testing purposes since no pooling.
 	@Primary
-	@Qualifier("firstTarget")
+	@Qualifier("primaryTarget")
 	@Bean
 	public DataSource dataSource1() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -146,11 +146,6 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 				log.info("user=====" + user);
 			}
 		};
-	}
-
-	// @Override
-	public PlatformTransactionManager annotationDrivenTransactionManager() {
-		return txManager();
 	}
 
 }

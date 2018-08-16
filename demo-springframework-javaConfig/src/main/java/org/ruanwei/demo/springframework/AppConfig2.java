@@ -121,10 +121,11 @@ public class AppConfig2 {
 	@Autowired
 	public AppConfig2() {
 		log.info("AppConfig()======");
-		/*
-		 * if (familyCount == 0) { familyCount =
-		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
-		 */
+
+		if (familyCount == 0) {
+			familyCount = Integer.valueOf(env.getProperty("family.familyCount",
+					"2"));
+		}
 	}
 
 	@Lazy
@@ -338,8 +339,6 @@ public class AppConfig2 {
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer
-				.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		log.info("propertySourcesPlaceholderConfigurer=========="
 				+ propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
