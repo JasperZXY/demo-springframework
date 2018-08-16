@@ -12,10 +12,14 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.data.relational.core.mapping.event.RelationalEvent;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -27,9 +31,9 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-// @Import(JdbcConfiguration.class)
-// @EnableJdbcRepositories
-@EnableTransactionManagement(order = 1)
+@Import(JdbcConfiguration.class)
+@EnableJdbcRepositories
+@EnableTransactionManagement
 @Configuration
 public class DataAccessConfig2 implements TransactionManagementConfigurer {
 	private static Log log = LogFactory.getLog(DataAccessConfig2.class);
@@ -124,6 +128,11 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 				log.info("Received an event: " + event);
 			}
 		};
+	}
+
+	@Bean
+	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
+		return new NamedParameterJdbcTemplate(dataSource1());
 	}
 
 	@Bean
