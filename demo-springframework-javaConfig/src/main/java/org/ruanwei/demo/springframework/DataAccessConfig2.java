@@ -130,7 +130,7 @@ public class DataAccessConfig2 implements TransactionManagementConfigurer {
 		};
 	}
 
-	@Bean
+	// @Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
 		return new NamedParameterJdbcTemplate(dataSource1());
 	}
