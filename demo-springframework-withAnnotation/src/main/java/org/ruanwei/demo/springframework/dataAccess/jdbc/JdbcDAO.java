@@ -112,7 +112,7 @@ public class JdbcDAO {
 
 	@Required
 	@Autowired
-	public void setDataSource(@Qualifier("primaryTarget") DataSource dataSource) {
+	public void setDataSource(@Qualifier("jdbcDataSource") DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
 				dataSource);

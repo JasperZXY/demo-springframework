@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
 import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
@@ -30,9 +31,10 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@Import(JdbcConfiguration.class)
-@EnableJdbcRepositories
+// @Import(JdbcConfiguration.class)
+// @EnableJdbcRepositories
 @EnableTransactionManagement
+@PropertySource("classpath:jdbc.properties")
 @Configuration
 public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	private static Log log = LogFactory.getLog(DataAccessConfig2.class);
@@ -47,7 +49,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	private String password;
 
 	// ==========A.Data Access:JDBC==========
-	@Qualifier("embeddedTarget")
+	@Qualifier("embeddedDataSource")
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
@@ -60,7 +62,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	// DataSource:pure jdbc
 	// should only be used for testing purposes since no pooling.
 	@Primary
-	@Qualifier("primaryTarget")
+	@Qualifier("jdbcDataSource")
 	@Bean
 	public DataSource dataSource1() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -72,6 +74,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	}
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
+	@Qualifier("dbcp2DataSource")
 	@Bean
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -88,6 +91,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	}
 
 	// polled-DataSource:c3p0
+	@Qualifier("c3p0DataSource")
 	@Bean
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();

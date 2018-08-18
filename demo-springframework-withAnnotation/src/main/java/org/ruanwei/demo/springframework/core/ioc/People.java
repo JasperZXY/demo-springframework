@@ -17,7 +17,6 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.PayloadApplicationEvent;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Component;
 //import org.springframework.transaction.event.TransactionalEventListener;
 
 @Lazy
-@Primary
 @Qualifier("somebody")
 @Component("father")
 public class People implements SmartLifecycle {

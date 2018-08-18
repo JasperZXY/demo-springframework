@@ -16,8 +16,6 @@ import org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -69,14 +67,15 @@ public class DataAccessTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testDataAccess() {
 		testSpringJdbcService();
 		testJdbcTransactionService();
-		testSpringDataService();
+		//testSpringDataService();
 	}
 	
+	@Disabled
 	@Test
 	void testDataAccess2() {
 		testSpringDataService();

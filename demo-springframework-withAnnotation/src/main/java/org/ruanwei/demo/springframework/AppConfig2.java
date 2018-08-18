@@ -56,33 +56,25 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  *
  */
 // @Profile("development")
-// @Profile("production")
-// @ImportResource({"classpath:spring/applicationContext.xml"})
 
-@Import(DataAccessConfig2.class)
 @EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
-@PropertySource("classpath:jdbc.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
+// @ImportResource({"classpath:spring/applicationContext2.xml"})
+@Import(DataAccessConfig2.class)
 @Configuration
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
 
-	@Value("${family.familyCount:4}")
+	@Value("${family.familyCount:2}")
 	private int familyCount;
 
 	@Autowired
 	private Environment env;
 
-	@Autowired
 	public AppConfig2() {
 		log.info("AppConfig()======");
-
-		if (familyCount == 0) {
-			familyCount = Integer.valueOf(env.getProperty("family.familyCount",
-					"2"));
-		}
 	}
 
 	@Lazy

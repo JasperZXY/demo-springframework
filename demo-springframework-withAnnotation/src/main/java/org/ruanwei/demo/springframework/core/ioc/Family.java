@@ -58,7 +58,7 @@ public class Family implements BeanNameAware, BeanClassLoaderAware,
 	@Valid
 	@Qualifier("somebody")
 	@Autowired
-	private People guest1;
+	private People guest;
 
 	// 2.Setter-based dependency injection
 	@Autowired
@@ -94,10 +94,9 @@ public class Family implements BeanNameAware, BeanClassLoaderAware,
 
 		// 3.Method injection: Lookup method injection
 		People guest = createGuest();
-		// 这里是为了兼容不适用@Lookup注解时的方法注入
-//		if (guest == null) {
-//			guest = new People2("ruanwei_def", 18);
-//		}
+		if (guest == null) {
+			guest = new People("ruanwei_def", 18);
+		}
 		// 等价于PayloadApplicationEvent<People2>(this,guest);
 		publisher.publishEvent(guest);
 
@@ -108,12 +107,12 @@ public class Family implements BeanNameAware, BeanClassLoaderAware,
 	// 1.Constructor-based dependency injection(byName with javac -g)
 	@Autowired
 	public Family(@Value("${family.1.familyName:ruan_def}") String familyName,
-			@Value("${family.familyCount:4}") int familyCount,
+			@Value("${family.familyCount:2}") int familyCount,
 			@Valid People father) {
 		this.familyName = familyName;
 		this.familyCount = familyCount;
 		this.father = father;
-		log.info("Family2(String familyName, int familyCount, People father)"
+		log.info("Family(String familyName, int familyCount, People father)"
 				+ this);
 	}
 
@@ -165,8 +164,8 @@ public class Family implements BeanNameAware, BeanClassLoaderAware,
 	public String toString() {
 		return "Family [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
-				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
-				+ guest1 + "]";
+				+ ", son=" + son + ", daughter=" + daughter + ", guest="
+				+ guest + "]";
 	}
 
 }

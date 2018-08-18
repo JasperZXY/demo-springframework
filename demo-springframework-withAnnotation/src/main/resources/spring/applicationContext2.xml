@@ -15,24 +15,21 @@
 
 	<!-- ==========A.The IoC Container========== -->
 	<!-- A.1.Bean Definition and Dependency Injection -->
-	<!-- 参考 @Component/@Lazy/@Autowired/@Qulifier/@Inject/@DependsOn/@Lookup 
-		etc. -->
-	<!-- org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor 
-		process @Autowired/@Value/@Lookup/@Inject. -->
+	<!-- <context:component-scan> implicitly enables the <context:annotation-config>. -->
+	<!-- <context:annotation-config /> registers the below 6 BeanPostProcessor 
+		by default. -->
 	<!-- org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor 
-		process @Required. -->
+		for @Required. -->
+	<!-- org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor 
+		for @Autowired/@Value/@Lookup/JSR-330:@Inject. -->
 	<!-- org.springframework.context.annotation.CommonAnnotationBeanPostProcessor 
-		process @Resource/@PostConstruct/@PreDestroy -->
+		process JSR-250:@Resource/@PostConstruct/@PreDestroy -->
+	<!-- org.springframework.context.event.EventListenerMethodProcessor process 
+		@EventListener -->
 	<!-- org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor 
 		process @PersistenceContext -->
 	<!-- org.springframework.context.annotation.ConfigurationClassPostProcessor 
 		process @Configuration -->
-	<!-- org.springframework.context.event.EventListenerMethodProcessor process 
-		@EventListener -->
-	<!-- <context:annotation-config /> registers the above 6 BeanPostProcessor 
-		by default. -->
-
-	<!-- <context:component-scan> implicitly enables the <context:annotation-config>. -->
 	<context:component-scan base-package="org.ruanwei.demo.springframework">
 		<!-- <context:exclude-filter/> <context:include-filter/> -->
 	</context:component-scan>
@@ -80,8 +77,8 @@
 	</bean>
 
 	<!-- A.2.Data Binding -->
+	<!-- 一共有五种方式，参考withoutAnnotation项目 -->
 	<!-- A.2.1.ConversionService-based Type Conversion and Formatting -->
-	<!-- 一共有五种方式，参考xmlConfig项目 -->
 	<bean id="conversionService"
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="registerDefaultFormatters" value="true" />
@@ -111,7 +108,7 @@
 	<bean
 		class="org.springframework.validation.beanvalidation.MethodValidationPostProcessor"
 		p:order="0" p:validator-ref="validator" />
-	
+
 	<!-- building message codes from validation error codes,used by DataBinder -->
 	<bean id="messageCodesResolver"
 		class="org.springframework.validation.DefaultMessageCodesResolver" />
@@ -162,7 +159,9 @@
 	<!-- FreeMarkerConfigurationFactoryBean/ContentNegotiationManagerFactoryBean/ProxyFactoryBean 
 		etc. -->
 	<!-- 参考 @Component/@Order -->
-
+	
+	<!-- A.7 Switches on the load-time weaving -->
+	<!-- <context:load-time-weaver/> -->
 
 	<!-- ==========B.AOP and Instrumentation========== -->
 	<!-- Enabling @AspectJ Support with XML configuration -->
@@ -172,9 +171,6 @@
 	<aop:aspectj-autoproxy />
 
 	<!-- <context:spring-configured /> -->
-
-	<!-- this switches on the load-time weaving -->
-	<!-- <context:load-time-weaver/> -->
 
 	<!-- more bean definitions for services go here -->
 

@@ -17,7 +17,7 @@ public class SpringDataService {
 	private static final User2 paramForCreate = new User2("ruanwei_tmp88", 35,
 			Date.valueOf("1983-07-06"));
 
-	@Autowired
+	//@Autowired
 	private UserJdbcRepository userJdbcRepository;
 	//@Autowired
 	private SimpleJdbcRepository<User2, Integer> simpleJdbcRepository;
