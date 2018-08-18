@@ -8,17 +8,17 @@
 		<version>1.0.20180111</version>
 	</parent>
 
-	<artifactId>demo-springframework-javaConfig</artifactId>
+	<artifactId>demo-springframework-withAnnotation</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>Demo:Spring Framework(Annotation-based Configuration Metadata)</name>
+	<name>Demo:Spring Framework with Annotation-based Configuration Metadata</name>
 
 	<dependencies>
 	</dependencies>
 
 	<build>
-		<finalName>demo-springframework-javaConfig</finalName>
+		<finalName>demo-springframework-withAnnotation</finalName>
 	</build>
 
 </project>

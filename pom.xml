@@ -15,8 +15,8 @@
 	<name>Demo:Spring Framework</name>
 
 	<modules>
-		<module>demo-springframework-xmlConfig</module>
-		<module>demo-springframework-javaConfig</module>
+		<module>demo-springframework-withoutAnnotation</module>
+		<module>demo-springframework-withAnnotation</module>
 		<module>demo-springframework-temp</module>
 	</modules>
 

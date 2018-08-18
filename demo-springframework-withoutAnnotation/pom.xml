@@ -8,17 +8,17 @@
 		<version>1.0.20180111</version>
 	</parent>
 
-	<artifactId>demo-springframework-xmlConfig</artifactId>
+	<artifactId>demo-springframework-withoutAnnotation</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>Demo:Spring Framework(NonAnnotation-based Configuration Metadata)</name>
+	<name>Demo:Spring Framework without Annotation-based Configuration Metadata</name>
 
 	<dependencies>
 	</dependencies>
 
 	<build>
-		<finalName>demo-springframework-xmlConfig</finalName>
+		<finalName>demo-springframework-withoutAnnotation</finalName>
 	</build>
 
 </project>
