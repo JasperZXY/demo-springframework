@@ -1,9 +1,9 @@
 # demo-springframework
 
-项目说明：
-xmlOrJava为纯基于XML/Java的配置元数据的项目，演示完整的配置方式
-annotation为XML/Java+注解配置的项目(自动扫描和自动注入)，演示最佳实践配置方式
-temp为临时项目，准备删除
+demo-springframework共包含两个模块：
+- demo-springframework-withoutAnnotation模块为纯基于XML/Java的配置元数据的项目，不使用注解。
+- demo-springframework-withAnnotation模块为基于XML/Java的配置元数据的项目，但优先使用注解(<context:annotation-config/>)。
+- demo-springframework-temp为临时项目，准备删除。
 
 注意：
 1.PropertySourcesPlaceholderConfigurer将PropertySources作为Placeholder，因此同时可以被@Value和Environment访问
