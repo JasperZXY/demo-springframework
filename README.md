@@ -59,3 +59,4 @@
 - a.@Valid/@Validated注解；
 - b.@Format注解；
 7. 补充AOP和事务的配置对比
+8. 把AOP从ContextTest和ContextService中拆分出来
