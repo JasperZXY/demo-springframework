@@ -75,7 +75,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Qualifier("dbcp2DataSource")
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClassName);
@@ -92,7 +92,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:c3p0
 	@Qualifier("c3p0DataSource")
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(driverClassName);
@@ -135,7 +135,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	@Bean
 	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		return new NamedParameterJdbcTemplate(dataSource());
+		return new NamedParameterJdbcTemplate(dataSource1());
 	}
 
 	@Bean

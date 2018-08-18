@@ -33,7 +33,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(AppConfig2.class)
+@SpringJUnitConfig(locations="classpath:spring/applicationContext2.xml")
+//@SpringJUnitConfig(AppConfig2.class)
 public class ContextTest {
 	private static Log log = LogFactory.getLog(ContextTest.class);
 
@@ -61,7 +62,7 @@ public class ContextTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	void testApplicationContext() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");

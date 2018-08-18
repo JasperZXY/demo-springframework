@@ -95,7 +95,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Qualifier("dbcp2DataSource")
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClassName);
@@ -112,7 +112,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	// polled-DataSource:c3p0
 	@Qualifier("c3p0DataSource")
-	@Bean
+	@Bean(destroyMethod="close")
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(driverClassName);
