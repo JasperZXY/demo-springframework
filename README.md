@@ -60,3 +60,4 @@
 - b.@Format注解；
 7. 补充AOP和事务的配置对比
 8. 事务和AOP的引入没有对应的Java配置没有对比
+9. withoutAnnotation在java配置的测试用例空指针
