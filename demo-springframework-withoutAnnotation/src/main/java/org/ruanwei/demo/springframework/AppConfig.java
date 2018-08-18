@@ -12,6 +12,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
+import org.ruanwei.demo.springframework.core.ContextService;
 import org.ruanwei.demo.springframework.core.aop.GoodImpl;
 import org.ruanwei.demo.springframework.core.aop.MyAspect;
 import org.ruanwei.demo.springframework.core.ioc.Family;
@@ -32,7 +33,8 @@ import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyInitializingBean;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycle;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MyLifecycleProcessor;
 import org.ruanwei.demo.springframework.core.ioc.lifecycle.MySmartLifecycle;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.CustomEditorConfigurer;
@@ -40,11 +42,12 @@ import org.springframework.beans.factory.config.FieldRetrievingFactoryBean;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.beans.factory.config.PropertyPathFactoryBean;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Description;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
@@ -59,118 +62,69 @@ import org.springframework.format.FormatterRegistrar;
 import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.validation.DefaultMessageCodesResolver;
+import org.springframework.validation.MessageCodesResolver;
 import org.springframework.validation.beanvalidation.BeanValidationPostProcessor;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
- * <li>@Import(DataAccessConfig.class)等价于&lt;import resource="dataAccess.xml"/>.
  * 
- * <li>@ImportResource("applicationContext.xml")等价于&lt;bean
- * class="example.AppConfig"/>.
+ * 由于没有开启注解，因此以下三种方式均无法注入依赖到AppConfig： 
+ * <li>@Value(${placeholder}). 
+ * <li>@Value(#{SpEL ). 
+ * <li>@Autowired/@Qualifier.
  * 
- * <li>@Profile("dev")(可用于@Component)等价于&lt;beans profile="dev">.
- * 
- * <li>@Lazy(可用于@Component)等价于&lt;beans default-lazy-init="true">或&lt;bean
- * lazy-init="true" />.
- * 
- * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)(可用于@Component)等价于&lt;bean
- * scope="singleton" />.
- * 
- * <li>@Scope(scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE,proxyMode=
- * ScopedProxyMode.TARGET_CLASS)(可用于@Component)等价于&lt;bean
- * scope="prototype">&lt;aop:scoped-proxy proxy-target-class="true"/>&lt;/bean>或
- * &lt;context:component-scan scoped-proxy="interfaces" />.
- * 
- * <li>@DependsOn({ "bean1", "bean2" })(可用于@Component)等价于&lt;bean
- * depends-on="bean1,bean2" />.
- * 
- * <li>@Primary等价于(可用于@Component)等价于&lt;bean primary="true"
- * autowire-candidate="true" />.
- * 
- * <li>@Qualifier("first")(可用于@Component)等价于&lt;bean>&lt;qualifier
- * value="first"/>&lt;/bean>.
- * 
- * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于&lt;bean
- * init-method="init" destroy-method="destroy" />.
- * 
- * <li>@Bean(autowire = Autowire.BY_NAME)等价于&lt;bean autowire="byName" />.
- * 
- * <li>@PropertySource("propertySource.properties")等价于
- * ctx.getEnvironment().getPropertySources().addFirst(new
- * ResourcePropertySource("propertySource.properties")).
- * 
- * <li>@ComponentScan(basePackages = { "org.ruanwei.demo"
- * })等价于&lt;context:component-scan base-package="org.ruanwei.demo">.
- * 
- * <li>@EnableAsync. <li>@EnableScheduling. <li>@EnableTransactionManagement.
- * <li>@EnableAspectJAutoProxy等价于&lt;aop:aspectj-autoproxy />. <li>
- * 
- * @EnableWebMvc.
+ * 要引用外部化配置，以下两种方式：
+ * <li>通过EnvironmentAware注入Environment，然后获取属性
+ * <li>利用@Bean方法参数的隐式支持@Value和@Autowired(可以替换为@Value("#{nyBean}"))
  * 
  * @author ruanwei
  *
  */
 // @Profile("development")
-// @Profile("production")
-// @ImportResource({"classpath:spring/applicationContext.xml"})
-@EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 @PropertySource("classpath:jdbc.properties")
+// @ImportResource({"classpath:spring/applicationContext.xml"})
+@Import(DataAccessConfig.class)
 @Configuration
-public class AppConfig {
+public class AppConfig implements EnvironmentAware, InitializingBean {
 	private static Log log = LogFactory.getLog(AppConfig.class);
 
-	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
-	@Value("${family.familyCount:4}")
-	private int familyCount;
-	@Value("#{father}")
-	private People father;
-	@Value("#{mother}")
-	private People mother;
-	@Value("${son.all}")
-	private People son;
-	@Value("${daughter.all}")
-	private People daughter;
-	@Value("#{guest1}")
-	private People guest1;
-
-	@Value("1,2")
-	private Integer[] someArray;
-	@Value("3,4")
-	private List<Integer> someList;
-	@Value("5,6")
-	private Set<Integer> someSet;
-	@Value("a=1,b=2")
-	private Properties someProperties;
-	// @Value("c=3,d=4")
-	private Map<String, Integer> someMap;
-
-	// @Inject
-	// @Resource
-	@Autowired
 	private Environment env;
+
+	private int familyCount;
 
 	public AppConfig() {
 		log.info("AppConfig()======");
+	}
 
-		/*
-		 * if (familyCount == 0) { familyCount =
-		 * Integer.valueOf(env.getProperty("family.familyCount", "2")); }
-		 */
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.env = environment;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		log.info("afterPropertiesSet()======" + env);
+		familyCount = Integer.parseInt(env.getProperty("family.familyCount",
+				"2"));
 	}
 
 	// ==========A.The IoC Container==========
 	// A.1.Bean Definition and Dependency Injection
 	// A.1.1.Bean instantiation with a constructor
-	// TODO:@Value在字段中解析不到值，但在@Bean方法参数中可以,why
 	@Lazy
 	@DependsOn("house")
 	@Bean(name = "family", initMethod = "init", destroyMethod = "destroy")
 	public Family family(
 			@Value("${family.1.familyName:ruan_def}") String familyName,
-			@Value("#{father}") People father) {
+			@Qualifier("father") People father,
+			@Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter,
+			@Qualifier("guest") People guest) {
+		log.info("AppConfig1()======" + env);
 		// 1.Constructor-based dependency injection
 		Family family = new Family(familyName, familyCount, father);
 		// 2.Setter-based dependency injection
@@ -178,7 +132,7 @@ public class AppConfig {
 		family.setSon(son);
 		family.setDaughter(daughter);
 		// Proxied scoped beans as dependencies
-		family.setGuest(guest1);
+		family.setGuest(guest);
 		return family;
 	}
 
@@ -187,13 +141,17 @@ public class AppConfig {
 	@DependsOn("house")
 	@Bean("family2")
 	public Family family2(
-			@Value("${family.2.familyName:ruan_def2}") String familyName) {
+			@Value("${family.2.familyName:ruan_def2}") String familyName,
+			@Qualifier("father") People father,
+			@Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter,
+			@Qualifier("guest") People guest) {
 		Family family = FamilyFactory.createInstance1(familyName, familyCount,
 				father);
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
-		family.setGuest(guest1);
+		family.setGuest(guest);
 		return family;
 	}
 
@@ -202,13 +160,17 @@ public class AppConfig {
 	@DependsOn("house")
 	@Bean("family3")
 	public Family family3(
-			@Value("${family.3.familyName:ruan_def3}") String familyName) {
+			@Value("${family.3.familyName:ruan_def3}") String familyName,
+			@Qualifier("father") People father,
+			@Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter,
+			@Qualifier("guest") People guest) {
 		Family family = familyFactory().createInstance2(familyName,
 				familyCount, father);
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
-		family.setGuest(guest1);
+		family.setGuest(guest);
 		return family;
 	}
 
@@ -219,13 +181,15 @@ public class AppConfig {
 	}
 
 	@Lazy
+	@Qualifier("father")
 	@Bean("father")
 	public People father(@Value("${father.name:ruanwei_def}") String name,
 			@Value("${father.age:35}") int age) {
 		return new People(name, age);
 	}
 
-	// @Lazy
+	@Lazy
+	@Qualifier("mother")
 	@Bean("mother")
 	public People mother(@Value("${mother.name:lixiaoling_def}") String name,
 			@Value("${mother.age:34}") int age) {
@@ -233,9 +197,27 @@ public class AppConfig {
 	}
 
 	@Lazy
+	@Qualifier("son")
+	@Bean("son")
+	public People son(@Value("${son.name:ruanziqiao_def}") String name,
+			@Value("${son.age:5}") int age) {
+		return new People(name, age);
+	}
+
+	@Lazy
+	@Qualifier("daughter")
+	@Bean("daughter")
+	public People daughter(
+			@Value("${daughter.name:ruanzixuan_def}") String name,
+			@Value("${daughter.age:6}") int age) {
+		return new People(name, age);
+	}
+
+	@Lazy
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	@Bean("guest1")
-	public People guest1(@Value("${guest.name:ruan_def}") String name,
+	@Qualifier("guest")
+	@Bean("guest")
+	public People guest(@Value("${guest.name:ruan_def}") String name,
 			@Value("#{(new java.util.Random()).nextInt(100) ?: 8}") int age) {
 		return new People(name, age);
 	}
@@ -243,6 +225,10 @@ public class AppConfig {
 	@Bean("absHouse")
 	public House absHouse(
 			@Value("${abshouse.name:houseName_def}") String houseName,
+			@Value("1,2") Integer[] someArray,
+			@Value("3,4") List<Integer> someList,
+			@Value("5,6") Set<Integer> someSet,
+			@Value("a=1,b=2") Properties someProperties,
 			@Value("#{someField1}") double someField1,
 			@Value("#{someField2}") String someField2,
 			@Value("#{someField3}") String someField3) {
@@ -254,7 +240,7 @@ public class AppConfig {
 		abshouse.setSomeList(someList);
 		abshouse.setSomeSet(someSet);
 		abshouse.setSomeProperties(someProperties);
-		abshouse.setSomeMap(someMap);
+		abshouse.setSomeMap(null);
 
 		abshouse.setSomeList2(someList2());
 		abshouse.setSomeSet2(someSet2());
@@ -451,6 +437,11 @@ public class AppConfig {
 		return methodValidationPostProcessor;
 	}
 
+	// building message codes from validation error codes,used by DataBinder
+	public MessageCodesResolver messageCodesResolver() {
+		return new DefaultMessageCodesResolver();
+	}
+
 	// A.3.Internationalization:MessageSource/ResourceBundleMessageSource
 	@Bean("messageSource")
 	public ReloadableResourceBundleMessageSource messageSource() {
@@ -563,10 +554,18 @@ public class AppConfig {
 	// A.6.3.Customizing instantiation logic with a FactoryBean
 	@Bean("familyx")
 	public MyFamilyFactoryBean myFamilyFactoryBean(
-			@Value("${family.x.familyName:ruan_def}") String familyName) {
+			@Value("${family.x.familyName:ruan_def}") String familyName,
+			@Value("${family.familyCount:2}") int familyCount,
+			@Qualifier("father") People father) {
 		MyFamilyFactoryBean myFamilyFactoryBean = new MyFamilyFactoryBean(
 				familyName, familyCount, father);
 		return myFamilyFactoryBean;
+	}
+
+	// just for testing
+	@Bean
+	public ContextService contextService() {
+		return new ContextService();
 	}
 
 	// ==========B.AOP and Instrumentation==========

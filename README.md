@@ -12,35 +12,36 @@
 - &lt;beans default-autowire-candidates="*Service"/> vs nothing.
 - &lt;import resource="classpath:dataAccess.xml"> vs @Import(DadaAccessConfig.class).
 - &lt;bean class="DadaAccessConfig.class"> vs @ImportResource("classpath:dataAccess.xml").
-- nothing vs @PropertySource("classpath:ps.properties").
+- ctx.getEnvironment().getPropertySources().addFirst(new ResourcePropertySource("ps.properties")) vs @PropertySource("classpath:ps.properties").
 - &lt;bean id="myBean" class="org.ruanwei.MyBean"> vs @Bean("myBean").
 - nothing vs @Description("this is a bean").
 - &lt;bean lazy-init-"true"> vs @Lazy.
 - &lt;bean depends-on-"anotherBean"> vs @DependsOn("anotherBean").
-- &lt;bean scope="singleton"> vs @Scope("singleton") vs JSR-330:@Singleton/@Scope.
+- &lt;bean scope="singleton"> vs @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON) vs JSR-330:@Singleton/@Scope.
 - &lt;bean init-method="init"> vs InitializingBean vs @Bean(initMethod="init").
 - &lt;bean destroy-method="destroy"> vs DisposableBean vs @Bean(destroyMethod="destroy").
 - &lt;bean p:order="1">(PriorityOrdered/Ordered) vs @Order(1) vs JSR-250:@Priority(1).
 - &lt;bean autowire="byType"> vs @Bean(autowire=Autowire.BY_TYPE).
 - &lt;bean primary="true"> vs @Primary.
+- &lt;bean autowire-candidate="false"> vs nothing.
 - &lt;bean>&lt;qualifier value="primaryBean"/>&lt;/bean> vs @Qualifier("primaryBean") vs JSR-330:@Named("primaryBean")/@Qualifier.
 - &lt;bean>&lt;lookup-method name="createCommand" bean="myCommand"/>&lt;/bean> vs nothing.
 - &lt;bean>&lt;replaced-method name="computeValue" replacer="replacementComputeValue"/>&lt;/bean> vs nothing.
 - &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
 - &lt;context:spring-configured/> vs @EnableSpringConfigured.
 - &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
-- &lt;aop:scoped-proxy/> vs nothing.
+- &lt;aop:scoped-proxy proxy-target-class="true"/> vs @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS).
 <p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.
 
 ### 开启基于注解的配置元数据：
 - &lt;context:annotation-config/> vs @Bean xxxBeanPostProcessor.
-- &lt;context:component-scan="org.ruanwei"/> vs @ComponentScan("org.ruanwei").
+- &lt;context:component-scan base-package="org.ruanwei" scoped-proxy="class"/> vs @ComponentScan(basePackages="org.ruanwei",scopedProxy=ScopedProxyMode.CLASS).
 
 ### 基于注解和非基于注解的配置元数据主要对比：
 - @Component("myBean")/JSR-250:@ManagedBean("myBean") vs @Bean("myBean").
 - @Required vs nothing.
 - @Autowired(required="true")/JSR-250:@Resource("myBean")/JSR-330:@Inject vs nothing.
-- @Value("${holder}") vs nothing.
+- @Value("${placeholder}")/@Value("#{SpEL}") vs nothing.
 - JSR-250:@PostConstruct vs @Bean(init-method="init").
 - JSR-250:@PreDestroy vs @Bean(destroy-method="destroy").
 - @EventListener vs org.springframework.context.event.EventListener.

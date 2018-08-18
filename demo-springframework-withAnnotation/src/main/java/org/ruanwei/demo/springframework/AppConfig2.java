@@ -51,49 +51,6 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
- * <li>@Import(DataAccessConfig.class)等价于&lt;import resource="dataAccess.xml"/>.
- * 
- * <li>@ImportResource("applicationContext.xml")等价于&lt;bean
- * class="example.AppConfig"/>.
- * 
- * <li>@Profile("dev")(可用于@Component)等价于&lt;beans profile="dev">.
- * 
- * <li>@Lazy(可用于@Component)等价于&lt;beans default-lazy-init="true">或&lt;bean
- * lazy-init="true" />.
- * 
- * <li>@Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)(可用于@Component)等价于&lt;bean
- * scope="singleton" />.
- * 
- * <li>@Scope(scopeName=ConfigurableBeanFactory.SCOPE_PROTOTYPE,proxyMode=
- * ScopedProxyMode.TARGET_CLASS)(可用于@Component)等价于&lt;bean
- * scope="prototype">&lt;aop:scoped-proxy proxy-target-class="true"/>&lt;/bean>或
- * &lt;context:component-scan scoped-proxy="interfaces" />.
- * 
- * <li>@DependsOn({ "bean1", "bean2" })(可用于@Component)等价于&lt;bean
- * depends-on="bean1,bean2" />.
- * 
- * <li>@Primary等价于(可用于@Component)等价于&lt;bean primary="true"
- * autowire-candidate="true" />.
- * 
- * <li>@Qualifier("first")(可用于@Component)等价于&lt;bean>&lt;qualifier
- * value="first"/>&lt;/bean>.
- * 
- * <li>@Bean(initMethod = "init", destroyMethod = "destroy")等价于&lt;bean
- * init-method="init" destroy-method="destroy" />.
- * 
- * <li>@Bean(autowire = Autowire.BY_NAME)等价于&lt;bean autowire="byName" />.
- * 
- * <li>@PropertySource("propertySource.properties")等价于
- * ctx.getEnvironment().getPropertySources().addFirst(new
- * ResourcePropertySource("propertySource.properties")).
- * 
- * <li>@ComponentScan(basePackages = { "org.ruanwei.demo"
- * })等价于&lt;context:component-scan base-package="org.ruanwei.demo">.
- * 
- * <li>@EnableAsync. <li>@EnableScheduling. <li>@EnableTransactionManagement.
- * <li>@EnableAspectJAutoProxy等价于&lt;aop:aspectj-autoproxy />. <li>
- * 
- * @EnableWebMvc.
  * 
  * @author ruanwei
  *

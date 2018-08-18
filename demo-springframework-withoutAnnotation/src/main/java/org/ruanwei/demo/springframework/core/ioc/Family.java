@@ -56,8 +56,6 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	// 3.Method injection: Lookup method injection
 	// TODO:加@Valid报错
 	private People guest;
-	// @Valid
-	private People guest2;
 
 	private ApplicationContext context;
 	private BeanFactory beanFactory;
@@ -108,6 +106,12 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		this.mother = mother;
 	}
 
+	// TODO:具体怎么用
+	public void setXXX(ObjectProvider<People> mother) {
+		log.info("setMother(ObjectFactory<People> mother)" + mother);
+		this.mother = mother.getIfUnique();
+	}
+
 	public void setSon(People son) {
 		log.info("setSon(People son)" + son);
 		this.son = son;
@@ -121,11 +125,6 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	public void setGuest(People guest) {
 		log.info("setGuest(People guest)" + guest);
 		this.guest = guest;
-	}
-
-	public void setGuest(ObjectProvider<People> guest) {
-		log.info("setGuest(ObjectFactory<People> guest)" + guest);
-		this.guest2 = guest.getIfUnique();
 	}
 
 	// 3.Method injection: Lookup method injection
@@ -231,6 +230,6 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		return "Family [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
 				+ ", son=" + son + ", daughter=" + daughter + ", guest="
-				+ guest + ", guest2=" + guest2 + "]";
+				+ guest + "]";
 	}
 }

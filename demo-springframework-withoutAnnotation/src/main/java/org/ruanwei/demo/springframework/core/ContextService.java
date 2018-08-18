@@ -50,7 +50,7 @@ public class ContextService {
 		testIoC(context);
 
 		log.info("6======================================================================================");
-		testAOP(context);
+		//testAOP(context);
 
 		log.info("7======================================================================================");
 		testApplicationEvent(context);
