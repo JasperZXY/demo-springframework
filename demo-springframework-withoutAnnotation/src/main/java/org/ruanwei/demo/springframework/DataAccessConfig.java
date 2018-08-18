@@ -6,6 +6,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.SpringJdbcService;
+import org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService;
 import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService;
 import org.springframework.beans.factory.InitializingBean;
@@ -141,12 +143,26 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		return txManager;
 	}
 
+	// just for testing
+	@Bean
+	public SpringJdbcService springJdbcService() {
+		SpringJdbcService springJdbcService = new SpringJdbcService();
+		springJdbcService.setJdbcDAO(jdbcDAO());
+		return springJdbcService;
+	}
+
 	@Bean
 	public SpringTransactionService springTransactionService() {
 		SpringTransactionService springTransactionService = new SpringTransactionService();
 		springTransactionService.setJdbcTransaction(jdbcTransaction());
 		springTransactionService.setJdbcDAO(jdbcDAO());
 		return springTransactionService;
+	}
+
+	@Bean
+	public SpringDataService springDataService() {
+		SpringDataService springDataService = new SpringDataService();
+		return springDataService;
 	}
 
 	@Bean

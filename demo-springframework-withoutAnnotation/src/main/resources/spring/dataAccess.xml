@@ -31,7 +31,7 @@
 		pooling -->
 	<bean id="dataSource1"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-		destroy-method="close" primary="true">
+		primary="true">
 		<qualifier value="jdbcDataSource" />
 		<property name="driverClassName" value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
@@ -142,11 +142,13 @@
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
 
+	<!-- just for testing -->
 	<bean id="springJdbcService"
 		class="org.ruanwei.demo.springframework.dataAccess.jdbc.SpringJdbcService">
 		<property name="jdbcDAO" ref="jdbcDAO" />
 	</bean>
 
+	<!-- just for testing -->
 	<bean id="springDataService"
 		class="org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService">
 		<!-- <property name="jdbcRepository" ref="jdbcRepository" /> -->

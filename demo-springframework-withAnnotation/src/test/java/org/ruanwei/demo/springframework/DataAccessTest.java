@@ -52,14 +52,6 @@ public class DataAccessTest {
 	@BeforeAll
 	static void beforeAll() {
 		log.info("beforeAll()");
-
-		MockEnvironment env = new MockEnvironment();
-		env.setActiveProfiles("development");
-		env.setDefaultProfiles("production");
-		env.setProperty("foo", "bar");
-
-		MockPropertySource ps = new MockPropertySource();
-		ps.setProperty("foo1", "bar1");
 	}
 
 	@BeforeEach

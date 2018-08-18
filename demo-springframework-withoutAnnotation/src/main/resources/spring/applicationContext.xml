@@ -333,8 +333,8 @@
 	</aop:config>
 	
 	<!-- just for testing -->
-	<bean id="contextService" class="org.ruanwei.demo.springframework.core.aop.AopService" />
-
+	<bean id="aopService" class="org.ruanwei.demo.springframework.core.aop.AopService" />
+	
 	<!-- <context:spring-configured /> -->
 
 	<!-- more bean definitions go here -->

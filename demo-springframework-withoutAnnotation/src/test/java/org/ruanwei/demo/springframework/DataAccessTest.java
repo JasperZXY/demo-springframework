@@ -36,6 +36,7 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 //@Transactional("transactionManager")
 @ActiveProfiles("development")
 @SpringJUnitConfig(locations="classpath:spring/applicationContext.xml")
+// @SpringJUnitConfig(AppConfig.class)
 public class DataAccessTest {
 	private static Log log = LogFactory.getLog(DataAccessTest.class);
 
@@ -49,14 +50,6 @@ public class DataAccessTest {
 	@BeforeAll
 	static void beforeAll() {
 		log.info("beforeAll()");
-
-		MockEnvironment env = new MockEnvironment();
-		env.setActiveProfiles("development");
-		env.setDefaultProfiles("production");
-		env.setProperty("foo", "bar");
-
-		MockPropertySource ps = new MockPropertySource();
-		ps.setProperty("foo1", "bar1");
 	}
 
 	@BeforeEach
