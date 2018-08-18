@@ -293,7 +293,7 @@
 	<!-- <context:load-time-weaver/> -->
 	
 	<!-- just for testing -->
-	<bean id="contextService" class="org.ruanwei.demo.springframework.core.ContextService" />
+	<bean id="contextService" class="org.ruanwei.demo.springframework.core.ioc.ContextService" />
 
 	<!-- ==========B.AOP and Instrumentation========== -->
 	<bean id="myAspect" class="org.ruanwei.demo.springframework.core.aop.MyAspect" />
@@ -331,6 +331,9 @@
 				default-impl="org.ruanwei.demo.springframework.core.aop.HappyImpl" />
 		</aop:aspect>
 	</aop:config>
+	
+	<!-- just for testing -->
+	<bean id="contextService" class="org.ruanwei.demo.springframework.core.aop.AopService" />
 
 	<!-- <context:spring-configured /> -->
 

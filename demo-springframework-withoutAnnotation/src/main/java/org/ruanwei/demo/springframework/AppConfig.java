@@ -12,9 +12,10 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
-import org.ruanwei.demo.springframework.core.ContextService;
+import org.ruanwei.demo.springframework.core.aop.AopService;
 import org.ruanwei.demo.springframework.core.aop.GoodImpl;
 import org.ruanwei.demo.springframework.core.aop.MyAspect;
+import org.ruanwei.demo.springframework.core.ioc.ContextService;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.FamilyFactory;
 import org.ruanwei.demo.springframework.core.ioc.House;
@@ -70,14 +71,11 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 
 /**
  * 
- * 由于没有开启注解，因此以下三种方式均无法注入依赖到AppConfig： 
- * <li>@Value(${placeholder}). 
- * <li>@Value(#{SpEL ). 
- * <li>@Autowired/@Qualifier.
+ * 由于没有开启注解，因此以下三种方式均无法注入依赖到AppConfig： <li>@Value(${placeholder}). <li>
+ * @Value(#{SpEL ). <li>@Autowired/@Qualifier.
  * 
- * 要引用外部化配置，以下两种方式：
- * <li>通过EnvironmentAware注入Environment，然后获取属性
- * <li>利用@Bean方法参数的隐式支持@Value和@Autowired(可以替换为@Value("#{nyBean}"))
+ * 要引用外部化配置，以下两种方式： <li>通过EnvironmentAware注入Environment，然后获取属性 <li>
+ * 利用@Bean方法参数的隐式支持@Value和@Autowired(可以替换为@Value("#{nyBean}"))
  * 
  * @author ruanwei
  *
@@ -577,6 +575,12 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	public GoodImpl good() {
 		GoodImpl good = new GoodImpl();
 		return good;
+	}
+
+	// just for testing
+	@Bean
+	public AopService aopService() {
+		return new AopService();
 	}
 
 }

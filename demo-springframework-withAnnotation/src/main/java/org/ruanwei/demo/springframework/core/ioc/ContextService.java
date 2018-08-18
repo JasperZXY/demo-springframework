@@ -1,4 +1,4 @@
-package org.ruanwei.demo.springframework.core;
+package org.ruanwei.demo.springframework.core.ioc;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -7,10 +7,6 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.SpringApplicaiton2;
-import org.ruanwei.demo.springframework.core.aop.Good2;
-import org.ruanwei.demo.springframework.core.aop.Happy2;
-import org.ruanwei.demo.springframework.core.ioc.AbsHouse;
-import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.event.MyApplicationEvent2;
 import org.ruanwei.demo.springframework.core.ioc.extension.MyFamilyFactoryBean2;
 import org.springframework.context.ApplicationContext;
@@ -50,9 +46,6 @@ public class ContextService {
 
 		log.info("5======================================================================================");
 		testIoC(context);
-
-		log.info("6======================================================================================");
-		testAOP(context);
 
 		log.info("7======================================================================================");
 		testApplicationEvent(context);
@@ -151,15 +144,6 @@ public class ContextService {
 		log.info(family);
 		log.info(familyx);
 		log.info(myFamilyFactoryBean);
-	}
-
-	private  void testAOP(ApplicationContext context) {
-		Family family = context.getBean("family", Family.class);
-		family.sayHello("whatever");
-
-		Good2 good = (Good2) context.getBean("good");
-		Happy2 mixin = (Happy2) context.getBean("good");
-		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	private  void testApplicationEvent(ApplicationContext context) {

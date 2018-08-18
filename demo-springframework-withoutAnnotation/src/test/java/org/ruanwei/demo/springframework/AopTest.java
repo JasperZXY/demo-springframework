@@ -8,13 +8,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.core.ioc.ContextService;
+import org.ruanwei.demo.springframework.core.aop.AopService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.mock.env.MockEnvironment;
-import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -33,12 +30,13 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(AppConfig2.class)
-public class ContextTest {
-	private static Log log = LogFactory.getLog(ContextTest.class);
+//@SpringJUnitConfig(locations="classpath:spring/applicationContext.xml")
+@SpringJUnitConfig(AppConfig.class)
+public class AopTest {
+	private static Log log = LogFactory.getLog(AopTest.class);
 
 	@Autowired
-	private ContextService contextService;
+	private AopService aopService;
 
 	@Autowired
 	private ApplicationContext context;
@@ -46,14 +44,6 @@ public class ContextTest {
 	@BeforeAll
 	static void beforeAll() {
 		log.info("beforeAll()");
-
-		MockEnvironment env = new MockEnvironment();
-		env.setActiveProfiles("development");
-		env.setDefaultProfiles("production");
-		env.setProperty("foo", "bar");
-
-		MockPropertySource ps = new MockPropertySource();
-		ps.setProperty("foo1", "bar1");
 	}
 
 	@BeforeEach
@@ -61,12 +51,12 @@ public class ContextTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	// @Disabled
 	@Test
-	void testApplicationContext() {
+	void testAop() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
-		contextService.setContext(context);
-		contextService.testApplicationContext();
+		aopService.setContext(context);
+		aopService.testAop();
 	}
 
 	@AfterEach
