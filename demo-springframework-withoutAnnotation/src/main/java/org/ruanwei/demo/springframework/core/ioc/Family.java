@@ -55,7 +55,7 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 
 	// 3.Method injection: Lookup method injection
 	// TODO:加@Valid报错
-	private People guest1;
+	private People guest;
 	// @Valid
 	private People guest2;
 
@@ -64,6 +64,7 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	private MessageSource messageSource;
 	private ResourceLoader resourceLoader;
 	private ApplicationEventPublisher publisher;
+
 	private Environment env;
 
 	private String beanName;
@@ -82,9 +83,9 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		People guest = createGuest();
 		// 这里是为了兼容不适用@Lookup注解时的方法注入
 		if (guest == null) {
-			guest = new People("ruan_guest", 18);
+			guest = new People("ruan_default", 0);
 		}
-		// 等价于PayloadApplicationEvent<People2>(this,guest);
+		// 等价于PayloadApplicationEvent<People>(this,guest);
 		publisher.publishEvent(guest);
 
 		return message;
@@ -117,13 +118,13 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 		this.daughter = daughter;
 	}
 
-	public void setGuest1(People guest) {
-		log.info("setGuest1(People guest)" + guest);
-		this.guest1 = guest;
+	public void setGuest(People guest) {
+		log.info("setGuest(People guest)" + guest);
+		this.guest = guest;
 	}
 
-	public void setGuest2(ObjectProvider<People> guest) {
-		log.info("setGuest2(ObjectFactory<People> guest)" + guest);
+	public void setGuest(ObjectProvider<People> guest) {
+		log.info("setGuest(ObjectFactory<People> guest)" + guest);
 		this.guest2 = guest.getIfUnique();
 	}
 
@@ -229,7 +230,7 @@ public class Family implements ApplicationContextAware, BeanFactoryAware,
 	public String toString() {
 		return "Family [familyName=" + familyName + ", familyCount="
 				+ familyCount + ", father=" + father + ", mother=" + mother
-				+ ", son=" + son + ", daughter=" + daughter + ", guest1="
-				+ guest1 + ", guest2=" + guest2 + "]";
+				+ ", son=" + son + ", daughter=" + daughter + ", guest="
+				+ guest + ", guest2=" + guest2 + "]";
 	}
 }

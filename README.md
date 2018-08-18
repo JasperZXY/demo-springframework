@@ -18,14 +18,16 @@
 - &lt;bean lazy-init-"true"> vs @Lazy.
 - &lt;bean depends-on-"anotherBean"> vs @DependsOn("anotherBean").
 - &lt;bean scope="singleton"> vs @Scope("singleton") vs JSR-330:@Singleton/@Scope.
-- &lt;bean init-method="init"> vs @Bean(initMethod="init").
-- &lt;bean destroy-method="destroy"> vs @Bean(destroyMethod="destroy").
-- &lt;bean p:order="1"> vs @Order(1) vs JSR-250:@Priority(1).
+- &lt;bean init-method="init"> vs InitializingBean vs @Bean(initMethod="init").
+- &lt;bean destroy-method="destroy"> vs DisposableBean vs @Bean(destroyMethod="destroy").
+- &lt;bean p:order="1">(PriorityOrdered/Ordered) vs @Order(1) vs JSR-250:@Priority(1).
 - &lt;bean autowire="byType"> vs @Bean(autowire=Autowire.BY_TYPE).
 - &lt;bean primary="true"> vs @Primary.
 - &lt;bean>&lt;qualifier value="primaryBean"/>&lt;/bean> vs @Qualifier("primaryBean") vs JSR-330:@Named("primaryBean")/@Qualifier.
 - &lt;bean>&lt;lookup-method name="createCommand" bean="myCommand"/>&lt;/bean> vs nothing.
 - &lt;bean>&lt;replaced-method name="computeValue" replacer="replacementComputeValue"/>&lt;/bean> vs nothing.
+- &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
+- &lt;context:spring-configured/> vs @EnableSpringConfigured.
 - &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
 - &lt;aop:scoped-proxy/> vs nothing.
 <p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.

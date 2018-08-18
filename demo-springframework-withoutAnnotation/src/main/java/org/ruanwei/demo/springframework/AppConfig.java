@@ -178,7 +178,7 @@ public class AppConfig {
 		family.setSon(son);
 		family.setDaughter(daughter);
 		// Proxied scoped beans as dependencies
-		family.setGuest1(guest1);
+		family.setGuest(guest1);
 		return family;
 	}
 
@@ -193,7 +193,7 @@ public class AppConfig {
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
-		family.setGuest1(guest1);
+		family.setGuest(guest1);
 		return family;
 	}
 
@@ -208,7 +208,7 @@ public class AppConfig {
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
-		family.setGuest1(guest1);
+		family.setGuest(guest1);
 		return family;
 	}
 
@@ -489,7 +489,7 @@ public class AppConfig {
 	public MyLifecycleProcessor myLifecycleProcessor() {
 		return new MyLifecycleProcessor();
 	}
-	
+
 	// A.5.Environment：Profile and PropertySource
 	// A.5.1.PropertySource：供Environment访问，参考@PropertySource
 	// A.5.2.Profile：参考@Profile和<beans profile="">
