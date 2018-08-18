@@ -120,6 +120,7 @@
 			/> </aop:aspect> -->
 	</aop:config>
 
+	<!-- just for testing -->
 	<bean id="springTransactionService"
 		class="org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService">
 		<property name="jdbcDAO" ref="jdbcDAO" />

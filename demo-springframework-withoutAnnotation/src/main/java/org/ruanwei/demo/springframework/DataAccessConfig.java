@@ -5,21 +5,18 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.User2;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
+import org.ruanwei.demo.springframework.dataAccess.tx.SpringTransactionService;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
+import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
-import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
-import org.springframework.data.relational.core.mapping.event.RelationalEvent;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -30,24 +27,47 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@Import(JdbcConfiguration.class)
-@EnableJdbcRepositories
+// @Import(JdbcConfiguration.class)
+// @EnableJdbcRepositories
+@PropertySource("classpath:jdbc.properties")
 @EnableTransactionManagement
 @Configuration
-public class DataAccessConfig {// implements TransactionManagementConfigurer {
+public class DataAccessConfig implements EnvironmentAware, InitializingBean {// implements
+																				// TransactionManagementConfigurer
+																				// {
 	private static Log log = LogFactory.getLog(DataAccessConfig.class);
 
-	@Value("${jdbc.driverClassName}")
 	private String driverClassName;
-	@Value("${jdbc.url}")
 	private String url;
-	@Value("${jdbc.username}")
 	private String username;
-	@Value("${jdbc.password}")
 	private String password;
 
+	private Environment env;
+
+	public DataAccessConfig() {
+		log.info("DataAccessConfig()======");
+	}
+
+	@Override
+	public void setEnvironment(Environment environment) {
+		this.env = environment;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		log.info("afterPropertiesSet()======" + env);
+		driverClassName = env.getProperty("jdbc.driverClassName",
+				"com.mysql.cj.jdbc.Driver");
+		url = env
+				.getProperty(
+						"jdbc.url",
+						"jdbc:mysql://localhost:3306/demo?useUnicode=true&autoReconnect=true&characterEncoding=utf-8");
+		username = env.getProperty("jdbc.username", "root");
+		password = env.getProperty("jdbc.password", "qqqq1234");
+	}
+
 	// ==========A.Data Access:JDBC==========
-	@Qualifier("embeddedTarget")
+	@Qualifier("embeddedDataSource")
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
@@ -60,7 +80,7 @@ public class DataAccessConfig {// implements TransactionManagementConfigurer {
 	// DataSource:pure jdbc
 	// should only be used for testing purposes since no pooling.
 	@Primary
-	@Qualifier("primaryTarget")
+	@Qualifier("jdbcDataSource")
 	@Bean
 	public DataSource dataSource1() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -72,6 +92,7 @@ public class DataAccessConfig {// implements TransactionManagementConfigurer {
 	}
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
+	@Qualifier("dbcp2DataSource")
 	@Bean
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -88,6 +109,7 @@ public class DataAccessConfig {// implements TransactionManagementConfigurer {
 	}
 
 	// polled-DataSource:c3p0
+	@Qualifier("c3p0DataSource")
 	@Bean
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -120,32 +142,20 @@ public class DataAccessConfig {// implements TransactionManagementConfigurer {
 	}
 
 	@Bean
-	public ApplicationListener<?> loggingListener() {
-
-		return (ApplicationListener<ApplicationEvent>) event -> {
-			if (event instanceof RelationalEvent) {
-				log.info("Received an event: " + event);
-			}
-		};
+	public SpringTransactionService springTransactionService() {
+		SpringTransactionService springTransactionService = new SpringTransactionService();
+		springTransactionService.setJdbcTransaction(jdbcTransaction());
+		springTransactionService.setJdbcDAO(jdbcDAO());
+		return springTransactionService;
 	}
 
 	@Bean
-	public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
-		return new NamedParameterJdbcTemplate(dataSource());
+	public JdbcTransaction jdbcTransaction() {
+		return new JdbcTransaction();
 	}
 
 	@Bean
-	public ApplicationListener<BeforeSaveEvent> timeStampingSaveTime() {
-
-		return event -> {
-
-			Object entity = event.getEntity();
-
-			if (entity instanceof User2) {
-				User2 user = (User2) entity;
-				log.info("user=====" + user);
-			}
-		};
+	public JdbcDAO jdbcDAO() {
+		return new JdbcDAO();
 	}
-
 }

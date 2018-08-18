@@ -85,7 +85,6 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 // @Profile("development")
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
-@PropertySource("classpath:jdbc.properties")
 // @ImportResource({"classpath:spring/applicationContext.xml"})
 @Import(DataAccessConfig.class)
 @Configuration
