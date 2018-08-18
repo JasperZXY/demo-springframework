@@ -2,7 +2,7 @@
 
 ### demo-springframework项目共包含两个模块：
 - demo-springframework-withoutAnnotation模块为纯基于XML/Java的配置元数据的项目，未开启基于注解的配置元数据。
-- demo-springframework-withAnnotation模块为基于XML/Java的配置元数据的项目，开启基于注解的配置元数据(<context:annotation-config/>)。
+- demo-springframework-withAnnotation模块为基于XML/Java的配置元数据的项目，并开启基于注解的配置元数据(<context:annotation-config/>)。
 
 ### 基于XML和基于Java的配置元数据主要对比：
 - &lt;beans> vs @Configuration.
