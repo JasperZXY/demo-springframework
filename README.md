@@ -29,6 +29,7 @@
 - &lt;bean>&lt;replaced-method name="computeValue" replacer="replacementComputeValue"/>&lt;/bean> vs nothing.
 - &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
 - &lt;context:spring-configured/> vs @EnableSpringConfigured.
+
 - &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
 - &lt;aop:scoped-proxy proxy-target-class="true"/> vs @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS).
 <p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.
@@ -57,3 +58,4 @@
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
+7. 补充AOP和事务的配置对比
