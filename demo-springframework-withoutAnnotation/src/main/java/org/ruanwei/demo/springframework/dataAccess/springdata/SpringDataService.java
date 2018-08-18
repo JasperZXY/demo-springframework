@@ -27,4 +27,8 @@ public class SpringDataService {
 
 	public void testSpringDataRedis() {
 	}
+
+	public void setJdbcRepository(JdbcRepository jdbcRepository) {
+		this.jdbcRepository = jdbcRepository;
+	}
 }

@@ -151,6 +151,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		return springJdbcService;
 	}
 
+	// just for testing
 	@Bean
 	public SpringTransactionService springTransactionService() {
 		SpringTransactionService springTransactionService = new SpringTransactionService();
@@ -159,9 +160,11 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		return springTransactionService;
 	}
 
+	// just for testing
 	@Bean
 	public SpringDataService springDataService() {
 		SpringDataService springDataService = new SpringDataService();
+		//springDataService.setJdbcRepository(jdbcRepository);
 		return springDataService;
 	}
 
