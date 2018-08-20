@@ -23,7 +23,7 @@ public class User {
 		this.birthday = birthday;
 	}
 
-	/*public String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -49,8 +49,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday
-				+ "]";
-	}*/
+		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday + "]";
+	}
 
 }
