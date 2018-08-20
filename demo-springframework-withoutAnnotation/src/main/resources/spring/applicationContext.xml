@@ -172,12 +172,21 @@
 		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="registerDefaultFormatters" value="true" />
 		<!-- 方式一：单个指定Converter/ConverterFactory/GenericConverter S->T -->
-		<!-- <property name="converters"> <set> <bean class="org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter" 
-			/> </set> </property> -->
+		<!-- <property name="converters">
+			<set>
+				<bean
+					class="org.ruanwei.demo.springframework.core.ioc.databinding.StringToPeopleConverter" />
+			</set>
+		</property> -->
 		<!-- 方式二：单个指定Formatter/AnnotationFormatterFactory String->T -->
-		<!-- <property name="formatters"> <set> <bean class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter" 
-			/> @PeopleFormat <bean class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory" 
-			/> </set> </property> -->
+		<!-- <property name="formatters">
+			<set>
+				<bean
+					class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatter" />
+				<bean
+					class="org.ruanwei.demo.springframework.core.ioc.databinding.PeopleFormatAnnotationFormatterFactory" />
+			</set>
+		</property> -->
 		<!-- 方式三：分组指定converters和formatters -->
 		<property name="formatterRegistrars">
 			<set>
@@ -197,12 +206,22 @@
 	</bean>
 
 	<!-- A.2.2.PropertyEditor-based Conversion -->
-	<!-- <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer"> 
-		方式四：单个指定PropertyEditor <property name="customEditors"> <map> <entry key="org.ruanwei.demo.springframework.core.ioc.People" 
-		value="org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor" 
-		/> </map> </property> 方式五：分组指定PropertyEditor <property name="propertyEditorRegistrars"> 
-		<list> <bean class="org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar" 
-		/> </list> </property> </bean> -->
+	<!-- <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		方式四：单个指定PropertyEditor
+		<property name="customEditors">
+			<map>
+				<entry key="org.ruanwei.demo.springframework.core.ioc.People"
+					value="org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditor" />
+			</map>
+		</property>
+		方式五：分组指定PropertyEditor
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean
+					class="org.ruanwei.demo.springframework.core.ioc.databinding.PeoplePropertyEditorRegistrar" />
+			</list>
+		</property>
+	</bean> -->
 
 	<!-- A.2.3.Validation JSR-303/JSR-349/JSR-380 -->
 	<bean id="validator"
@@ -293,7 +312,8 @@
 	<!-- <context:load-time-weaver/> -->
 	
 	<!-- just for testing -->
-	<bean id="contextService" class="org.ruanwei.demo.springframework.core.ioc.ContextService" />
+	<bean id="contextService"
+		class="org.ruanwei.demo.springframework.core.ioc.ContextService" />
 
 	<!-- ==========B.AOP and Instrumentation========== -->
 	<bean id="myAspect" class="org.ruanwei.demo.springframework.core.aop.MyAspect" />
