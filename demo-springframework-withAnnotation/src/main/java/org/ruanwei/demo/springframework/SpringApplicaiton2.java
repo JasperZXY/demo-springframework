@@ -2,7 +2,6 @@ package org.ruanwei.demo.springframework;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.springdata.SpringDataService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -20,9 +19,6 @@ public class SpringApplicaiton2 {
 
 	public static void main(String[] args) {
 		log.info("Hello, World!" + context);
-		SpringDataService springDataService = context
-				.getBean(SpringDataService.class);
-		springDataService.testSpringData();
 	}
 
 	private static void initApplicationContext(ApplicationContextType type) {

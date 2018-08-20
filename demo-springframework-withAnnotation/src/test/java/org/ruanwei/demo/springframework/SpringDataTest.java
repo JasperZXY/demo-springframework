@@ -1,11 +1,7 @@
 package org.ruanwei.demo.springframework;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.sql.Date;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -14,11 +10,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
-import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.User2;
+import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.UserJdbcRepository;
+import org.springframework.data.jdbc.repository.support.SimpleJdbcRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -43,8 +40,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 @ActiveProfiles("development")
 @SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
 //@SpringJUnitConfig(AppConfig2.class)
-public class DataAccessTest {
-	private static Log log = LogFactory.getLog(DataAccessTest.class);
+public class SpringDataTest {
+	private static Log log = LogFactory.getLog(SpringDataTest.class);
 
 	private static final User paramForCreate1 = new User("ruanwei_tmp", 35, Date.valueOf("1983-07-06"));
 	private static final User paramForUpdate1 = new User("ruanwei", 18, Date.valueOf("1983-07-06"));
@@ -68,10 +65,10 @@ public class DataAccessTest {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
-	@Autowired
-	private JdbcDAO jdbcDAO;
-	@Autowired
-	private JdbcTransaction jdbcTransaction;
+	// @Autowired
+	private UserJdbcRepository userJdbcRepository;
+	// @Autowired
+	private SimpleJdbcRepository<User2, Integer> simpleJdbcRepository;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -83,22 +80,19 @@ public class DataAccessTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
-	void testSpringJdbcWithJdbcTemplate() {
-		assertNotNull(jdbcDAO, "jdbcDAO is null++++++++++++++++++++++++++++");
-		testCRUD();
+	public void testSpringDataJdbc() {
+		Iterable<User2> users = userJdbcRepository.findAll();
+		users.forEach(u -> log.info("user2========" + u));
+		// Iterable<User2> users2 = simpleJdbcRepository.findAll();
+		// users2.forEach(u -> log.info("user2=" + u));
+		// userJdbcRepository.save(paramForCreate);
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
-	void testSpringJdbcWithTransaction() {
-		assertNotNull(jdbcTransaction, "jdbcTransaction is null++++++++++++++++++++++++++++");
-		try {
-			jdbcTransaction.transactionalMethod();
-		} catch (Exception e) {
-			log.error("transaction rolled back", e);
-		}
+	public void testSpringDataRedis() {
 	}
 
 	@AfterEach
@@ -111,45 +105,4 @@ public class DataAccessTest {
 		log.info("afterAll()");
 	}
 
-	private void testCRUD() {
-		testCreate();
-		testBatchUpdate();
-		testQueryForSingleRow();
-		testQueryFormultiRow();
-		testDelete();
-	}
-
-	private void testCreate() {
-		jdbcDAO.createUser1(paramForCreate1);
-		jdbcDAO.createUser2(paramForCreate1);
-		jdbcDAO.createUser3(paramForCreate1);
-		jdbcDAO.createUser4(paramForCreate1);
-		jdbcDAO.createUser4(paramForCreate2);
-		jdbcDAO.createUser5(paramForCreate1);
-		jdbcDAO.createUser5(paramForCreate2);
-	}
-
-	private void testBatchUpdate() {
-		List<User> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
-		jdbcDAO.batchUpdateUser1(users);
-		jdbcDAO.batchUpdateUser2(users);
-		jdbcDAO.batchUpdateUser3(users);
-		jdbcDAO.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
-	}
-
-	private void testQueryForSingleRow() {
-		jdbcDAO.queryForSingleColumn();
-		jdbcDAO.queryForMultiColumn();
-		jdbcDAO.queryForObject();
-	}
-
-	private void testQueryFormultiRow() {
-		jdbcDAO.queryForSingleColumnList();
-		jdbcDAO.queryForMultiColumnList();
-		jdbcDAO.queryForObjectList();
-	}
-
-	private void testDelete() {
-		jdbcDAO.deleteUser(2);
-	}
 }
