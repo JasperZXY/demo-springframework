@@ -23,7 +23,7 @@ public class User {
 		this.birthday = birthday;
 	}
 
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 
@@ -45,7 +45,7 @@ public class User {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
+	}*/
 
 	@Override
 	public String toString() {
