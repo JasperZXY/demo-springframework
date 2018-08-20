@@ -163,8 +163,8 @@ public class ContextTest {
 
 		ApplicationEventPublisher applicationEventPublisher = (ApplicationEventPublisher) context;
 		log.info("applicationEventPublisher==========" + applicationEventPublisher);
-		applicationEventPublisher.publishEvent(
-				new MyApplicationEvent2(SpringApplicaiton2.class, "custom ApplicationEvent from SpringApplication"));
+		applicationEventPublisher
+				.publishEvent(new MyApplicationEvent2(this, "custom ApplicationEvent from SpringApplication"));
 		applicationEventPublisher.publishEvent(new String("PayloadApplicationEvent<String> from SpringApplication"));
 	}
 

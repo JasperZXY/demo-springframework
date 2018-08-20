@@ -62,7 +62,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @PropertySource("classpath:family.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
 // @ImportResource({"classpath:spring/applicationContext2.xml"})
-@Import(DataAccessConfig2.class)
+@Import({ DataAccessConfig2.class, SpringDataConfig2.class })
 @Configuration
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
@@ -188,45 +188,39 @@ public class AppConfig2 {
 		return customEditorConfigurer;
 	}
 
-	private void registerConvertors(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerConvertors(FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> converters = new HashSet<Object>();
 		converters.add(new StringToPeopleConverter2());
 		conversionService.setConverters(converters);
 	}
 
-	private void registerFormatters(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerFormatters(FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> formatters = new HashSet<Object>();
 		formatters.add(new PeopleFormatter2());
 		formatters.add(new PeopleFormatAnnotationFormatterFactory2());
 		conversionService.setFormatters(formatters);
 	}
 
-	private void registerFormatterRegistrars(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerFormatterRegistrars(FormattingConversionServiceFactoryBean conversionService) {
 		Set<FormatterRegistrar> formatterRegistrars = new HashSet<FormatterRegistrar>();
 		formatterRegistrars.add(new PeopleFormatterRegistrar2());
 		JodaTimeFormatterRegistrar jodaTimeFormatterRegistrar = new JodaTimeFormatterRegistrar();
 		DateTimeFormatterFactoryBean dateTimeFormatterFactoryBean = new DateTimeFormatterFactoryBean();
 		dateTimeFormatterFactoryBean.setPattern("yyyy-MM-dd");
-		jodaTimeFormatterRegistrar
-				.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
+		jodaTimeFormatterRegistrar.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
 		formatterRegistrars.add(jodaTimeFormatterRegistrar);
 		conversionService.setFormatterRegistrars(formatterRegistrars);
 	}
 
-	private static void registerPropertyEditors(
-			CustomEditorConfigurer customEditorConfigurer) {
+	private static void registerPropertyEditors(CustomEditorConfigurer customEditorConfigurer) {
 		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
 		customEditors.put(People.class, PeoplePropertyEditor2.class);
 		customEditorConfigurer.setCustomEditors(customEditors);
 	}
 
-	private static void registerPropertyEditorRegistrars(
-			CustomEditorConfigurer customEditorConfigurer) {
-		customEditorConfigurer
-				.setPropertyEditorRegistrars(new PeoplePropertyEditorRegistrar2[] { new PeoplePropertyEditorRegistrar2() });
+	private static void registerPropertyEditorRegistrars(CustomEditorConfigurer customEditorConfigurer) {
+		customEditorConfigurer.setPropertyEditorRegistrars(
+				new PeoplePropertyEditorRegistrar2[] { new PeoplePropertyEditorRegistrar2() });
 	}
 
 	// A.2.3.Validation JSR-303/JSR-349/JSR-380
@@ -244,8 +238,7 @@ public class AppConfig2 {
 	public BeanValidationPostProcessor beanValidationPostProcessor() {
 		BeanValidationPostProcessor beanValidationPostProcessor = new BeanValidationPostProcessor();
 		beanValidationPostProcessor.setValidator(validator());
-		log.info("beanValidationPostProcessor=========="
-				+ beanValidationPostProcessor);
+		log.info("beanValidationPostProcessor==========" + beanValidationPostProcessor);
 		return beanValidationPostProcessor;
 	}
 
@@ -255,8 +248,7 @@ public class AppConfig2 {
 		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
 		methodValidationPostProcessor.setValidator(validator());
 		methodValidationPostProcessor.setOrder(0);
-		log.info("methodValidationPostProcessor=========="
-				+ methodValidationPostProcessor);
+		log.info("methodValidationPostProcessor==========" + methodValidationPostProcessor);
 		return methodValidationPostProcessor;
 	}
 
@@ -288,20 +280,18 @@ public class AppConfig2 {
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		log.info("propertySourcesPlaceholderConfigurer=========="
-				+ propertySourcesPlaceholderConfigurer);
+		log.info("propertySourcesPlaceholderConfigurer==========" + propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
 	}
 
 	// PropertyPlaceholderConfigurer通过指定location/properties属性，以替换@Value中的占位符
 	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
-		propertyPlaceholderConfigurer.setLocations(new ClassPathResource(
-				"family.properties"), new ClassPathResource("jdbc.properties"));
+		propertyPlaceholderConfigurer.setLocations(new ClassPathResource("family.properties"),
+				new ClassPathResource("jdbc.properties"));
 		propertyPlaceholderConfigurer.setFileEncoding("UTF-8");
 		propertyPlaceholderConfigurer.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertyPlaceholderConfigurer=========="
-				+ propertyPlaceholderConfigurer);
+		log.info("propertyPlaceholderConfigurer==========" + propertyPlaceholderConfigurer);
 		return propertyPlaceholderConfigurer;
 	}
 

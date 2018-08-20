@@ -31,8 +31,6 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-// @Import(JdbcConfiguration.class)
-// @EnableJdbcRepositories
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
 @Configuration

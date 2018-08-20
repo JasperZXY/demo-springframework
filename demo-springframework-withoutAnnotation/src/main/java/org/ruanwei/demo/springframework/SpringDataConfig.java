@@ -12,27 +12,30 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
+import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
+@Import(JdbcConfiguration.class)
+@EnableJdbcRepositories
 @PropertySource("classpath:jdbc.properties")
-@EnableTransactionManagement
 @Configuration
-public class DataAccessConfig implements EnvironmentAware, InitializingBean {// implements
+public class SpringDataConfig implements EnvironmentAware, InitializingBean {// implements
 																				// TransactionManagementConfigurer
 																				// {
-	private static Log log = LogFactory.getLog(DataAccessConfig.class);
+	private static Log log = LogFactory.getLog(SpringDataConfig.class);
 
 	private String driverClassName;
 	private String url;
@@ -41,7 +44,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	private Environment env;
 
-	public DataAccessConfig() {
+	public SpringDataConfig() {
 		log.info("DataAccessConfig()======");
 	}
 

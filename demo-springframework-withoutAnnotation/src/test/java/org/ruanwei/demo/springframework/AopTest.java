@@ -8,9 +8,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.core.aop.AopService;
+import org.ruanwei.demo.springframework.core.aop.Good;
+import org.ruanwei.demo.springframework.core.aop.Happy;
+import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -31,13 +32,10 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-//@SpringJUnitConfig(locations="classpath:spring/applicationContext.xml")
-@SpringJUnitConfig(AppConfig.class)
+@SpringJUnitConfig(locations = "classpath:spring/applicationContext.xml")
+//@SpringJUnitConfig(AppConfig.class)
 public class AopTest {
 	private static Log log = LogFactory.getLog(AopTest.class);
-
-	@Autowired
-	private AopService aopService;
 
 	@Autowired
 	private ApplicationContext context;
@@ -52,12 +50,18 @@ public class AopTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	// @Disabled
 	@Test
 	void testAop() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
-		aopService.setContext(context);
-		aopService.testAop();
+		log.info("1======================================================================================");
+
+		Family family = context.getBean("family", Family.class);
+		family.sayHello("whatever");
+
+		Good good = (Good) context.getBean("good");
+		Happy mixin = (Happy) context.getBean("good");
+		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	@AfterEach

@@ -12,10 +12,8 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.HibernateValidator;
-import org.ruanwei.demo.springframework.core.aop.AopService;
 import org.ruanwei.demo.springframework.core.aop.GoodImpl;
 import org.ruanwei.demo.springframework.core.aop.MyAspect;
-import org.ruanwei.demo.springframework.core.ioc.ContextService;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.FamilyFactory;
 import org.ruanwei.demo.springframework.core.ioc.House;
@@ -84,7 +82,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 // @ImportResource({"classpath:spring/applicationContext.xml"})
-@Import(DataAccessConfig.class)
+@Import({ DataAccessConfig.class, SpringDataConfig.class })
 @Configuration
 public class AppConfig implements EnvironmentAware, InitializingBean {
 	private static Log log = LogFactory.getLog(AppConfig.class);
@@ -105,8 +103,7 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		log.info("afterPropertiesSet()======" + env);
-		familyCount = Integer.parseInt(env.getProperty("family.familyCount",
-				"2"));
+		familyCount = Integer.parseInt(env.getProperty("family.familyCount", "2"));
 	}
 
 	// ==========A.The IoC Container==========
@@ -115,12 +112,9 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Lazy
 	@DependsOn("house")
 	@Bean(name = "family", initMethod = "init", destroyMethod = "destroy")
-	public Family family(
-			@Value("${family.1.familyName:ruan_def}") String familyName,
-			@Qualifier("father") People father,
-			@Qualifier("mother") People mother, @Qualifier("son") People son,
-			@Qualifier("daughter") People daughter,
-			@Qualifier("guest") People guest) {
+	public Family family(@Value("${family.1.familyName:ruan_def}") String familyName,
+			@Qualifier("father") People father, @Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter, @Qualifier("guest") People guest) {
 		log.info("AppConfig1()======" + env);
 		// 1.Constructor-based dependency injection
 		Family family = new Family(familyName, familyCount, father);
@@ -137,14 +131,10 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Lazy
 	@DependsOn("house")
 	@Bean("family2")
-	public Family family2(
-			@Value("${family.2.familyName:ruan_def2}") String familyName,
-			@Qualifier("father") People father,
-			@Qualifier("mother") People mother, @Qualifier("son") People son,
-			@Qualifier("daughter") People daughter,
-			@Qualifier("guest") People guest) {
-		Family family = FamilyFactory.createInstance1(familyName, familyCount,
-				father);
+	public Family family2(@Value("${family.2.familyName:ruan_def2}") String familyName,
+			@Qualifier("father") People father, @Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter, @Qualifier("guest") People guest) {
+		Family family = FamilyFactory.createInstance1(familyName, familyCount, father);
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
@@ -156,14 +146,10 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Lazy
 	@DependsOn("house")
 	@Bean("family3")
-	public Family family3(
-			@Value("${family.3.familyName:ruan_def3}") String familyName,
-			@Qualifier("father") People father,
-			@Qualifier("mother") People mother, @Qualifier("son") People son,
-			@Qualifier("daughter") People daughter,
-			@Qualifier("guest") People guest) {
-		Family family = familyFactory().createInstance2(familyName,
-				familyCount, father);
+	public Family family3(@Value("${family.3.familyName:ruan_def3}") String familyName,
+			@Qualifier("father") People father, @Qualifier("mother") People mother, @Qualifier("son") People son,
+			@Qualifier("daughter") People daughter, @Qualifier("guest") People guest) {
+		Family family = familyFactory().createInstance2(familyName, familyCount, father);
 		family.setMother(mother);
 		family.setSon(son);
 		family.setDaughter(daughter);
@@ -180,33 +166,28 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Lazy
 	@Qualifier("father")
 	@Bean("father")
-	public People father(@Value("${father.name:ruanwei_def}") String name,
-			@Value("${father.age:35}") int age) {
+	public People father(@Value("${father.name:ruanwei_def}") String name, @Value("${father.age:35}") int age) {
 		return new People(name, age);
 	}
 
 	@Lazy
 	@Qualifier("mother")
 	@Bean("mother")
-	public People mother(@Value("${mother.name:lixiaoling_def}") String name,
-			@Value("${mother.age:34}") int age) {
+	public People mother(@Value("${mother.name:lixiaoling_def}") String name, @Value("${mother.age:34}") int age) {
 		return new People(name, age);
 	}
 
 	@Lazy
 	@Qualifier("son")
 	@Bean("son")
-	public People son(@Value("${son.name:ruanziqiao_def}") String name,
-			@Value("${son.age:5}") int age) {
+	public People son(@Value("${son.name:ruanziqiao_def}") String name, @Value("${son.age:5}") int age) {
 		return new People(name, age);
 	}
 
 	@Lazy
 	@Qualifier("daughter")
 	@Bean("daughter")
-	public People daughter(
-			@Value("${daughter.name:ruanzixuan_def}") String name,
-			@Value("${daughter.age:6}") int age) {
+	public People daughter(@Value("${daughter.name:ruanzixuan_def}") String name, @Value("${daughter.age:6}") int age) {
 		return new People(name, age);
 	}
 
@@ -220,15 +201,10 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	}
 
 	@Bean("absHouse")
-	public House absHouse(
-			@Value("${abshouse.name:houseName_def}") String houseName,
-			@Value("1,2") Integer[] someArray,
-			@Value("3,4") List<Integer> someList,
-			@Value("5,6") Set<Integer> someSet,
-			@Value("a=1,b=2") Properties someProperties,
-			@Value("#{someField1}") double someField1,
-			@Value("#{someField2}") String someField2,
-			@Value("#{someField3}") String someField3) {
+	public House absHouse(@Value("${abshouse.name:houseName_def}") String houseName, @Value("1,2") Integer[] someArray,
+			@Value("3,4") List<Integer> someList, @Value("5,6") Set<Integer> someSet,
+			@Value("a=1,b=2") Properties someProperties, @Value("#{someField1}") double someField1,
+			@Value("#{someField2}") String someField2, @Value("#{someField3}") String someField3) {
 		House abshouse = new House();
 
 		abshouse.setHouseName(houseName);
@@ -362,45 +338,39 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 		return customEditorConfigurer;
 	}
 
-	private void registerConvertors(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerConvertors(FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> converters = new HashSet<Object>();
 		converters.add(new StringToPeopleConverter());
 		conversionService.setConverters(converters);
 	}
 
-	private void registerFormatters(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerFormatters(FormattingConversionServiceFactoryBean conversionService) {
 		Set<Object> formatters = new HashSet<Object>();
 		formatters.add(new PeopleFormatter());
 		formatters.add(new PeopleFormatAnnotationFormatterFactory());
 		conversionService.setFormatters(formatters);
 	}
 
-	private void registerFormatterRegistrars(
-			FormattingConversionServiceFactoryBean conversionService) {
+	private void registerFormatterRegistrars(FormattingConversionServiceFactoryBean conversionService) {
 		Set<FormatterRegistrar> formatterRegistrars = new HashSet<FormatterRegistrar>();
 		formatterRegistrars.add(new PeopleFormatterRegistrar());
 		JodaTimeFormatterRegistrar jodaTimeFormatterRegistrar = new JodaTimeFormatterRegistrar();
 		DateTimeFormatterFactoryBean dateTimeFormatterFactoryBean = new DateTimeFormatterFactoryBean();
 		dateTimeFormatterFactoryBean.setPattern("yyyy-MM-dd");
-		jodaTimeFormatterRegistrar
-				.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
+		jodaTimeFormatterRegistrar.setDateFormatter(dateTimeFormatterFactoryBean.getObject());
 		formatterRegistrars.add(jodaTimeFormatterRegistrar);
 		conversionService.setFormatterRegistrars(formatterRegistrars);
 	}
 
-	private static void registerPropertyEditors(
-			CustomEditorConfigurer customEditorConfigurer) {
+	private static void registerPropertyEditors(CustomEditorConfigurer customEditorConfigurer) {
 		Map<Class<?>, Class<? extends PropertyEditor>> customEditors = new HashMap<Class<?>, Class<? extends PropertyEditor>>();
 		customEditors.put(People.class, PeoplePropertyEditor.class);
 		customEditorConfigurer.setCustomEditors(customEditors);
 	}
 
-	private static void registerPropertyEditorRegistrars(
-			CustomEditorConfigurer customEditorConfigurer) {
-		customEditorConfigurer
-				.setPropertyEditorRegistrars(new PeoplePropertyEditorRegistrar[] { new PeoplePropertyEditorRegistrar() });
+	private static void registerPropertyEditorRegistrars(CustomEditorConfigurer customEditorConfigurer) {
+		customEditorConfigurer.setPropertyEditorRegistrars(
+				new PeoplePropertyEditorRegistrar[] { new PeoplePropertyEditorRegistrar() });
 	}
 
 	// A.2.3.Validation JSR-303/JSR-349/JSR-380
@@ -418,8 +388,7 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	public BeanValidationPostProcessor beanValidationPostProcessor() {
 		BeanValidationPostProcessor beanValidationPostProcessor = new BeanValidationPostProcessor();
 		beanValidationPostProcessor.setValidator(validator());
-		log.info("beanValidationPostProcessor=========="
-				+ beanValidationPostProcessor);
+		log.info("beanValidationPostProcessor==========" + beanValidationPostProcessor);
 		return beanValidationPostProcessor;
 	}
 
@@ -429,8 +398,7 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 		MethodValidationPostProcessor methodValidationPostProcessor = new MethodValidationPostProcessor();
 		methodValidationPostProcessor.setValidator(validator());
 		methodValidationPostProcessor.setOrder(0);
-		log.info("methodValidationPostProcessor=========="
-				+ methodValidationPostProcessor);
+		log.info("methodValidationPostProcessor==========" + methodValidationPostProcessor);
 		return methodValidationPostProcessor;
 	}
 
@@ -483,10 +451,8 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	// A.5.2.Profile：参考@Profile和<beans profile="">
 	@Profile("development")
 	@Bean("house")
-	public House house1(
-			@Value("${house.name:houseName_def}") String houseName,
-			@Value("${house.host.development:development_def}") String hostName,
-			@Value("#{absHouse}") House abshouse) {
+	public House house1(@Value("${house.name:houseName_def}") String houseName,
+			@Value("${house.host.development:development_def}") String hostName, @Value("#{absHouse}") House abshouse) {
 		abshouse.setHouseName(houseName);
 		abshouse.setHostName(hostName);
 		return abshouse;
@@ -495,8 +461,7 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	@Profile("production")
 	@Bean("house")
 	public House house2(@Value("${house.name:houseName_def}") String houseName,
-			@Value("${house.host.production:production_def}") String hostName,
-			@Value("#{absHouse}") House abshouse) {
+			@Value("${house.host.production:production_def}") String hostName, @Value("#{absHouse}") House abshouse) {
 		abshouse.setHouseName(houseName);
 		abshouse.setHostName(hostName);
 		return abshouse;
@@ -529,40 +494,28 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
 		PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer = new PropertySourcesPlaceholderConfigurer();
 		propertySourcesPlaceholderConfigurer.setFileEncoding("UTF-8");
-		propertySourcesPlaceholderConfigurer
-				.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertySourcesPlaceholderConfigurer=========="
-				+ propertySourcesPlaceholderConfigurer);
+		propertySourcesPlaceholderConfigurer.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		log.info("propertySourcesPlaceholderConfigurer==========" + propertySourcesPlaceholderConfigurer);
 		return propertySourcesPlaceholderConfigurer;
 	}
 
 	// PropertyPlaceholderConfigurer通过指定location/properties属性，以替换@Value中的占位符
 	public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
 		PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
-		propertyPlaceholderConfigurer.setLocations(new ClassPathResource(
-				"family.properties"), new ClassPathResource("jdbc.properties"));
+		propertyPlaceholderConfigurer.setLocations(new ClassPathResource("family.properties"),
+				new ClassPathResource("jdbc.properties"));
 		propertyPlaceholderConfigurer.setFileEncoding("UTF-8");
 		propertyPlaceholderConfigurer.setOrder(Ordered.HIGHEST_PRECEDENCE);
-		log.info("propertyPlaceholderConfigurer=========="
-				+ propertyPlaceholderConfigurer);
+		log.info("propertyPlaceholderConfigurer==========" + propertyPlaceholderConfigurer);
 		return propertyPlaceholderConfigurer;
 	}
 
 	// A.6.3.Customizing instantiation logic with a FactoryBean
 	@Bean("familyx")
-	public MyFamilyFactoryBean myFamilyFactoryBean(
-			@Value("${family.x.familyName:ruan_def}") String familyName,
-			@Value("${family.familyCount:2}") int familyCount,
-			@Qualifier("father") People father) {
-		MyFamilyFactoryBean myFamilyFactoryBean = new MyFamilyFactoryBean(
-				familyName, familyCount, father);
+	public MyFamilyFactoryBean myFamilyFactoryBean(@Value("${family.x.familyName:ruan_def}") String familyName,
+			@Value("${family.familyCount:2}") int familyCount, @Qualifier("father") People father) {
+		MyFamilyFactoryBean myFamilyFactoryBean = new MyFamilyFactoryBean(familyName, familyCount, father);
 		return myFamilyFactoryBean;
-	}
-
-	// just for testing
-	@Bean
-	public ContextService contextService() {
-		return new ContextService();
 	}
 
 	// ==========B.AOP and Instrumentation==========
@@ -575,12 +528,6 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	public GoodImpl good() {
 		GoodImpl good = new GoodImpl();
 		return good;
-	}
-
-	// just for testing
-	@Bean
-	public AopService aopService() {
-		return new AopService();
 	}
 
 }
