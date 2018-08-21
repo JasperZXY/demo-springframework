@@ -30,7 +30,7 @@
 - &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
 - &lt;context:spring-configured/> vs @EnableSpringConfigured.
 - &lt;aop:scoped-proxy proxy-target-class="true"/> vs @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS).
-<p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.
+<p>注意：基于XML的配置元数据需要使用&lt;context:annotation-config/>开启@Configuration注解支持.
 
 ### 开启基于注解的配置元数据：
 - &lt;context:annotation-config/> vs @Bean xxxBeanPostProcessor.
@@ -55,6 +55,7 @@
 - @Pointcut("execution(* transfer(..))") vs &lt;aop:aspect><aop:pointcut id="myPointcut" expression="execution(* transfer(..))"/>&lt;/aop:aspect>
 - @Before("org.ruanwei.SystemArchitecture.myPointcut()") vs &lt;aop:aspect>&lt;aop:before pointcut-ref="myPointcut" method="myAdviceMethod"/>
 - @DeclareParents(value="org.ruanwei.*A*",defaultImpl=BImpl.class) vs &lt;aop:aspect>&lt;aop:declare-parents types-matching="org.ruanwei.*A*" implement-interface="org.ruanwei.B" default-impl="org.ruanwei.BImpl"/>
+<p>注意：对于AOP配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
 
 ### TODO:
 1. 补充在Spring中使用AspectJ；

@@ -14,6 +14,7 @@ import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -56,12 +57,15 @@ public class AopTest {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
 		log.info("1======================================================================================");
 
-		Family family = context.getBean("family", Family.class);
-		family.sayHello("whatever");
+		// 对于AOP配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
+		if(context instanceof AbstractRefreshableApplicationContext) {
+			Family family = context.getBean("family", Family.class);
+			family.sayHello("whatever");
 
-		Good good = (Good) context.getBean("good");
-		Happy mixin = (Happy) context.getBean("good");
-		log.info(good.good("whatever") + mixin.happy("whatever"));
+			Good good = (Good) context.getBean("good");
+			Happy mixin = (Happy) context.getBean("good");
+			log.info(good.good("whatever") + mixin.happy("whatever"));
+		}
 	}
 
 	@AfterEach

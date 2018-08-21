@@ -40,9 +40,9 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author ruanwei
  *
  */
-public class JdbcDAO/** extends JdbcDaoSupport */
+public class JdbcDao
 {
-	private static Log log = LogFactory.getLog(JdbcDAO.class);
+	private static Log log = LogFactory.getLog(JdbcDao.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;
