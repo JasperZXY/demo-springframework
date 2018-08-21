@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
 import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.User2;
 import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.UserJdbcRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.repository.support.SimpleJdbcRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
