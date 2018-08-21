@@ -4,7 +4,7 @@
 - demo-springframework-withoutAnnotation模块为纯基于XML/Java的配置元数据的项目，未开启基于注解的配置元数据。
 - demo-springframework-withAnnotation模块为基于XML/Java的配置元数据的项目，并开启基于注解的配置元数据(<context:annotation-config/>)。
 
-### 基于XML和基于Java的配置元数据主要对比：
+### 基于XML的和基于Java的配置元数据主要对比：
 - &lt;beans> vs @Configuration.
 - &lt;beans profile="dev"/> vs @Profile("dev").
 - &lt;beans default-lazy-init="true"/> vs nothing.
@@ -36,7 +36,7 @@
 - &lt;context:annotation-config/> vs @Bean xxxBeanPostProcessor.
 - &lt;context:component-scan base-package="org.ruanwei" scoped-proxy="class"/> vs @ComponentScan(basePackages="org.ruanwei",scopedProxy=ScopedProxyMode.CLASS).
 
-#### 基于注解和非基于注解的配置元数据主要对比：
+#### 基于注解和基于非注解的配置元数据主要对比：
 - @Component("myBean")/JSR-250:@ManagedBean("myBean") vs @Bean("myBean").
 - @Required vs nothing.
 - @Autowired(required="true")/JSR-250:@Resource("myBean")/JSR-330:@Inject vs nothing.
@@ -57,6 +57,14 @@
 - @DeclareParents(value="org.ruanwei.*A*",defaultImpl=BImpl.class) vs &lt;aop:aspect>&lt;aop:declare-parents types-matching="org.ruanwei.*A*" implement-interface="org.ruanwei.B" default-impl="org.ruanwei.BImpl"/>
 <p>注意：对于AOP配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
 
+### 开启基于@Transactional注解的事务声明配置：
+- &lt;tx:annotation-driven transaction-manager="txManager"/> vs @EnableTransactionManagement
+
+#### 基于@Transactional注解的和基于XML的事务声明配置主要对比：
+- @Transactional vs &lt;tx:advice id="txAdvice" transaction-manager="txManager">&lt;tx:attributes>&lt;tx:method name="get*"/>&lt;/tx:attributes>&lt;/tx:advice>
+- &lt;aop:config>&lt;aop:pointcut id="myPointcut" expression="execution(* transfer(..))"/>&lt;aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>&lt;/aop:config>
+<p>注意：对于事务配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
+
 ### TODO:
 1. 补充在Spring中使用AspectJ；
 2. 解析自定义配置xml标签
@@ -66,6 +74,6 @@
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
-7. 补充AOP和事务的配置对比
+7. 补充事务的配置对比
 8. 事务和AOP的引入没有对应的Java配置没有对比
 9. withoutAnnotation在java配置的测试用例空指针
