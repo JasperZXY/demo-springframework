@@ -74,3 +74,5 @@
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
+7. Spring Data Jdbc还没有通
+8. 将aop单独出独立的Java配置元数据
