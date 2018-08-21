@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
@@ -80,7 +81,7 @@ public class ContextTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	void testEnvWithProfile() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");

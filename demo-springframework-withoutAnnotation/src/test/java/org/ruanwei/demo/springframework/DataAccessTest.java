@@ -86,7 +86,8 @@ public class DataAccessTest {
 	// @Disabled
 	@Test
 	void testSpringJdbcWithJdbcTemplate() {
-		assertNotNull(jdbcDao, "jdbcDAO is null++++++++++++++++++++++++++++");
+		log.error("testSpringJdbcWithTransaction+++++++++++++++++++++++++++++++++++");
+		assertNotNull(jdbcDao, "jdbcDao is null++++++++++++++++++++++++++++");
 		testCRUD();
 	}
 

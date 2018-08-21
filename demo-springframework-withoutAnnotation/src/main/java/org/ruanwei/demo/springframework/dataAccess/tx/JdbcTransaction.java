@@ -33,7 +33,8 @@ public class JdbcTransaction {
 		jdbcDao.createUser1(paramForCreate4);
 	}
 
-	public void setJdbcDAO(JdbcDao jdbcDao) {
+	public void setJdbcDao(JdbcDao jdbcDao) {
+		log.error("transactionalMethod+++++++"+jdbcDao);
 		this.jdbcDao = jdbcDao;
 	}
 }

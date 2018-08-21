@@ -199,6 +199,7 @@ public class JdbcDao
 	// create/update/delete都是调用update方法
 	public int createUser1(User user) {
 		log.info("createUser1(User user)" + user);
+		log.error("testSpringJdbcWithTransaction4+++++++++++++++++++++++++++++++++++"+jdbcTemplate);
 
 		int count = jdbcTemplate.update(sql_72, user.getName(), user.getAge(),
 				user.getBirthday());
@@ -383,4 +384,9 @@ public class JdbcDao
 			return ps;
 		};
 	}
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
 }

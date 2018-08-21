@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.core.aop.Good;
 import org.ruanwei.demo.springframework.core.aop.Happy;
@@ -51,7 +52,7 @@ public class AopTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	void testAop() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
