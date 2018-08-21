@@ -32,8 +32,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext.xml")
-//@SpringJUnitConfig(AppConfig.class)
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext.xml")
+@SpringJUnitConfig(AppConfig.class)
 public class AopTest {
 	private static Log log = LogFactory.getLog(AopTest.class);
 

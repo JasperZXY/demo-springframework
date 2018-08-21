@@ -29,7 +29,6 @@
 - &lt;bean>&lt;replaced-method name="computeValue" replacer="replacementComputeValue"/>&lt;/bean> vs nothing.
 - &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
 - &lt;context:spring-configured/> vs @EnableSpringConfigured.
-- &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
 - &lt;aop:scoped-proxy proxy-target-class="true"/> vs @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS).
 <p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.
 
@@ -37,7 +36,7 @@
 - &lt;context:annotation-config/> vs @Bean xxxBeanPostProcessor.
 - &lt;context:component-scan base-package="org.ruanwei" scoped-proxy="class"/> vs @ComponentScan(basePackages="org.ruanwei",scopedProxy=ScopedProxyMode.CLASS).
 
-### 基于注解和非基于注解的配置元数据主要对比：
+#### 基于注解和非基于注解的配置元数据主要对比：
 - @Component("myBean")/JSR-250:@ManagedBean("myBean") vs @Bean("myBean").
 - @Required vs nothing.
 - @Autowired(required="true")/JSR-250:@Resource("myBean")/JSR-330:@Inject vs nothing.
@@ -47,6 +46,15 @@
 - @EventListener vs org.springframework.context.event.EventListener.
 - @Lookup vs &lt;lookup-method name="createCommand" bean="myCommand"/>.
 - @PersistenceContext vs .
+
+### 开启基于@AspectJ风格的AOP配置：
+- &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
+
+#### 基于@AspectJ风格的和基于schema风格的AOP配置主要对比：
+- @AspectJ vs &lt;aop:config>&lt;aop:aspect ref="myAspect">&lt;/aop:config>
+- @Pointcut("execution(* transfer(..))") vs &lt;aop:aspect><aop:pointcut id="myPointcut" expression="execution(* transfer(..))"/>&lt;/aop:aspect>
+- @Before("org.ruanwei.SystemArchitecture.myPointcut()") vs &lt;aop:aspect>&lt;aop:before pointcut-ref="myPointcut" method="myAdviceMethod"/>
+- @DeclareParents(value="org.ruanwei.*A*",defaultImpl=BImpl.class) vs &lt;aop:aspect>&lt;aop:declare-parents types-matching="org.ruanwei.*A*" implement-interface="org.ruanwei.B" default-impl="org.ruanwei.BImpl"/>
 
 ### TODO:
 1. 补充在Spring中使用AspectJ；

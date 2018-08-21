@@ -28,8 +28,8 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@Import(JdbcConfiguration.class)
-@EnableJdbcRepositories
+//@Import(JdbcConfiguration.class)
+//@EnableJdbcRepositories
 @PropertySource("classpath:jdbc.properties")
 @Configuration
 public class SpringDataConfig2 implements EnvironmentAware, InitializingBean {// implements

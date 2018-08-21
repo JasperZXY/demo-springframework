@@ -52,8 +52,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
-//@SpringJUnitConfig(AppConfig2.class)
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
+@SpringJUnitConfig(AppConfig2.class)
 public class ContextTest {
 	private static Log log = LogFactory.getLog(ContextTest.class);
 
