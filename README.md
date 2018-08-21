@@ -69,11 +69,8 @@
 1. 补充在Spring中使用AspectJ；
 2. 解析自定义配置xml标签
 3. demo-springframework-temp为临时项目，准备删除。
-4. 补充测试用例
-5. 补充@Valid支持分组验证；
+4. 补充@Valid支持分组验证；
+5. review事务的配置和用例
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
-7. 补充事务的配置对比
-8. 事务和AOP的引入没有对应的Java配置没有对比
-9. withoutAnnotation在java配置的测试用例空指针
