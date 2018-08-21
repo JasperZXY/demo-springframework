@@ -5,20 +5,15 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
-import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jdbc.repository.config.EnableJdbcRepositories;
-import org.springframework.data.jdbc.repository.config.JdbcConfiguration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -141,13 +136,4 @@ public class SpringDataConfig2 implements EnvironmentAware, InitializingBean {//
 		return txManager;
 	}
 
-	@Bean
-	public JdbcTransaction jdbcTransaction() {
-		return new JdbcTransaction();
-	}
-
-	@Bean
-	public JdbcDAO jdbcDAO() {
-		return new JdbcDAO();
-	}
 }
