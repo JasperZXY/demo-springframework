@@ -1,4 +1,4 @@
-package org.ruanwei.demo.springframework.dataAccess.springdata.jdbc;
+package org.ruanwei.demo.springframework.data.jdbc;
 
 import org.springframework.data.repository.CrudRepository;
 
