@@ -96,6 +96,11 @@
 		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
+	
+	<bean id="jdbcDao"
+		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao">
+		<property name="dataSource" ref="dataSource1" />
+	</bean>
 
 	<!-- ==========A.Data Access:TransactionManager========== -->
 	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
@@ -144,12 +149,6 @@
 	<bean id="jdbcTransaction"
 		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction">
 		<property name="jdbcDao" ref="jdbcDao" />
-	</bean>
-
-	<!-- ==========A.Data Access:DAO========== -->
-	<bean id="jdbcDao"
-		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao">
-		<property name="dataSource" ref="dataSource1" />
 	</bean>
 
 	<!-- more bean definitions go here -->

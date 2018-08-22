@@ -21,6 +21,7 @@ import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -37,9 +38,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 // @DirtiesContext
-// @Transactional("txManager")
 // @Rollback
 // @Commit
+// @Transactional("txManager")
 @ActiveProfiles("development")
 //@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
 @SpringJUnitConfig(AppConfig2.class)
@@ -85,7 +86,7 @@ public class DataAccessTest {
 
 	// @Disabled
 	@Test
-	void testSpringJdbcWithJdbcTemplate() {
+	void testSpringJdbc() {
 		assertNotNull(jdbcDAO, "jdbcDAO is null++++++++++++++++++++++++++++");
 		testCRUD();
 	}

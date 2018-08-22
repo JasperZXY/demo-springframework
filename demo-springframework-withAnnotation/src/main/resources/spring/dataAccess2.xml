@@ -102,8 +102,6 @@
 		class="org.springframework.transaction.jta.JtaTransactionManager"
 		lazy-init="true" />
 
-	<!-- ==========A.Data Access:DAO========== -->
-
 	<!-- more bean definitions go here -->
 
 </beans>

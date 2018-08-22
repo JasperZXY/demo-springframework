@@ -110,6 +110,13 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		dataSource.setMaxPoolSize(100);
 		return dataSource;
 	}
+	
+	@Bean
+	public JdbcDao jdbcDao() {
+		JdbcDao jdbcDao = new JdbcDao();
+		jdbcDao.setDataSource(dataSource1());
+		return jdbcDao;
+	}
 
 	// ==========A.Data Access:TransactionManager==========
 	// local transaction manager for jdbc
@@ -128,14 +135,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
 	}
-
-	@Bean
-	public JdbcDao jdbcDao() {
-		JdbcDao jdbcDao = new JdbcDao();
-		jdbcDao.setDataSource(dataSource1());
-		return jdbcDao;
-	}
-
+	
 	@Bean
 	public JdbcTransaction jdbcTransaction() {
 		JdbcTransaction jdbcTransaction = new JdbcTransaction();

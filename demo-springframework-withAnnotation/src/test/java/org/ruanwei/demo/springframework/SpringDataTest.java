@@ -66,7 +66,7 @@ public class SpringDataTest {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
-	// @Autowired
+	@Autowired
 	private UserJdbcRepository userJdbcRepository;
 	// @Autowired
 	private SimpleJdbcRepository<User2, Integer> simpleJdbcRepository;
@@ -81,7 +81,7 @@ public class SpringDataTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	//@Disabled
 	@Test
 	public void testSpringDataJdbc() {
 		Iterable<User2> users = userJdbcRepository.findAll();
@@ -89,6 +89,11 @@ public class SpringDataTest {
 		// Iterable<User2> users2 = simpleJdbcRepository.findAll();
 		// users2.forEach(u -> log.info("user2=" + u));
 		// userJdbcRepository.save(paramForCreate);
+	}
+	
+	@Disabled
+	@Test
+	public void testSpringDataJpa() {
 	}
 
 	@Disabled
