@@ -58,6 +58,12 @@ public class AopTest {
 
 		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
+	}
+
+	@Test
+	void testIntroduction() {
+		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
+		log.info("2======================================================================================");
 
 		Good good = (Good) context.getBean("good");
 		Happy mixin = (Happy) context.getBean("good");
