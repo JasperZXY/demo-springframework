@@ -56,7 +56,7 @@ import org.springframework.util.StopWatch;
  */
 @Order(2)
 @Aspect
-@Component()
+@Component
 public class MyAspect2 {
 	private static Log log = LogFactory.getLog(MyAspect2.class);
 

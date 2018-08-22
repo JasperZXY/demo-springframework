@@ -5,8 +5,6 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
-import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
@@ -28,8 +26,8 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
-@Import(JdbcConfiguration.class)
-@EnableJdbcRepositories
+//@Import(JdbcConfiguration.class)
+//@EnableJdbcRepositories
 @PropertySource("classpath:jdbc.properties")
 @Configuration
 public class SpringDataConfig2 implements EnvironmentAware, InitializingBean {// implements
@@ -141,13 +139,4 @@ public class SpringDataConfig2 implements EnvironmentAware, InitializingBean {//
 		return txManager;
 	}
 
-	@Bean
-	public JdbcTransaction jdbcTransaction() {
-		return new JdbcTransaction();
-	}
-
-	@Bean
-	public JdbcDAO jdbcDAO() {
-		return new JdbcDAO();
-	}
 }

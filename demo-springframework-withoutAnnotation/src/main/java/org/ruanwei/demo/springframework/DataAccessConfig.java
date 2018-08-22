@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
 import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,10 +41,6 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	private Environment env;
 
-	public DataAccessConfig() {
-		log.info("DataAccessConfig()======");
-	}
-
 	@Override
 	public void setEnvironment(Environment environment) {
 		this.env = environment;
@@ -53,12 +49,9 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		log.info("afterPropertiesSet()======" + env);
-		driverClassName = env.getProperty("jdbc.driverClassName",
-				"com.mysql.cj.jdbc.Driver");
-		url = env
-				.getProperty(
-						"jdbc.url",
-						"jdbc:mysql://localhost:3306/demo?useUnicode=true&autoReconnect=true&characterEncoding=utf-8");
+		driverClassName = env.getProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
+		url = env.getProperty("jdbc.url",
+				"jdbc:mysql://localhost:3306/demo?useUnicode=true&autoReconnect=true&characterEncoding=utf-8");
 		username = env.getProperty("jdbc.username", "root");
 		password = env.getProperty("jdbc.password", "qqqq1234");
 	}
@@ -67,10 +60,8 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	@Qualifier("embeddedDataSource")
 	@Bean
 	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
-				.setType(EmbeddedDatabaseType.HSQL).setScriptEncoding("UTF-8")
-				.ignoreFailedDrops(true)
-				.addScript("classpath:db/db-schema-hsql.sql")
+		return new EmbeddedDatabaseBuilder().generateUniqueName(true).setType(EmbeddedDatabaseType.HSQL)
+				.setScriptEncoding("UTF-8").ignoreFailedDrops(true).addScript("classpath:db/db-schema-hsql.sql")
 				.addScripts("classpath:db/db-test-data.sql").build();
 	}
 
@@ -90,7 +81,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Qualifier("dbcp2DataSource")
-	@Bean(destroyMethod="close")
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClassName);
@@ -107,7 +98,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 
 	// polled-DataSource:c3p0
 	@Qualifier("c3p0DataSource")
-	@Bean(destroyMethod="close")
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(driverClassName);
@@ -139,12 +130,16 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	}
 
 	@Bean
-	public JdbcTransaction jdbcTransaction() {
-		return new JdbcTransaction();
+	public JdbcDao jdbcDao() {
+		JdbcDao jdbcDao = new JdbcDao();
+		jdbcDao.setDataSource(dataSource1());
+		return jdbcDao;
 	}
 
 	@Bean
-	public JdbcDAO jdbcDAO() {
-		return new JdbcDAO();
+	public JdbcTransaction jdbcTransaction() {
+		JdbcTransaction jdbcTransaction = new JdbcTransaction();
+		jdbcTransaction.setJdbcDao(jdbcDao());
+		return jdbcTransaction;
 	}
 }

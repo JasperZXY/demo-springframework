@@ -4,7 +4,7 @@ import java.sql.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
 
 public class JdbcTransaction {
@@ -15,12 +15,12 @@ public class JdbcTransaction {
 	private static final User paramForCreate3 = new User("ruanwei_tmp3", 35, Date.valueOf("1983-07-06"));
 	private static final User paramForCreate4 = new User("ruanwei_tmp4", 35, Date.valueOf("1983-07-06"));
 
-	private JdbcDAO jdbcDAO;
+	private JdbcDao jdbcDao;
 
 	// 不能在这一层进行try-catch
 	public void transactionalMethod() {
-		jdbcDAO.createUser1(paramForCreate1);
-		jdbcDAO.createUser1(paramForCreate2);
+		jdbcDao.createUser1(paramForCreate1);
+		jdbcDao.createUser1(paramForCreate2);
 
 		transactionalSubMethod();
 
@@ -29,11 +29,12 @@ public class JdbcTransaction {
 
 	// 不能在这一层进行try-catch
 	private void transactionalSubMethod() {
-		jdbcDAO.createUser1(paramForCreate3);
-		jdbcDAO.createUser1(paramForCreate4);
+		jdbcDao.createUser1(paramForCreate3);
+		jdbcDao.createUser1(paramForCreate4);
 	}
 
-	public void setJdbcDAO(JdbcDAO jdbcDAO) {
-		this.jdbcDAO = jdbcDAO;
+	public void setJdbcDao(JdbcDao jdbcDao) {
+		log.error("transactionalMethod+++++++"+jdbcDao);
+		this.jdbcDao = jdbcDao;
 	}
 }

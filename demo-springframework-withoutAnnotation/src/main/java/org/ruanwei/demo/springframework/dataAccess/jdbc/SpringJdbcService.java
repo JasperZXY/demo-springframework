@@ -37,7 +37,7 @@ public class SpringJdbcService {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
-	private JdbcDAO jdbcDAO;
+	private JdbcDao jdbcDao;
 
 	public void testSpringJdbc() {
 		testCRUD();
@@ -52,41 +52,41 @@ public class SpringJdbcService {
 	}
 
 	private void testCreate() {
-		jdbcDAO.createUser1(paramForCreate1);
-		jdbcDAO.createUser2(paramForCreate1);
-		jdbcDAO.createUser3(paramForCreate1);
-		jdbcDAO.createUser4(paramForCreate1);
-		jdbcDAO.createUser4(paramForCreate2);
-		jdbcDAO.createUser5(paramForCreate1);
-		jdbcDAO.createUser5(paramForCreate2);
+		jdbcDao.createUser1(paramForCreate1);
+		jdbcDao.createUser2(paramForCreate1);
+		jdbcDao.createUser3(paramForCreate1);
+		jdbcDao.createUser4(paramForCreate1);
+		jdbcDao.createUser4(paramForCreate2);
+		jdbcDao.createUser5(paramForCreate1);
+		jdbcDao.createUser5(paramForCreate2);
 	}
 
 	private void testBatchUpdate() {
 		List<User> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
-		jdbcDAO.batchUpdateUser1(users);
-		jdbcDAO.batchUpdateUser2(users);
-		jdbcDAO.batchUpdateUser3(users);
-		jdbcDAO.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
+		jdbcDao.batchUpdateUser1(users);
+		jdbcDao.batchUpdateUser2(users);
+		jdbcDao.batchUpdateUser3(users);
+		jdbcDao.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
 	}
 
 	private void testQueryForSingleRow() {
-		jdbcDAO.queryForSingleColumn();
-		jdbcDAO.queryForMultiColumn();
-		jdbcDAO.queryForObject();
+		jdbcDao.queryForSingleColumn();
+		jdbcDao.queryForMultiColumn();
+		jdbcDao.queryForObject();
 	}
 
 	private void testQueryFormultiRow() {
-		jdbcDAO.queryForSingleColumnList();
-		jdbcDAO.queryForMultiColumnList();
-		jdbcDAO.queryForObjectList();
+		jdbcDao.queryForSingleColumnList();
+		jdbcDao.queryForMultiColumnList();
+		jdbcDao.queryForObjectList();
 	}
 
 	private void testDelete() {
 		// jdbcDAO.deleteUser(2);
 	}
 
-	public void setJdbcDAO(JdbcDAO jdbcDAO) {
-		this.jdbcDAO = jdbcDAO;
+	public void setJdbcDAO(JdbcDao jdbcDao) {
+		this.jdbcDao = jdbcDao;
 	}
 
 }

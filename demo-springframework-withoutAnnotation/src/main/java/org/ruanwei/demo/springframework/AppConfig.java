@@ -69,11 +69,14 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 
 /**
  * 
- * 由于没有开启注解，因此以下三种方式均无法注入依赖到AppConfig： <li>@Value(${placeholder}). <li>
- * @Value(#{SpEL ). <li>@Autowired/@Qualifier.
+ * 由于没有开启注解，因此以下三种方式均无法注入依赖到AppConfig： 
+ * <li>@Value(${placeholder}). 
+ * <li>@Value(#{SpEL ). 
+ * <li>@Autowired/@Qualifier.
  * 
- * 要引用外部化配置，以下两种方式： <li>通过EnvironmentAware注入Environment，然后获取属性 <li>
- * 利用@Bean方法参数的隐式支持@Value和@Autowired(可以替换为@Value("#{nyBean}"))
+ * 要引用外部化配置，以下两种方式： 
+ * <li>通过EnvironmentAware注入Environment，然后获取属性 
+ * <li>利用@Bean方法参数的隐式支持@Value和@Autowired(可以替换为@Value("#{nyBean}"))
  * 
  * @author ruanwei
  *
@@ -82,7 +85,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 // @ImportResource({"classpath:spring/applicationContext.xml"})
-@Import({ DataAccessConfig.class, SpringDataConfig.class })
+@Import({ AopConfig.class, DataAccessConfig.class, SpringDataConfig.class })
 @Configuration
 public class AppConfig implements EnvironmentAware, InitializingBean {
 	private static Log log = LogFactory.getLog(AppConfig.class);
@@ -90,10 +93,6 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	private Environment env;
 
 	private int familyCount;
-
-	public AppConfig() {
-		log.info("AppConfig()======");
-	}
 
 	@Override
 	public void setEnvironment(Environment environment) {
@@ -115,7 +114,6 @@ public class AppConfig implements EnvironmentAware, InitializingBean {
 	public Family family(@Value("${family.1.familyName:ruan_def}") String familyName,
 			@Qualifier("father") People father, @Qualifier("mother") People mother, @Qualifier("son") People son,
 			@Qualifier("daughter") People daughter, @Qualifier("guest") People guest) {
-		log.info("AppConfig1()======" + env);
 		// 1.Constructor-based dependency injection
 		Family family = new Family(familyName, familyCount, father);
 		// 2.Setter-based dependency injection

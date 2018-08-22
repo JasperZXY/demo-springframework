@@ -40,9 +40,9 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author ruanwei
  *
  */
-public class JdbcDAO/** extends JdbcDaoSupport */
+public class JdbcDao
 {
-	private static Log log = LogFactory.getLog(JdbcDAO.class);
+	private static Log log = LogFactory.getLog(JdbcDao.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;
@@ -199,6 +199,7 @@ public class JdbcDAO/** extends JdbcDaoSupport */
 	// create/update/delete都是调用update方法
 	public int createUser1(User user) {
 		log.info("createUser1(User user)" + user);
+		log.error("testSpringJdbcWithTransaction4+++++++++++++++++++++++++++++++++++"+jdbcTemplate);
 
 		int count = jdbcTemplate.update(sql_72, user.getName(), user.getAge(),
 				user.getBirthday());
@@ -383,4 +384,9 @@ public class JdbcDAO/** extends JdbcDaoSupport */
 			return ps;
 		};
 	}
+
+	public JdbcTemplate getJdbcTemplate() {
+		return jdbcTemplate;
+	}
+	
 }

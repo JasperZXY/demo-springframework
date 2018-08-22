@@ -35,6 +35,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
@@ -52,8 +53,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
-//@SpringJUnitConfig(AppConfig2.class)
+@TestPropertySource("classpath:family.properties")
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
+@SpringJUnitConfig(AppConfig2.class)
 public class ContextTest {
 	private static Log log = LogFactory.getLog(ContextTest.class);
 

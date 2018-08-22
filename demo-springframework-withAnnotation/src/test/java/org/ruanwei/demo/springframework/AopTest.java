@@ -32,8 +32,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
-//@SpringJUnitConfig(AppConfig2.class)
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
+@SpringJUnitConfig(AppConfig2.class)
 public class AopTest {
 	private static Log log = LogFactory.getLog(AopTest.class);
 
@@ -58,6 +58,12 @@ public class AopTest {
 
 		Family family = context.getBean("family", Family.class);
 		family.sayHello("whatever");
+	}
+
+	@Test
+	void testIntroduction() {
+		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
+		log.info("2======================================================================================");
 
 		Good2 good = (Good2) context.getBean("good");
 		Happy2 mixin = (Happy2) context.getBean("good");

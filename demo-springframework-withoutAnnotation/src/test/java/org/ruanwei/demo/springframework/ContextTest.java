@@ -12,6 +12,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.ruanwei.demo.springframework.core.ioc.House;
@@ -35,6 +36,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.env.MockPropertySource;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 /**
@@ -52,8 +54,9 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
  *
  */
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext.xml")
-//@SpringJUnitConfig(AppConfig.class)
+@TestPropertySource("classpath:family.properties")
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext.xml")
+@SpringJUnitConfig(AppConfig.class)
 public class ContextTest {
 	private static Log log = LogFactory.getLog(ContextTest.class);
 
@@ -78,7 +81,7 @@ public class ContextTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	void testEnvWithProfile() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");

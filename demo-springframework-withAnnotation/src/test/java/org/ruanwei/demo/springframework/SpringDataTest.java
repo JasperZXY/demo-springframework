@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
 import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.User2;
 import org.ruanwei.demo.springframework.dataAccess.springdata.jdbc.UserJdbcRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.repository.support.SimpleJdbcRepository;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -38,8 +39,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 // @Rollback
 // @Commit
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
-//@SpringJUnitConfig(AppConfig2.class)
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
+@SpringJUnitConfig(AppConfig2.class)
 public class SpringDataTest {
 	private static Log log = LogFactory.getLog(SpringDataTest.class);
 

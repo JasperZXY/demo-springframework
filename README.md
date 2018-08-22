@@ -4,7 +4,7 @@
 - demo-springframework-withoutAnnotation模块为纯基于XML/Java的配置元数据的项目，未开启基于注解的配置元数据。
 - demo-springframework-withAnnotation模块为基于XML/Java的配置元数据的项目，并开启基于注解的配置元数据(<context:annotation-config/>)。
 
-### 基于XML和基于Java的配置元数据主要对比：
+### 基于XML的和基于Java的配置元数据主要对比：
 - &lt;beans> vs @Configuration.
 - &lt;beans profile="dev"/> vs @Profile("dev").
 - &lt;beans default-lazy-init="true"/> vs nothing.
@@ -29,15 +29,14 @@
 - &lt;bean>&lt;replaced-method name="computeValue" replacer="replacementComputeValue"/>&lt;/bean> vs nothing.
 - &lt;context:load-time-weaver/> vs @EnableLoadTimeWeaving.
 - &lt;context:spring-configured/> vs @EnableSpringConfigured.
-- &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
 - &lt;aop:scoped-proxy proxy-target-class="true"/> vs @Scope(proxyMode=ScopedProxyMode.TARGET_CLASS).
-<p>注意：基于XML的配置元数据使用&lt;context:annotation-config/>开启@Configuration注解支持.
+<p>注意：基于XML的配置元数据需要使用&lt;context:annotation-config/>开启@Configuration注解支持.
 
 ### 开启基于注解的配置元数据：
 - &lt;context:annotation-config/> vs @Bean xxxBeanPostProcessor.
 - &lt;context:component-scan base-package="org.ruanwei" scoped-proxy="class"/> vs @ComponentScan(basePackages="org.ruanwei",scopedProxy=ScopedProxyMode.CLASS).
 
-### 基于注解和非基于注解的配置元数据主要对比：
+#### 基于注解和基于非注解的配置元数据主要对比：
 - @Component("myBean")/JSR-250:@ManagedBean("myBean") vs @Bean("myBean").
 - @Required vs nothing.
 - @Autowired(required="true")/JSR-250:@Resource("myBean")/JSR-330:@Inject vs nothing.
@@ -48,15 +47,31 @@
 - @Lookup vs &lt;lookup-method name="createCommand" bean="myCommand"/>.
 - @PersistenceContext vs .
 
+### 开启基于@AspectJ风格的AOP配置：
+- &lt;aop:aspectj-autoproxy/> vs @EnableAspectJAutoProxy.
+
+#### 基于@AspectJ风格的和基于schema风格的AOP配置主要对比：
+- @AspectJ vs &lt;aop:config>&lt;aop:aspect ref="myAspect">&lt;/aop:config>
+- @Pointcut("execution(* transfer(..))") vs &lt;aop:aspect><aop:pointcut id="myPointcut" expression="execution(* transfer(..))"/>&lt;/aop:aspect>
+- @Before("org.ruanwei.SystemArchitecture.myPointcut()") vs &lt;aop:aspect>&lt;aop:before pointcut-ref="myPointcut" method="myAdviceMethod"/>
+- @DeclareParents(value="org.ruanwei.*A*",defaultImpl=BImpl.class) vs &lt;aop:aspect>&lt;aop:declare-parents types-matching="org.ruanwei.*A*" implement-interface="org.ruanwei.B" default-impl="org.ruanwei.BImpl"/>
+<p>注意：对于AOP配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
+
+### 开启基于@Transactional注解的事务声明配置：
+- &lt;tx:annotation-driven transaction-manager="txManager"/> vs @EnableTransactionManagement
+
+#### 基于@Transactional注解的和基于XML的事务声明配置主要对比：
+- @Transactional vs &lt;tx:advice id="txAdvice" transaction-manager="txManager">&lt;tx:attributes>&lt;tx:method name="get*"/>&lt;/tx:attributes>&lt;/tx:advice>
+- &lt;aop:config>&lt;aop:pointcut id="myPointcut" expression="execution(* transfer(..))"/>&lt;aop:advisor advice-ref="txAdvice" pointcut-ref="myPointcut"/>&lt;/aop:config>
+<p>注意：对于事务配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
+
 ### TODO:
 1. 补充在Spring中使用AspectJ；
 2. 解析自定义配置xml标签
 3. demo-springframework-temp为临时项目，准备删除。
-4. 补充测试用例
-5. 补充@Valid支持分组验证；
+4. 补充@Valid支持分组验证；
+5. review事务的配置和用例
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
-7. 补充AOP和事务的配置对比
-8. 事务和AOP的引入没有对应的Java配置没有对比
-9. withoutAnnotation在java配置的测试用例空指针
+7. Spring Data Jdbc还没有通

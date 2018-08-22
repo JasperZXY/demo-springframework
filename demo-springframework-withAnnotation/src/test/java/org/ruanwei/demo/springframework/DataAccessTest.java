@@ -41,8 +41,8 @@ import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 // @Rollback
 // @Commit
 @ActiveProfiles("development")
-@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
-//@SpringJUnitConfig(AppConfig2.class)
+//@SpringJUnitConfig(locations = "classpath:spring/applicationContext2.xml")
+@SpringJUnitConfig(AppConfig2.class)
 public class DataAccessTest {
 	private static Log log = LogFactory.getLog(DataAccessTest.class);
 
