@@ -8,14 +8,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.core.aop.Good;
 import org.ruanwei.demo.springframework.core.aop.Happy;
 import org.ruanwei.demo.springframework.core.ioc.Family;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -52,21 +50,18 @@ public class AopTest {
 		log.info("beforeEach()");
 	}
 
-	@Disabled
+	// @Disabled
 	@Test
 	void testAop() {
 		assertNotNull(context, "context is null++++++++++++++++++++++++++++");
 		log.info("1======================================================================================");
 
-		// 对于AOP配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
-		if(context instanceof AbstractRefreshableApplicationContext) {
-			Family family = context.getBean("family", Family.class);
-			family.sayHello("whatever");
+		Family family = context.getBean("family", Family.class);
+		family.sayHello("whatever");
 
-			Good good = (Good) context.getBean("good");
-			Happy mixin = (Happy) context.getBean("good");
-			log.info(good.good("whatever") + mixin.happy("whatever"));
-		}
+		Good good = (Good) context.getBean("good");
+		Happy mixin = (Happy) context.getBean("good");
+		log.info(good.good("whatever") + mixin.happy("whatever"));
 	}
 
 	@AfterEach
