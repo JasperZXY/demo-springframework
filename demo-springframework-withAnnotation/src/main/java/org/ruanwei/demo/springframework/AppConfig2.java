@@ -56,13 +56,11 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  *
  */
 // @Profile("development")
-
-@EnableAspectJAutoProxy
 @PropertySource("classpath:propertySource-${spring.profiles.active:development}.properties")
 @PropertySource("classpath:family.properties")
 @ComponentScan(basePackages = { "org.ruanwei.demo.springframework" })
 // @ImportResource({"classpath:spring/applicationContext2.xml"})
-@Import({ DataAccessConfig2.class, SpringDataConfig2.class })
+@Import({ AopConfig2.class, DataAccessConfig2.class, SpringDataConfig2.class })
 @Configuration
 public class AppConfig2 {
 	private static Log log = LogFactory.getLog(AppConfig2.class);
@@ -72,10 +70,6 @@ public class AppConfig2 {
 
 	@Autowired
 	private Environment env;
-
-	public AppConfig2() {
-		log.info("AppConfig()======");
-	}
 
 	@Lazy
 	@Description("result in a List bean,see ListFactoryBean")
