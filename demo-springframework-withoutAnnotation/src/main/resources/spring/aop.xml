@@ -26,9 +26,9 @@
 		of the proxy-target-class attribute of the <aop:config> element to true. -->
 	<aop:config>
 		<aop:pointcut id="myPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.core.ioc.Family.say*(..)) and args(message)" />
-		<!-- <aop:advisor advice-ref="myAspect" pointcut-ref="myPointcut" order="3" 
-			/> -->
+			expression="within(org.ruanwei.demo.springframework.core.ioc.*) and execution(* *..Family.say*(..)) and args(message)" />
+		<!-- <aop:advisor advice-ref="myAspect"
+			pointcut-ref="myPointcut" order="0" /> -->
 		<aop:aspect id="myAspect1" ref="myAspect" order="1">
 			<aop:pointcut id="myPointcut1"
 				expression="within(org.ruanwei.demo.springframework.core.ioc.*) and execution(* *..Family.say*(..)) and this(t) and args(message)" />
