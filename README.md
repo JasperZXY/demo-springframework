@@ -74,4 +74,3 @@
 6. 以下考虑从XmlConfig项目中迁出：
 - a.@Valid/@Validated注解；
 - b.@Format注解；
-7. Spring Data Jdbc还没有通
