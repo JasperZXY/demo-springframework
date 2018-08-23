@@ -21,7 +21,6 @@ import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -51,26 +50,30 @@ public class DataAccessTest {
 	private static final User paramForUpdate1 = new User("ruanwei", 18, Date.valueOf("1983-07-06"));
 	private static final User paramForUpdate2 = new User("ruanwei_tmp", 88, Date.valueOf("1983-07-06"));
 
-	private static final Map<String, Object> paramForCreate2 = new HashMap<String, Object>();
-	private static final Map<String, Object> paramForUpdate3 = new HashMap<String, Object>();
-	private static final Map<String, Object> paramForUpdate4 = new HashMap<String, Object>();
+	private static final Map<String, Object> mapParamForCreate1 = new HashMap<String, Object>();
+	private static final Map<String, Object> mapParamForUpdate1 = new HashMap<String, Object>();
+	private static final Map<String, Object> mapParamForUpdate2 = new HashMap<String, Object>();
+
+	private static final int args0 = 0;
+	private static final int args1 = 1;
 
 	static {
-		paramForCreate2.put("name", "ruanwei_tmp");
-		paramForCreate2.put("age", 35);
-		paramForCreate2.put("birthday", Date.valueOf("1983-07-06"));
+		mapParamForCreate1.put("name", "ruanwei_tmp");
+		mapParamForCreate1.put("age", 35);
+		mapParamForCreate1.put("birthday", Date.valueOf("1983-07-06"));
 
-		paramForUpdate3.put("name", "ruanwei");
-		paramForUpdate3.put("age", 18);
-		paramForUpdate3.put("birthday", Date.valueOf("1983-07-06"));
+		mapParamForUpdate1.put("name", "ruanwei");
+		mapParamForUpdate1.put("age", 18);
+		mapParamForUpdate1.put("birthday", Date.valueOf("1983-07-06"));
 
-		paramForUpdate4.put("name", "ruanwei_tmp");
-		paramForUpdate4.put("age", 88);
-		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
+		mapParamForUpdate2.put("name", "ruanwei_tmp");
+		mapParamForUpdate2.put("age", 88);
+		mapParamForUpdate2.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
 	@Autowired
 	private JdbcDAO jdbcDAO;
+
 	@Autowired
 	private JdbcTransaction jdbcTransaction;
 
@@ -116,7 +119,7 @@ public class DataAccessTest {
 		testCreate();
 		testBatchUpdate();
 		testQueryForSingleRow();
-		testQueryFormultiRow();
+		testQueryForList();
 		testDelete();
 	}
 
@@ -125,9 +128,9 @@ public class DataAccessTest {
 		jdbcDAO.createUser2(paramForCreate1);
 		jdbcDAO.createUser3(paramForCreate1);
 		jdbcDAO.createUser4(paramForCreate1);
-		jdbcDAO.createUser4(paramForCreate2);
+		jdbcDAO.createUser4(mapParamForCreate1);
 		jdbcDAO.createUser5(paramForCreate1);
-		jdbcDAO.createUser5(paramForCreate2);
+		jdbcDAO.createUser5(mapParamForCreate1);
 	}
 
 	private void testBatchUpdate() {
@@ -135,19 +138,19 @@ public class DataAccessTest {
 		jdbcDAO.batchUpdateUser1(users);
 		jdbcDAO.batchUpdateUser2(users);
 		jdbcDAO.batchUpdateUser3(users);
-		jdbcDAO.batchUpdateUser4(paramForUpdate3, paramForUpdate4);
+		jdbcDAO.batchUpdateUser4(mapParamForUpdate1, mapParamForUpdate2);
 	}
 
 	private void testQueryForSingleRow() {
-		jdbcDAO.queryForSingleColumn();
-		jdbcDAO.queryForMultiColumn();
-		jdbcDAO.queryForObject();
+		jdbcDAO.queryForSingleRowWithSingleColumn(args1);
+		jdbcDAO.queryForSingleRowAsColumnMap(args1);
+		jdbcDAO.queryForSingleRowAsBeanProperty(args1);
 	}
 
-	private void testQueryFormultiRow() {
-		jdbcDAO.queryForSingleColumnList();
-		jdbcDAO.queryForMultiColumnList();
-		jdbcDAO.queryForObjectList();
+	private void testQueryForList() {
+		jdbcDAO.queryForListWithSingleColumn(args0);
+		jdbcDAO.queryForListWithColumnMap(args0);
+		jdbcDAO.queryForListWithBeanProperty(args0);
 	}
 
 	private void testDelete() {
