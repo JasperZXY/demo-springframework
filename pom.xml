@@ -123,11 +123,13 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jdbc</artifactId>
 		</dependency>
-		<!-- 注意这里的版本号，spring-data的release train版本有问题 -->
+		<!-- spring-data的release train版本 -->
+		<!-- Kay-SR9对应2.0.9.RELEASE, Lovelace-RC2对应2.1.0.RC2 -->
+		<!-- 目前2.1.0.RC2与2.0.9.RELEASE不兼容，因此这里进行覆盖 -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-commons</artifactId>
-			<version>2.1.0.RC1</version>
+			<version>2.1.0.RC2</version>
 		</dependency>
 
 		<!-- <dependency>
