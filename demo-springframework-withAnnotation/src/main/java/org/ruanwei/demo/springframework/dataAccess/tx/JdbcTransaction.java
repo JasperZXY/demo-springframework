@@ -5,7 +5,7 @@ import java.sql.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -22,13 +22,13 @@ public class JdbcTransaction {
 	private static final User paramForCreate4 = new User("ruanwei_tmp4", 35, Date.valueOf("1983-07-06"));
 
 	@Autowired
-	private JdbcDAO jdbcDAO;
+	private JdbcDao jdbcDao;
 
 	// 不能在这一层进行try-catch
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { ArithmeticException.class })
 	public void transactionalMethod() {
-		jdbcDAO.createUser1(paramForCreate1);
-		jdbcDAO.createUser1(paramForCreate2);
+		jdbcDao.createUser1(paramForCreate1);
+		jdbcDao.createUser1(paramForCreate2);
 
 		transactionalSubMethod();
 
@@ -38,7 +38,7 @@ public class JdbcTransaction {
 	// 不能在这一层进行try-catch
 	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { ArithmeticException.class })
 	private void transactionalSubMethod() {
-		jdbcDAO.createUser1(paramForCreate3);
-		jdbcDAO.createUser1(paramForCreate4);
+		jdbcDao.createUser1(paramForCreate3);
+		jdbcDao.createUser1(paramForCreate4);
 	}
 }

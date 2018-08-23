@@ -46,8 +46,8 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("jdbcDAO")
-public class JdbcDAO {
-	private static Log log = LogFactory.getLog(JdbcDAO.class);
+public class JdbcDao {
+	private static Log log = LogFactory.getLog(JdbcDao.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;
