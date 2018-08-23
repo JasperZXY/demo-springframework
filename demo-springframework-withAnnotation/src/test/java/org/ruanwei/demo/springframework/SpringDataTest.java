@@ -12,9 +12,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.data.jdbc.User2;
-import org.ruanwei.demo.springframework.data.jdbc.UserJdbcRepository;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
+import org.ruanwei.demo.springframework.data.jdbc.SpringDataJdbcRepository;
+import org.ruanwei.demo.springframework.dataAccess.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jdbc.repository.support.SimpleJdbcRepository;
 import org.springframework.test.context.ActiveProfiles;
@@ -67,9 +66,9 @@ public class SpringDataTest {
 	}
 
 	@Autowired
-	private UserJdbcRepository userJdbcRepository;
+	private SpringDataJdbcRepository springDataJdbcRepository;
 	// @Autowired
-	private SimpleJdbcRepository<User2, Integer> simpleJdbcRepository;
+	private SimpleJdbcRepository<User, Integer> simpleJdbcRepository;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -84,8 +83,8 @@ public class SpringDataTest {
 	//@Disabled
 	@Test
 	public void testSpringDataJdbc() {
-		Iterable<User2> users = userJdbcRepository.findAll();
-		users.forEach(u -> log.info("user2========" + u));
+		Iterable<User> users = springDataJdbcRepository.findAll();
+		users.forEach(u -> log.info("user========" + u));
 		// Iterable<User2> users2 = simpleJdbcRepository.findAll();
 		// users2.forEach(u -> log.info("user2=" + u));
 		// userJdbcRepository.save(paramForCreate);
