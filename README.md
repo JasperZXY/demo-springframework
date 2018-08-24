@@ -75,3 +75,4 @@
 7. Spring Data Jdbc和Spring Jdbc的事务梳理；
 8. 解析自定义配置xml标签
 9. demo-springframework-temp为临时项目，准备删除
+10. 注意，Spring Data Jdbc不支持根据方法名推断SQL
