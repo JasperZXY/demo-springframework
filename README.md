@@ -66,12 +66,12 @@
 <p>注意：对于事务配置，没有与基于XML的配置元数据相匹配的基于Java的配置元数据.
 
 ### TODO:
-1. 补充在Spring中使用AspectJ；
-2. 补充@Valid支持分组验证
-3. 补充@Valid支持bean validation2.0
-4. 确认@Valid/@Validated注解是否是自动校验还是需要BeanValidationPostProcessor；
-5. 确认@Format注解是否独立发挥了作用而不依赖Converter；
-6. Spring Data Jdbc的分页和排序失败；
-7. withoutAnnotation项目中Spring Data Jdbc和Spring Jdbc的事务梳理；
+1. 补充@Valid支持分组验证
+2. 补充@Valid支持bean validation2.0
+3. 确认@Valid/@Validated注解是否是自动校验还是需要BeanValidationPostProcessor；
+4. 确认@Format注解是否独立发挥了作用而不依赖Converter；
+5. Spring Data Jdbc的分页和排序失败；
+6. withoutAnnotation项目中Spring Data Jdbc和Spring Jdbc的事务梳理；
+7. 补充在Spring中使用AspectJ；
 8. 解析自定义配置xml标签
 9. demo-springframework-temp为临时项目，准备删除
