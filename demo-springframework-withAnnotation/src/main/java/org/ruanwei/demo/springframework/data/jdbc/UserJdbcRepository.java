@@ -20,7 +20,7 @@ import org.springframework.jdbc.core.ColumnMapRowMapper;
  *
  */
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
-public interface JdbcRepository extends Repository<User, Integer> {
+public interface UserJdbcRepository extends Repository<User, Integer> {
 
 	// ====================single row====================
 	@Query("select name from user where id = :id")

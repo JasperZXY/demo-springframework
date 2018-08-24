@@ -1,17 +1,17 @@
 package org.ruanwei.demo.springframework.data.jdbc;
 
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.RepositoryDefinition;
 
 /**
  * 
- * see also SimpleJdbcRepository
+ * see also SimpleKeyValueRepository
  * 
  * @author ruanwei
  *
  */
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
-public interface JdbcCrudRepository extends CrudRepository<User, Integer> {
+public interface UserJdbcPagingAndSortingRepository extends PagingAndSortingRepository<User, Integer> {
 
 }
