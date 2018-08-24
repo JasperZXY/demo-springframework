@@ -110,6 +110,16 @@ public class SpringDataTest {
 			log.error("transaction rolled back", e);
 		}
 	}
+	
+	// @Disabled
+	@Test
+	public void testSpringDataJpa() {
+	}
+
+	// @Disabled
+	@Test
+	public void testSpringDataRedis() {
+	}
 
 	private void testCRUD() {
 		testCreate();
@@ -209,16 +219,6 @@ public class SpringDataTest {
 		userJdbcCrudRepository.delete(paramForDelete);
 		userJdbcCrudRepository.deleteAll(listParamForDelete);
 		// jdbcCrudRepository.deleteAll();
-	}
-
-	@Disabled
-	@Test
-	public void testSpringDataJpa() {
-	}
-
-	@Disabled
-	@Test
-	public void testSpringDataRedis() {
 	}
 
 	@AfterEach
