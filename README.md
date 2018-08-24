@@ -72,5 +72,6 @@
 4. 确认@Valid/@Validated注解是否是自动校验还是需要BeanValidationPostProcessor；
 5. 确认@Format注解是否独立发挥了作用而不依赖Converter；
 6. Spring Data Jdbc的分页和排序失败；
-6. 解析自定义配置xml标签
-7. demo-springframework-temp为临时项目，准备删除
+7. Spring Data Jdbc和Spring Jdbc的事务梳理；
+8. 解析自定义配置xml标签
+9. demo-springframework-temp为临时项目，准备删除
