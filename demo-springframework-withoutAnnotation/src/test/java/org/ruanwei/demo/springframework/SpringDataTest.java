@@ -12,9 +12,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.data.jdbc.User2;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.User;
-import org.springframework.data.jdbc.repository.support.SimpleJdbcRepository;
+import org.ruanwei.demo.springframework.data.jdbc.UserJdbcCrudRepository;
+import org.ruanwei.demo.springframework.dataAccess.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -64,10 +64,8 @@ public class SpringDataTest {
 		paramForUpdate4.put("birthday", Date.valueOf("1983-07-06"));
 	}
 
-	// @Autowired
-	// private UserJdbcRepository userJdbcRepository;
-	// @Autowired
-	private SimpleJdbcRepository<User2, Integer> simpleJdbcRepository;
+	@Autowired
+	private UserJdbcCrudRepository userJdbcCrudRepository;
 
 	@BeforeAll
 	static void beforeAll() {
