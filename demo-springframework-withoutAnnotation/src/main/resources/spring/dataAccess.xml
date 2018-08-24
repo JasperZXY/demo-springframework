@@ -132,7 +132,7 @@
 
 	<aop:config>
 		<aop:pointcut id="txPointcut"
-			expression="execution(* org.ruanwei.demo.springframework.dataAccess.tx.*Transaction*.*(..))" />
+			expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.*Dao.*(..))" />
 		<aop:advisor advice-ref="txAdvice"
 			pointcut-ref="txPointcut" order="2" />
 
@@ -144,12 +144,6 @@
 			<aop:around pointcut-ref="daoPointcut2" method="profile" />
 		</aop:aspect> -->
 	</aop:config>
-
-	<!-- just for testing -->
-	<bean id="jdbcTransaction"
-		class="org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction">
-		<property name="jdbcDao" ref="jdbcDao" />
-	</bean>
 
 	<!-- more bean definitions go here -->
 

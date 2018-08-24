@@ -6,7 +6,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
-import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
@@ -110,7 +109,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		dataSource.setMaxPoolSize(100);
 		return dataSource;
 	}
-	
+
 	@Bean
 	public JdbcDao jdbcDao() {
 		JdbcDao jdbcDao = new JdbcDao();
@@ -121,11 +120,11 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	// ==========A.Data Access:TransactionManager==========
 	// local transaction manager for jdbc
 	@Primary
-	@Bean("txManager")
-	public PlatformTransactionManager txManager() {
-		DataSourceTransactionManager txManager = new DataSourceTransactionManager();
-		txManager.setDataSource(dataSource1());
-		return txManager;
+	@Bean("transactionManager")
+	public PlatformTransactionManager transactionManager() {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+		transactionManager.setDataSource(dataSource1());
+		return transactionManager;
 	}
 
 	// global transaction manager
@@ -135,11 +134,5 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
 	}
-	
-	@Bean
-	public JdbcTransaction jdbcTransaction() {
-		JdbcTransaction jdbcTransaction = new JdbcTransaction();
-		jdbcTransaction.setJdbcDao(jdbcDao());
-		return jdbcTransaction;
-	}
+
 }
