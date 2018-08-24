@@ -25,6 +25,7 @@ import org.springframework.util.concurrent.ListenableFuture;
  * @author ruanwei
  *
  */
+@Transactional
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
 public interface UserJdbcRepository extends Repository<User, Integer> {
 
