@@ -97,11 +97,11 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	// ==========A.Data Access:TransactionManager==========
 	// local transaction manager for jdbc
 	@Primary
-	@Bean("txManager")
-	public PlatformTransactionManager txManager() {
-		DataSourceTransactionManager txManager = new DataSourceTransactionManager();
-		txManager.setDataSource(dataSource1());
-		return txManager;
+	@Bean("transactionManager")
+	public PlatformTransactionManager transactionManager() {
+		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+		transactionManager.setDataSource(dataSource1());
+		return transactionManager;
 	}
 
 	// global transaction manager

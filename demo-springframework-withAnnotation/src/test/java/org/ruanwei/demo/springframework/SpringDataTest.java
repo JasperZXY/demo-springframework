@@ -1,10 +1,14 @@
 package org.ruanwei.demo.springframework;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,14 +22,17 @@ import org.ruanwei.demo.springframework.data.jdbc.UserJdbcCrudRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcPagingAndSortingRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcRepository;
 import org.ruanwei.demo.springframework.dataAccess.User;
+import org.ruanwei.demo.springframework.dataAccess.tx.SpringDataJdbcTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.util.concurrent.ListenableFuture;
 
 /**
  * 
@@ -73,6 +80,9 @@ public class SpringDataTest {
 	@Autowired
 	private UserJdbcPagingAndSortingRepository userJdbcPagingAndSortingRepository;
 
+	@Autowired
+	private SpringDataJdbcTransaction springDataJdbcTransaction;
+
 	@BeforeAll
 	static void beforeAll() {
 		log.info("beforeAll()");
@@ -89,12 +99,24 @@ public class SpringDataTest {
 		testCRUD();
 	}
 
+	// @Disabled
+	@Test
+	void testSpringDataJdbcWithTransaction() {
+		assertNotNull(springDataJdbcTransaction, "springDataJdbcTransaction is null++++++++++++++++++++++++++++");
+		try {
+			springDataJdbcTransaction.transactionalMethod();
+		} catch (Exception e) {
+			log.error("transaction rolled back", e);
+		}
+	}
+
 	private void testCRUD() {
 		testCreate();
 		testUpdate();
 		testQueryForSingleRow();
 		testQueryForList();
-		//testQueryForPagingAndSorting();
+		testQueryAsync();
+		// testQueryForPagingAndSorting();
 		testDelete();
 	}
 
@@ -153,6 +175,12 @@ public class SpringDataTest {
 		userList3.forEach(e -> log.info("jdbcCrudRepository.findAll()========" + e));
 	}
 
+	private void testQueryAsync() {
+		Future<List<User>> userList = userJdbcRepository.findAllUser1();
+		CompletableFuture<List<User>> userList2 = userJdbcRepository.findAllUser2();
+		ListenableFuture<List<User>> userList3 = userJdbcRepository.findAllUser3();
+	}
+
 	private void testQueryForPagingAndSorting() {
 		Sort sort = Sort.by(Direction.ASC, "age");
 		Pageable pageable = PageRequest.of(0, 5);
@@ -161,8 +189,12 @@ public class SpringDataTest {
 		Iterable<User> userList = userJdbcPagingAndSortingRepository.findAll(sort);
 		userList.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
 
+		// see also java.util.Stream in java 8.
 		Page<User> userPage = userJdbcPagingAndSortingRepository.findAll(pageable);
 		userPage.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
+
+		Slice<User> userSlice = userJdbcPagingAndSortingRepository.findAll(pageable);
+		userSlice.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
 
 		Page<User> userPage2 = userJdbcPagingAndSortingRepository.findAll(pageableWithSort);
 		userPage2.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));

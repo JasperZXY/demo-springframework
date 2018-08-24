@@ -1,10 +1,14 @@
 package org.ruanwei.demo.springframework.dataAccess;
 
 import java.sql.Date;
-
-import lombok.Data;
+import java.util.Collection;
+import java.util.Collections;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.AfterDomainEventPublication;
+import org.springframework.data.domain.DomainEvents;
+
+import lombok.Data;
 
 @Data
 public class User {
@@ -47,6 +51,17 @@ public class User {
 		this.birthday = birthday;
 	}*/
 
+	@DomainEvents 
+    Collection<Object> domainEvents() {
+        // … return events you want to get published here
+		return Collections.EMPTY_LIST;
+    }
+
+    @AfterDomainEventPublication 
+    void callbackMethod() {
+       // … potentially clean up domain events list
+    }
+	
 	@Override
 	public String toString() {
 		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday + "]";
