@@ -14,6 +14,7 @@ import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
 
@@ -24,56 +25,80 @@ import org.springframework.util.concurrent.ListenableFuture;
  * @author ruanwei
  *
  */
-@Transactional(readOnly = true)
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
 public interface UserJdbcRepository extends Repository<User, Integer> {
 
 	// ====================single row====================
+	@Transactional(readOnly = true)
 	@Query("select name from user where id = :id")
 	String findNameById(@Param("id") int id);
 
+	@Transactional(readOnly = true)
 	@Query(rowMapperClass = ColumnMapRowMapper.class, value = "select name, age from user where id = :id")
 	Map<String, Object> findNameAndAgeById(@Param("id") int id);
 
+	@Transactional(readOnly = true)
 	@Query("select * from user where id = :id")
 	User findUserById(@Param("id") int id);
 
 	// ====================multiple row====================
+	@Transactional(readOnly = true)
 	@Query("select name from user where id > :id")
 	List<String> findNameListById(@Param("id") int id);
 
+	@Transactional(readOnly = true)
 	@Query("select name, age from user where id > :id")
 	List<Map<String, Object>> findNameAndAgeListById(@Param("id") int id);
 
+	@Transactional(readOnly = true)
 	@Query("select * from user where id > :id")
 	List<User> findUserListById(@Param("id") int id);
 
 	// ====================update====================
-	@Transactional(readOnly = false)
 	@Modifying
 	@Query("insert into user(name, age, birthday) values(:name, :age, :birthday)")
 	int createUser(@Param("name") String name, @Param("age") int age, @Param("birthday") Date birthday);
 
-	@Transactional(readOnly = false)
 	@Modifying
 	@Query("update user set age = :age where name = :name")
 	int updateUser(@Param("name") String name, @Param("age") int age);
 
-	@Transactional(readOnly = false)
 	@Modifying
 	@Query("delete from user where id > :id")
 	int deleteUser(@Param("id") int largerThanId);
 
+	// ====================transactional====================
+	// 不能在事务方法中进行try-catch
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { ArithmeticException.class })
+	default public void transactionalMethod(User... users) {
+		createUser(users[0].getName(), users[0].getAge(), users[0].getBirthday());
+		createUser(users[1].getName(), users[1].getAge(), users[1].getBirthday());
+
+		transactionalSubMethod(users[2], users[3]);
+
+		int i = 1 / 0;
+	}
+
+	// 不能在事务方法中进行try-catch
+	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { ArithmeticException.class })
+	default public void transactionalSubMethod(User... users) {
+		createUser(users[0].getName(), users[0].getAge(), users[0].getBirthday());
+		createUser(users[1].getName(), users[1].getAge(), users[1].getBirthday());
+	}
+
 	// ====================async query====================
 	@Async
+	@Transactional(readOnly = true)
 	@Query("select * from user")
 	Future<List<User>> findAllUser1();
 
 	@Async
+	@Transactional(readOnly = true)
 	@Query("select * from user")
 	CompletableFuture<List<User>> findAllUser2();
 
 	@Async
+	@Transactional(readOnly = true)
 	@Query("select * from user")
 	ListenableFuture<List<User>> findAllUser3();
 }

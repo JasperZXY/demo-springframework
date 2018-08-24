@@ -14,10 +14,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.dataAccess.User;
 import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
-import org.ruanwei.demo.springframework.dataAccess.tx.JdbcTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -47,8 +47,15 @@ public class DataAccessTest {
 	private static Log log = LogFactory.getLog(DataAccessTest.class);
 
 	private static final User paramForCreate1 = new User("ruanwei_tmp", 35, Date.valueOf("1983-07-06"));
-	private static final User paramForUpdate1 = new User("ruanwei", 18, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate2 = new User("ruanwei_tmp2", 35, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate3 = new User("ruanwei_tmp3", 35, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate4 = new User("ruanwei_tmp4", 35, Date.valueOf("1983-07-06"));
+	private static final User[] users = new User[] { paramForCreate1, paramForCreate2, paramForCreate3,
+			paramForCreate4 };
+
+	private static final User paramForUpdate1 = new User("ruanwei_tmp", 18, Date.valueOf("1983-07-06"));
 	private static final User paramForUpdate2 = new User("ruanwei_tmp", 88, Date.valueOf("1983-07-06"));
+	private static final List<User> listParamForUpdate2 = Arrays.asList(paramForUpdate1, paramForUpdate2);
 
 	private static final Map<String, Object> mapParamForCreate1 = new HashMap<String, Object>();
 	private static final Map<String, Object> mapParamForUpdate1 = new HashMap<String, Object>();
@@ -74,9 +81,6 @@ public class DataAccessTest {
 	@Autowired
 	private JdbcDao jdbcDao;
 
-	@Autowired
-	private JdbcTransaction jdbcTransaction;
-
 	@BeforeAll
 	static void beforeAll() {
 		log.info("beforeAll()");
@@ -87,7 +91,7 @@ public class DataAccessTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	void testSpringJdbc() {
 		assertNotNull(jdbcDao, "jdbcDAO is null++++++++++++++++++++++++++++");
@@ -97,9 +101,9 @@ public class DataAccessTest {
 	// @Disabled
 	@Test
 	void testSpringJdbcWithTransaction() {
-		assertNotNull(jdbcTransaction, "jdbcTransaction is null++++++++++++++++++++++++++++");
+		assertNotNull(jdbcDao, "jdbcDao is null++++++++++++++++++++++++++++");
 		try {
-			jdbcTransaction.transactionalMethod();
+			jdbcDao.transactionalMethod(users);
 		} catch (Exception e) {
 			log.error("transaction rolled back", e);
 		}
@@ -134,10 +138,9 @@ public class DataAccessTest {
 	}
 
 	private void testBatchUpdate() {
-		List<User> users = Arrays.asList(paramForUpdate1, paramForUpdate2);
-		jdbcDao.batchUpdateUser1(users);
-		jdbcDao.batchUpdateUser2(users);
-		jdbcDao.batchUpdateUser3(users);
+		jdbcDao.batchUpdateUser1(listParamForUpdate2);
+		jdbcDao.batchUpdateUser2(listParamForUpdate2);
+		jdbcDao.batchUpdateUser3(listParamForUpdate2);
 		jdbcDao.batchUpdateUser4(mapParamForUpdate1, mapParamForUpdate2);
 	}
 

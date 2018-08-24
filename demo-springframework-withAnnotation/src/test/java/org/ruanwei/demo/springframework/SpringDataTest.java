@@ -22,7 +22,6 @@ import org.ruanwei.demo.springframework.data.jdbc.UserJdbcCrudRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcPagingAndSortingRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcRepository;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.ruanwei.demo.springframework.dataAccess.tx.SpringDataJdbcTransaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,10 +58,15 @@ public class SpringDataTest {
 	private static Log log = LogFactory.getLog(SpringDataTest.class);
 
 	private static final User paramForCreate1 = new User("ruanwei_tmp", 35, Date.valueOf("1983-07-06"));
-	private static final User paramForCreate2 = new User("ruanwei_tmp", 88, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate2 = new User("ruanwei_tmp2", 35, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate3 = new User("ruanwei_tmp3", 35, Date.valueOf("1983-07-06"));
+	private static final User paramForCreate4 = new User("ruanwei_tmp4", 35, Date.valueOf("1983-07-06"));
+	private static final User[] arrayParamForCreate = new User[] { paramForCreate1, paramForCreate2, paramForCreate3,
+			paramForCreate4 };
+	private static final List<User> listParamForCreate = Arrays.asList(arrayParamForCreate);
+
 	private static final User paramForUpdate = new User("ruanwei_tmp", 18, Date.valueOf("1983-07-06"));
 	private static final User paramForDelete = new User("ruanwei_tmp", 18, Date.valueOf("1983-07-06"));
-	private static final List<User> listParamForCreate = Arrays.asList(paramForCreate1, paramForCreate2);
 	private static final List<User> listParamForDelete = Arrays.asList(paramForDelete);
 
 	private static final int args0 = 0;
@@ -79,9 +83,6 @@ public class SpringDataTest {
 
 	@Autowired
 	private UserJdbcPagingAndSortingRepository userJdbcPagingAndSortingRepository;
-
-	@Autowired
-	private SpringDataJdbcTransaction springDataJdbcTransaction;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -102,9 +103,9 @@ public class SpringDataTest {
 	// @Disabled
 	@Test
 	void testSpringDataJdbcWithTransaction() {
-		assertNotNull(springDataJdbcTransaction, "springDataJdbcTransaction is null++++++++++++++++++++++++++++");
+		assertNotNull(userJdbcRepository, "userJdbcRepository is null++++++++++++++++++++++++++++");
 		try {
-			springDataJdbcTransaction.transactionalMethod();
+			userJdbcRepository.transactionalMethod(arrayParamForCreate);
 		} catch (Exception e) {
 			log.error("transaction rolled back", e);
 		}
