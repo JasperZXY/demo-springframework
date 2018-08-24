@@ -15,6 +15,16 @@ import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.concurrent.ListenableFuture;
 
+/**
+ * 
+ * @RepositoryDefinition 等价于 extends Repository<>
+ * 
+ * Spring Data JDBC supports defining a query manually only as a String in a @Query annotation. 
+ * Deriving a query from the name of the method is currently not supported.
+ * 
+ * @author ruanwei
+ *
+ */
 public interface UserJdbcRepository extends Repository<User, Integer> {
 	// ====================single row====================
 	@Query("select name from user where id = :id")

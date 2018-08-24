@@ -20,7 +20,10 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 /**
  * 
- * @RepositoryDefinition 等价于 extends Repository
+ * @RepositoryDefinition 等价于 extends Repository<>
+ * 
+ * Spring Data JDBC supports defining a query manually only as a String in a @Query annotation. 
+ * Deriving a query from the name of the method is currently not supported.
  * 
  * @author ruanwei
  *
