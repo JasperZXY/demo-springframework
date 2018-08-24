@@ -1,7 +1,7 @@
 package org.ruanwei.demo.springframework;
 
 import java.sql.Date;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -14,9 +14,16 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.data.jdbc.SpringDataJdbcRepository;
+import org.ruanwei.demo.springframework.data.jdbc.JdbcCrudRepository;
+import org.ruanwei.demo.springframework.data.jdbc.JdbcPagingAndSortingRepository;
+import org.ruanwei.demo.springframework.data.jdbc.JdbcRepository;
 import org.ruanwei.demo.springframework.dataAccess.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -45,34 +52,26 @@ public class SpringDataTest {
 	private static Log log = LogFactory.getLog(SpringDataTest.class);
 
 	private static final User paramForCreate1 = new User("ruanwei_tmp", 35, Date.valueOf("1983-07-06"));
-	private static final User paramForUpdate1 = new User("ruanwei", 18, Date.valueOf("1983-07-06"));
-	private static final User paramForUpdate2 = new User("ruanwei_tmp", 88, Date.valueOf("1983-07-06"));
-
-	private static final Map<String, Object> mapParamForCreate1 = new HashMap<String, Object>();
-	private static final Map<String, Object> mapParamForUpdate1 = new HashMap<String, Object>();
-	private static final Map<String, Object> mapParamForUpdate2 = new HashMap<String, Object>();
+	private static final User paramForCreate2 = new User("ruanwei_tmp", 88, Date.valueOf("1983-07-06"));
+	private static final User paramForUpdate = new User("ruanwei_tmp", 18, Date.valueOf("1983-07-06"));
+	private static final User paramForDelete = new User("ruanwei_tmp", 18, Date.valueOf("1983-07-06"));
+	private static final List<User> listParamForCreate = Arrays.asList(paramForCreate1, paramForCreate2);
+	private static final List<User> listParamForDelete = Arrays.asList(paramForDelete);
 
 	private static final int args0 = 0;
 	private static final int args1 = 1;
 	private static final int args2 = 2;
+	private static final int args3 = 3;
+	private static final List<Integer> listParamForQuery = Arrays.asList(args0, args1, args2, args3);
 
-	static {
-		mapParamForCreate1.put("name", "ruanwei_tmp");
-		mapParamForCreate1.put("age", 35);
-		mapParamForCreate1.put("birthday", Date.valueOf("1983-07-06"));
-
-		mapParamForUpdate1.put("name", "ruanwei");
-		mapParamForUpdate1.put("age", 18);
-		mapParamForUpdate1.put("birthday", Date.valueOf("1983-07-06"));
-
-		mapParamForUpdate2.put("name", "ruanwei_tmp");
-		mapParamForUpdate2.put("age", 88);
-		mapParamForUpdate2.put("birthday", Date.valueOf("1983-07-06"));
-	}
-
-	// see also SimpleJdbcRepository
 	@Autowired
-	private SpringDataJdbcRepository springDataJdbcRepository;
+	private JdbcRepository jdbcRepository;
+
+	@Autowired
+	private JdbcCrudRepository jdbcCrudRepository;
+
+	@Autowired
+	private JdbcPagingAndSortingRepository jdbcPagingAndSortingRepository;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -92,59 +91,91 @@ public class SpringDataTest {
 
 	private void testCRUD() {
 		testCreate();
-		testBatchUpdate();
+		testUpdate();
 		testQueryForSingleRow();
 		testQueryForList();
+		//testQueryForPagingAndSorting();
 		testDelete();
 	}
 
 	private void testCreate() {
-		int count = springDataJdbcRepository.createUser(paramForCreate1.getName(), paramForCreate1.getAge(),
+		int count = jdbcRepository.createUser(paramForCreate1.getName(), paramForCreate1.getAge(),
 				paramForCreate1.getBirthday());
-		log.info("count========" + count);
+		log.info("jdbcRepository.createUser========" + count);
 
-		// see alse saveAll(Iterable<S> entities)
-		User user = springDataJdbcRepository.save(paramForCreate1);
-		log.info("user========" + user);
+		User user = jdbcCrudRepository.save(paramForCreate1);
+		log.info("jdbcCrudRepository.save========" + user);
+
+		Iterable<User> userList = jdbcCrudRepository.saveAll(listParamForCreate);
+		userList.forEach(e -> log.info("jdbcCrudRepository.saveAll========" + e));
 	}
 
-	private void testBatchUpdate() {
-		int count = springDataJdbcRepository.updateUser("ruanwei_tmp", 18);
-		log.info("count========" + count);
+	private void testUpdate() {
+		int count = jdbcRepository.updateUser(paramForUpdate.getName(), paramForUpdate.getAge());
+		log.info("jdbcRepository.updateUser========" + count);
 	}
 
 	private void testQueryForSingleRow() {
-		String name = springDataJdbcRepository.findNameById(args1);
-		log.info("name========" + name);
+		String name = jdbcRepository.findNameById(args1);
+		log.info("jdbcRepository.findNameById========" + name);
 
-		Map<String, Object> columnMap = springDataJdbcRepository.findNameAndAgeById(args1);
-		columnMap.forEach((k, v) -> log.info(k + "=" + v));
+		Map<String, Object> columnMap = jdbcRepository.findNameAndAgeById(args1);
+		columnMap.forEach((k, v) -> log.info("jdbcRepository.findNameAndAgeById====" + k + "=" + v));
 
-		User user = springDataJdbcRepository.findUserById(args1);
-		log.info("user========" + user);
+		User user = jdbcRepository.findUserById(args1);
+		log.info("jdbcRepository.findUserById========" + user);
 
-		// see also findAll()
-		Optional<User> user2 = springDataJdbcRepository.findById(args1);
-		log.info("user2========" + user2.get());
+		Optional<User> user2 = jdbcCrudRepository.findById(args1);
+		log.info("jdbcCrudRepository.findById========" + user2.get());
+
+		long count = jdbcCrudRepository.count();
+		log.info("jdbcCrudRepository.count()========" + count);
+
+		boolean exist = jdbcCrudRepository.existsById(args1);
+		log.info("jdbcCrudRepository.existsById========" + exist);
 	}
 
 	private void testQueryForList() {
-		List<String> nameList = springDataJdbcRepository.findNameListById(args0);
-		nameList.forEach(e -> log.info("name========" + e));
+		List<String> nameList = jdbcRepository.findNameListById(args0);
+		nameList.forEach(e -> log.info("jdbcRepository.findNameListById========" + e));
 
-		List<Map<String, Object>> columnMapList = springDataJdbcRepository.findNameAndAgeListById(args0);
-		columnMapList.forEach(columbMap -> columbMap.forEach((k, v) -> log.info(k + "=" + v)));
+		List<Map<String, Object>> columnMapList = jdbcRepository.findNameAndAgeListById(args0);
+		columnMapList.forEach(columbMap -> columbMap
+				.forEach((k, v) -> log.info("jdbcRepository.findNameAndAgeListById====" + k + "=" + v)));
 
-		List<User> userList = springDataJdbcRepository.findUserListById(args0);
-		userList.forEach(e -> log.info("user========" + e));
+		List<User> userList = jdbcRepository.findUserListById(args0);
+		userList.forEach(e -> log.info("jdbcRepository.findUserListById========" + e));
+
+		Iterable<User> userList2 = jdbcCrudRepository.findAllById(listParamForQuery);
+		userList2.forEach(e -> log.info("jdbcCrudRepository.findAllById========" + e));
+
+		Iterable<User> userList3 = jdbcCrudRepository.findAll();
+		userList3.forEach(e -> log.info("jdbcCrudRepository.findAll()========" + e));
+	}
+
+	private void testQueryForPagingAndSorting() {
+		Sort sort = Sort.by(Direction.ASC, "age");
+		Pageable pageable = PageRequest.of(0, 5);
+		Pageable pageableWithSort = PageRequest.of(0, 5, sort);
+
+		Iterable<User> userList = jdbcPagingAndSortingRepository.findAll(sort);
+		userList.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
+
+		Page<User> userPage = jdbcPagingAndSortingRepository.findAll(pageable);
+		userPage.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
+
+		Page<User> userPage2 = jdbcPagingAndSortingRepository.findAll(pageableWithSort);
+		userPage2.forEach(e -> log.info("jdbcPagingAndSortingRepository.findAll========" + e));
 	}
 
 	private void testDelete() {
-		int count = springDataJdbcRepository.deleteUser(args2);
-		log.info("count========" + count);
+		int count = jdbcRepository.deleteUser(args2);
+		log.info("jdbcRepository.deleteUser========" + count);
 
-		// see also delete(entity) and deleteAll()
-		springDataJdbcRepository.deleteById(args2);
+		jdbcCrudRepository.deleteById(args3);
+		jdbcCrudRepository.delete(paramForDelete);
+		jdbcCrudRepository.deleteAll(listParamForDelete);
+		// jdbcCrudRepository.deleteAll();
 	}
 
 	@Disabled

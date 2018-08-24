@@ -7,20 +7,20 @@ import java.util.Map;
 import org.ruanwei.demo.springframework.dataAccess.User;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 
 /**
  * 
- * see also PagingAndSortingRepository
+ * @RepositoryDefinition 等价于 extends Repository
  * 
  * @author ruanwei
  *
  */
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
-public interface SpringDataJdbcRepository extends CrudRepository<User, Integer> {
+public interface JdbcRepository extends Repository<User, Integer> {
 
 	// ====================single row====================
 	@Query("select name from user where id = :id")
