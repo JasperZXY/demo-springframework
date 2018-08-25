@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -16,12 +17,15 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mysql.cj.xdevapi.SessionFactory;
 
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
@@ -111,12 +115,33 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 		return jpaTransactionManager;
 	}
 
+	// local transaction manager for Hibernate
+	@Bean("hibernateTransactionManager")
+	public PlatformTransactionManager hibernateTransactionManager() {
+		HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
+		//hibernateTransactionManager.setSessionFactory(sessionFactory());
+		return hibernateTransactionManager;
+	}
+	
+	//@Bean("sessionFactory")
+	public SessionFactory sessionFactory() {
+		SessionFactory sessionFactory = new SessionFactory();
+		return sessionFactory;
+	}
+
 	// global transaction manager
 	@Lazy
 	@Bean("globalTxManager")
 	public PlatformTransactionManager globalTxManager() {
 		JtaTransactionManager txManager = new JtaTransactionManager();
 		return txManager;
+	}
+
+	// The valid phases are BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK
+	// and AFTER_COMPLETION.
+	@TransactionalEventListener
+	public void handleTransactionalEvent(ApplicationEvent event) {
+		log.info("handleTransactionalEvent======" + event);
 	}
 
 }
