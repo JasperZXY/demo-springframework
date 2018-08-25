@@ -18,7 +18,7 @@
         http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd 
         http://www.springframework.org/schema/redis http://www.springframework.org/schema/redis/spring-redis.xsd">
 
-	<!-- ==========A.Data Access:JDBC========== -->
+	<!-- ==========C.Data Access:JDBC========== -->
 	<!-- DataSource:HSQL/H2/DERBY -->
 	<jdbc:embedded-database id="dataSource" type="HSQL"
 		generate-name="true">
@@ -86,7 +86,7 @@
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
 
-	<!-- ==========A.Data Access:TransactionManager========== -->
+	<!-- ==========C.Data Access:Transaction========== -->
 	<tx:annotation-driven transaction-manager="transactionManager"
 		order="2" />
 
