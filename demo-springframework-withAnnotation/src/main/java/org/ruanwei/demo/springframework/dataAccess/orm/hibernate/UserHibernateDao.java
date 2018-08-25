@@ -11,8 +11,8 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@Repository
+// @Transactional
+// @Repository
 public class UserHibernateDao {
 	private static Log log = LogFactory.getLog(UserHibernateDao.class);
 

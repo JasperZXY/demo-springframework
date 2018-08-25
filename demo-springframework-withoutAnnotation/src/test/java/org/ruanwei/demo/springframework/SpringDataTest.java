@@ -16,11 +16,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcPagingAndSortingRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcRepository;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -73,10 +73,10 @@ public class SpringDataTest {
 	private static final int args3 = 3;
 	private static final List<Integer> listParamForQuery = Arrays.asList(args0, args1, args2, args3);
 
-	@Autowired
+	//@Autowired
 	private UserJdbcRepository userJdbcRepository;
 
-	@Autowired
+	//@Autowired
 	private UserJdbcPagingAndSortingRepository userJdbcPagingAndSortingRepository;
 
 	@BeforeAll
@@ -89,13 +89,13 @@ public class SpringDataTest {
 		log.info("beforeEach()");
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	public void testSpringDataJdbc() {
 		testCRUD();
 	}
 
-	// @Disabled
+	@Disabled
 	@Test
 	void testSpringDataJdbcWithTransaction() {
 		assertNotNull(userJdbcRepository, "userJdbcRepository is null++++++++++++++++++++++++++++");
