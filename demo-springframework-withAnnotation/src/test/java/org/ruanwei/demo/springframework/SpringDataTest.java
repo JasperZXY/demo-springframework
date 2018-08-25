@@ -16,9 +16,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.ruanwei.demo.springframework.data.jdbc.UserJdbcCrudRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcPagingAndSortingRepository;
 import org.ruanwei.demo.springframework.data.jdbc.UserJdbcRepository;
 import org.ruanwei.demo.springframework.dataAccess.User;
@@ -79,9 +77,6 @@ public class SpringDataTest {
 	private UserJdbcRepository userJdbcRepository;
 
 	@Autowired
-	private UserJdbcCrudRepository userJdbcCrudRepository;
-
-	@Autowired
 	private UserJdbcPagingAndSortingRepository userJdbcPagingAndSortingRepository;
 
 	@BeforeAll
@@ -110,7 +105,7 @@ public class SpringDataTest {
 			log.error("transaction rolled back", e);
 		}
 	}
-	
+
 	// @Disabled
 	@Test
 	public void testSpringDataJpa() {
@@ -136,10 +131,10 @@ public class SpringDataTest {
 				paramForCreate1.getBirthday());
 		log.info("jdbcRepository.createUser========" + count);
 
-		User user = userJdbcCrudRepository.save(paramForCreate1);
+		User user = userJdbcRepository.save(paramForCreate1);
 		log.info("jdbcCrudRepository.save========" + user);
 
-		Iterable<User> userList = userJdbcCrudRepository.saveAll(listParamForCreate);
+		Iterable<User> userList = userJdbcRepository.saveAll(listParamForCreate);
 		userList.forEach(e -> log.info("jdbcCrudRepository.saveAll========" + e));
 	}
 
@@ -158,13 +153,13 @@ public class SpringDataTest {
 		User user = userJdbcRepository.findUserById(args1);
 		log.info("jdbcRepository.findUserById========" + user);
 
-		Optional<User> user2 = userJdbcCrudRepository.findById(args1);
+		Optional<User> user2 = userJdbcRepository.findById(args1);
 		log.info("jdbcCrudRepository.findById========" + user2.get());
 
-		long count = userJdbcCrudRepository.count();
+		long count = userJdbcRepository.count();
 		log.info("jdbcCrudRepository.count()========" + count);
 
-		boolean exist = userJdbcCrudRepository.existsById(args1);
+		boolean exist = userJdbcRepository.existsById(args1);
 		log.info("jdbcCrudRepository.existsById========" + exist);
 	}
 
@@ -179,10 +174,10 @@ public class SpringDataTest {
 		List<User> userList = userJdbcRepository.findUserListById(args0);
 		userList.forEach(e -> log.info("jdbcRepository.findUserListById========" + e));
 
-		Iterable<User> userList2 = userJdbcCrudRepository.findAllById(listParamForQuery);
+		Iterable<User> userList2 = userJdbcRepository.findAllById(listParamForQuery);
 		userList2.forEach(e -> log.info("jdbcCrudRepository.findAllById========" + e));
 
-		Iterable<User> userList3 = userJdbcCrudRepository.findAll();
+		Iterable<User> userList3 = userJdbcRepository.findAll();
 		userList3.forEach(e -> log.info("jdbcCrudRepository.findAll()========" + e));
 	}
 
@@ -215,10 +210,10 @@ public class SpringDataTest {
 		int count = userJdbcRepository.deleteUser(args2);
 		log.info("jdbcRepository.deleteUser========" + count);
 
-		userJdbcCrudRepository.deleteById(args3);
-		userJdbcCrudRepository.delete(paramForDelete);
-		userJdbcCrudRepository.deleteAll(listParamForDelete);
-		// jdbcCrudRepository.deleteAll();
+		userJdbcRepository.deleteById(args3);
+		userJdbcRepository.delete(paramForDelete);
+		userJdbcRepository.deleteAll(listParamForDelete);
+		// userJdbcRepository.deleteAll();
 	}
 
 	@AfterEach

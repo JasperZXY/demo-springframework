@@ -9,7 +9,7 @@ import java.util.concurrent.Future;
 import org.ruanwei.demo.springframework.dataAccess.User;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.data.jdbc.repository.query.Query;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.data.repository.query.Param;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
@@ -20,7 +20,8 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 /**
  * 
- * @RepositoryDefinition 等价于 extends Repository<>
+ * @RepositoryDefinition 等价于 extends Repository<T,ID>.
+ * see also SimpleJdbcRepository.
  * 
  * Spring Data JDBC supports defining a query manually only as a String in a @Query annotation. 
  * Deriving a query from the name of the method is currently not supported.
@@ -30,7 +31,7 @@ import org.springframework.util.concurrent.ListenableFuture;
  */
 @Transactional
 @RepositoryDefinition(domainClass = User.class, idClass = Integer.class)
-public interface UserJdbcRepository extends Repository<User, Integer> {
+public interface UserJdbcRepository extends CrudRepository<User, Integer> {
 
 	// ====================single row====================
 	@Transactional(readOnly = true)
