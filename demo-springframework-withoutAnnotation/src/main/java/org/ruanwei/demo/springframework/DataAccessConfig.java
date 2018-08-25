@@ -1,5 +1,7 @@
 package org.ruanwei.demo.springframework;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -25,6 +27,7 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -130,8 +133,14 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactory.setDataSource(dataSource1());
+		entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+		entityManagerFactory.setPackagesToScan("org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity");
+		Properties jpaProperties = new Properties();
+		jpaProperties.put("hibernate.show_sql", true);
+		jpaProperties.put("hibernate.format_sql", true);
+		jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+		entityManagerFactory.setJpaProperties(jpaProperties);
 		// entityManagerFactory.setLoadTimeWeaver(loadTimeWeaver);
-		// entityManagerFactory.setJpaProperties(jpaProperties);
 		return entityManagerFactory;
 	}
 

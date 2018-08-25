@@ -10,7 +10,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.User;
+import org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ public class UserJpaDao {
 
 	private static final String sql_11 = "select name from user where id = 1";
 	private static final String sql_12 = "select name from user where id = ?";
-	private static final String jpa_sql_12 = "from User as u where u.age = ?1";
+	private static final String jpql_12 = "from User as u where u.age = ?1";
 	private static final String sql_13 = "select name from user where id = :id";
 
 	@PersistenceContext
@@ -37,9 +37,9 @@ public class UserJpaDao {
 	@Transactional(readOnly = true)
 	public void queryForSingleRowWithSingleColumn(int id) {
 		try {
-			Query query = entityManager.createQuery(jpa_sql_12);
+			Query query = entityManager.createQuery(jpql_12);
 			query.setParameter(1, 1);
-			List<User> list = query.getResultList();
+			List<UserEntity> list = query.getResultList();
 			list.forEach(e -> log.info("e========" + e));
 		} finally {
 			if (entityManager != null) {

@@ -113,14 +113,27 @@
 		</property>
 	</bean> -->
 
-	<!-- <bean id="entityManagerFactory"
+	<bean id="entityManagerFactory"
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource1" />
+		<property name="jpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="packagesToScan"
+			value="org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity" />
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
 		<property name="loadTimeWeaver">
 			<bean
 				class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" />
 		</property>
-	</bean> -->
+	</bean>
 
 	<!-- ==========C.Data Access:DAO========== -->
 	<bean id="userJdbcDao"
@@ -131,12 +144,13 @@
 	<!-- <bean id="userHibernateDao"
 		class="org.ruanwei.demo.springframework.dataAccess.orm.hibernate.UserHibernateDao">
 		<property name="sessionFactory" ref="sessionFactory" />
-	</bean>
-	
+	</bean> -->
+
 	<bean id="userJpaDao"
 		class="org.ruanwei.demo.springframework.dataAccess.orm.jpa.UserJpaDao">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean> -->
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
+	</bean>
 
 	<!-- ==========C.Data Access:Transaction========== -->
 	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
@@ -155,12 +169,12 @@
 	</bean> -->
 	
 	<!-- local transaction manager for JPA -->
-	<!-- <bean id="jpaTransactionManager"
+	<bean id="jpaTransactionManager"
 		class="org.springframework.orm.jpa.JpaTransactionManager">
 		<property name="entityManagerFactory"
 			ref="entityManagerFactory" />
-		<property name="dataSource" ref="dataSource1" />
-	</bean> -->
+		<!-- <property name="dataSource" ref="dataSource1" /> -->
+	</bean>
 
 	<!-- global transaction manager for JTA -->
 	<!-- <bean id="jtaTransactionManager"
@@ -171,7 +185,7 @@
 		transaction-manager="transactionManager">
 		<tx:attributes>
 			<!-- all methods starting with 'test' are read only -->
-			<tx:method name="query*" read-only="true"/>
+			<tx:method name="query*" read-only="true" />
 			<tx:method name="transactionalMethod"
 				propagation="REQUIRED" rollback-for="java.lang.ArithmeticException" />
 			<tx:method name="transactionalSubMethod"
