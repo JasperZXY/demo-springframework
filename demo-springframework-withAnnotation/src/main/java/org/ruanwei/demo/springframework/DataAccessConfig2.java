@@ -94,7 +94,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	}
 
 	// ==========A.Data Access:TransactionManager==========
-	// local transaction manager for JDBC
+	// local transaction manager for plain JDBC
 	@Primary
 	@Bean("transactionManager")
 	public PlatformTransactionManager transactionManager() {

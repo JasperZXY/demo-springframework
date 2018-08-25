@@ -19,6 +19,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -118,13 +119,21 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	}
 
 	// ==========A.Data Access:TransactionManager==========
-	// local transaction manager for jdbc
+	// local transaction manager for plain JDBC
 	@Primary
 	@Bean("transactionManager")
 	public PlatformTransactionManager transactionManager() {
 		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
 		transactionManager.setDataSource(dataSource1());
 		return transactionManager;
+	}
+
+	// local transaction manager for JPA
+	@Bean("jpaTransactionManager")
+	public PlatformTransactionManager jpaTransactionManager() {
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setDataSource(dataSource1());
+		return jpaTransactionManager;
 	}
 
 	// global transaction manager
