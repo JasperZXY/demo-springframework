@@ -4,18 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@Repository
 public class UserJpaDao {
 	private static Log log = LogFactory.getLog(UserJpaDao.class);
 
@@ -24,18 +18,14 @@ public class UserJpaDao {
 	private static final String jpa_sql_12 = "from User as u where u.age = ?1";
 	private static final String sql_13 = "select name from user where id = :id";
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
 	private EntityManagerFactory entityManagerFactory;
 
-	@PersistenceUnit
 	public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
 		this.entityManagerFactory = entityManagerFactory;
 	}
 
-	@Transactional(readOnly = true)
 	public void queryForSingleRowWithSingleColumn(int id) {
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
 		try {
 			Query query = entityManager.createQuery(jpa_sql_12);
 			query.setParameter(1, 1);

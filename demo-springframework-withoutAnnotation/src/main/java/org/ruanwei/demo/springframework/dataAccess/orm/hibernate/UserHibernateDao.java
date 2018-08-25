@@ -6,13 +6,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.SessionFactory;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
-@Repository
 public class UserHibernateDao {
 	private static Log log = LogFactory.getLog(UserHibernateDao.class);
 
@@ -24,13 +19,11 @@ public class UserHibernateDao {
 	private SessionFactory sessionFactory;
 	private HibernateTemplate hibernateTemplate;
 
-	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
 
-	@Transactional(readOnly = true)
 	public void queryForSingleRowWithSingleColumn(int id) {
 		List<User> list = sessionFactory.getCurrentSession().createQuery(hql_12).setParameter(0, 1).list();
 		list.forEach(e -> log.info("e========" + e));

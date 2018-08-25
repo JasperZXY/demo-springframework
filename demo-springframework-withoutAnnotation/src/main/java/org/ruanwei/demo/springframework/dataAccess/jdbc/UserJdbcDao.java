@@ -37,9 +37,6 @@ import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.jdbc.object.UpdatableSqlQuery;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * JdbcDaoSupport提供了setDataSource支持 NamedParameterJdbcTemplate支持IN表达式
@@ -47,7 +44,6 @@ import org.springframework.transaction.annotation.Transactional;
  * @author ruanwei
  *
  */
-@Transactional
 public class UserJdbcDao {
 	private static Log log = LogFactory.getLog(UserJdbcDao.class);
 
@@ -117,7 +113,6 @@ public class UserJdbcDao {
 
 	// ====================single row====================
 	// RowMapperResultSetExtractor & SingleColumnRowMapper
-	@Transactional(readOnly = true)
 	public void queryForSingleRowWithSingleColumn(int id) {
 		String column1 = jdbcTemplate.queryForObject(sql_11, String.class);
 		String column2 = jdbcTemplate.queryForObject(sql_12, new Object[] { id }, String.class);
@@ -129,7 +124,6 @@ public class UserJdbcDao {
 	}
 
 	// RowMapperResultSetExtractor & ColumnMapRowMapper
-	@Transactional(readOnly = true)
 	public void queryForSingleRowAsColumnMap(int id) {
 		Map<String, Object> columnMap1 = jdbcTemplate.queryForMap(sql_21);
 		Map<String, Object> columnMap2 = jdbcTemplate.queryForMap(sql_22, new Object[] { id });
@@ -143,7 +137,6 @@ public class UserJdbcDao {
 	}
 
 	// RowMapperResultSetExtractor & BeanPropertyRowMapper
-	@Transactional(readOnly = true)
 	public void queryForSingleRowAsBeanProperty(int id) {
 		User obj1 = advancedJdbcTemplate.queryForObject(sql_31, User.class);
 		User obj2 = advancedJdbcTemplate.queryForObject(sql_32, new Object[] { id }, User.class);
@@ -155,7 +148,6 @@ public class UserJdbcDao {
 	}
 
 	// ====================multiple row====================
-	@Transactional(readOnly = true)
 	public void queryForListWithSingleColumn(int largerThanId) {
 		List<String> columnList1 = jdbcTemplate.queryForList(sql_41, String.class);
 		List<String> columnList2 = jdbcTemplate.queryForList(sql_42, new Object[] { largerThanId }, String.class);
@@ -168,7 +160,6 @@ public class UserJdbcDao {
 		columnList3.forEach(column -> log.info("column=" + column));
 	}
 
-	@Transactional(readOnly = true)
 	public void queryForListWithColumnMap(int largerThanId) {
 		List<Map<String, Object>> columnMapList1 = jdbcTemplate.queryForList(sql_51);
 		List<Map<String, Object>> columnMapList2 = jdbcTemplate.queryForList(sql_52, new Object[] { largerThanId });
@@ -182,7 +173,6 @@ public class UserJdbcDao {
 		columnMapList3.forEach(columbMap -> columbMap.forEach((k, v) -> log.info(k + "=" + v)));
 	}
 
-	@Transactional(readOnly = true)
 	public void queryForListWithBeanProperty(int largerThanId) {
 		List<User> objList1 = advancedJdbcTemplate.queryForObjectList(sql_61, User.class);
 		List<User> objList2 = advancedJdbcTemplate.queryForObjectList(sql_62, new Object[] { largerThanId },
@@ -336,7 +326,6 @@ public class UserJdbcDao {
 
 	// ====================transaction====================
 	// 不能在事务方法中进行try-catch
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = { ArithmeticException.class })
 	public void transactionalMethod(User... users) {
 		createUser1(users[0]);
 		createUser1(users[1]);
@@ -347,7 +336,6 @@ public class UserJdbcDao {
 	}
 
 	// 不能在事务方法中进行try-catch
-	@Transactional(propagation = Propagation.REQUIRES_NEW, rollbackFor = { ArithmeticException.class })
 	private void transactionalSubMethod(User... users) {
 		createUser1(users[0]);
 		createUser1(users[1]);

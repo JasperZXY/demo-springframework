@@ -18,14 +18,15 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.jta.JtaTransactionManager;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mysql.cj.xdevapi.SessionFactory;
 
 @EnableTransactionManagement
 @PropertySource("classpath:jdbc.properties")
@@ -44,6 +45,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// ==========A.Data Access:JDBC==========
 	@Qualifier("embeddedDataSource")
+	@Lazy
 	@Bean
 	public DataSource dataSource() {
 		return new EmbeddedDatabaseBuilder().generateUniqueName(true).setType(EmbeddedDatabaseType.HSQL)
@@ -67,6 +69,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Qualifier("dbcp2DataSource")
+	@Lazy
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
@@ -84,6 +87,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:c3p0
 	@Qualifier("c3p0DataSource")
+	@Lazy
 	@Bean(destroyMethod = "close")
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
@@ -97,7 +101,25 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 		return dataSource;
 	}
 
-	// ==========A.Data Access:TransactionManager==========
+	// @Bean("sessionFactory")
+	public LocalSessionFactoryBean sessionFactory() {
+		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
+		sessionFactory.setDataSource(dataSource1());
+		return sessionFactory;
+	}
+
+	// @Bean("entityManagerFactory")
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+		entityManagerFactory.setDataSource(dataSource1());
+		// entityManagerFactory.setLoadTimeWeaver(loadTimeWeaver);
+		// entityManagerFactory.setJpaProperties(jpaProperties);
+		return entityManagerFactory;
+	}
+
+	// JndiObjectFactoryBean
+
+	// ==========C.Data Access:TransactionManager==========
 	// local transaction manager for plain JDBC
 	@Primary
 	@Bean("transactionManager")
@@ -107,34 +129,29 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 		return transactionManager;
 	}
 
+	// local transaction manager for Hibernate
+	// @Bean("hibernateTransactionManager")
+	public PlatformTransactionManager hibernateTransactionManager() {
+		HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
+		hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
+		hibernateTransactionManager.setDataSource(dataSource1());
+		return hibernateTransactionManager;
+	}
+
 	// local transaction manager for JPA
-	@Bean("jpaTransactionManager")
+	// @Bean("jpaTransactionManager")
 	public PlatformTransactionManager jpaTransactionManager() {
 		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		jpaTransactionManager.setDataSource(dataSource1());
 		return jpaTransactionManager;
 	}
 
-	// local transaction manager for Hibernate
-	@Bean("hibernateTransactionManager")
-	public PlatformTransactionManager hibernateTransactionManager() {
-		HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
-		//hibernateTransactionManager.setSessionFactory(sessionFactory());
-		return hibernateTransactionManager;
-	}
-	
-	//@Bean("sessionFactory")
-	public SessionFactory sessionFactory() {
-		SessionFactory sessionFactory = new SessionFactory();
-		return sessionFactory;
-	}
-
-	// global transaction manager
-	@Lazy
-	@Bean("globalTxManager")
-	public PlatformTransactionManager globalTxManager() {
-		JtaTransactionManager txManager = new JtaTransactionManager();
-		return txManager;
+	// global transaction manager for JTA
+	// @Bean("jtaTransactionManager")
+	public PlatformTransactionManager jtaTransactionManager() {
+		JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
+		return jtaTransactionManager;
 	}
 
 	// The valid phases are BEFORE_COMMIT, AFTER_COMMIT (default), AFTER_ROLLBACK

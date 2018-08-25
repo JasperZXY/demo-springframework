@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:c="http://www.springframework.org/schema/c" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:jms="http://www.springframework.org/schema/jms" xmlns:task="http://www.springframework.org/schema/task"
-	xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:redis="http://www.springframework.org/schema/redis"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:redis="http://www.springframework.org/schema/redis"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd 
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd 
@@ -20,8 +26,8 @@
 
 	<!-- ==========C.Data Access:JDBC========== -->
 	<!-- DataSource:HSQL/H2/DERBY -->
-	<jdbc:embedded-database id="dataSource" type="HSQL"
-		generate-name="true">
+	<jdbc:embedded-database id="dataSource"
+		type="HSQL" generate-name="true">
 		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:embedded-database>
@@ -33,17 +39,20 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		primary="true">
 		<qualifier value="jdbcDataSource" />
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 	</bean>
 
 	<!-- polled-DataSource:dbcp2, see PoolingDataSource -->
-	<bean id="dataSource2" class="org.apache.commons.dbcp2.BasicDataSource"
+	<bean id="dataSource2"
+		class="org.apache.commons.dbcp2.BasicDataSource" lazy-init="true"
 		destroy-method="close">
 		<qualifier value="dbcp2DataSource" />
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
+		<property name="driverClassName"
+			value="${jdbc.driverClassName}" />
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
@@ -55,7 +64,8 @@
 	</bean>
 
 	<!-- polled-DataSource:c3p0 -->
-	<bean id="dataSource3" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+	<bean id="dataSource3"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource" lazy-init="true"
 		destroy-method="close">
 		<qualifier value="c3p0DataSource" />
 		<property name="driverClass" value="${jdbc.driverClassName}" />
@@ -81,26 +91,68 @@
 		<property name="testConnectionOnCheckout" value="false" />
 	</bean>
 
-	<jdbc:initialize-database data-source="dataSource">
+	<jdbc:initialize-database
+		data-source="dataSource">
 		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
+	
+	<!-- <jee:jndi-lookup id="dataSource4" jndi-name="java:comp/env/jdbc/myds"/> -->
+
+	<!-- <bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource1" />
+		<property name="mappingResources">
+			<list>
+				<value>product.hbm.xml</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<value>
+				hibernate.dialect=org.hibernate.dialect.HSQLDialect
+			</value>
+		</property>
+	</bean> -->
+
+	<!-- <bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource1" />
+		<property name="loadTimeWeaver">
+			<bean
+				class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" />
+		</property>
+	</bean> -->
 
 	<!-- ==========C.Data Access:Transaction========== -->
-	<tx:annotation-driven transaction-manager="transactionManager"
-		order="2" />
+	<tx:annotation-driven
+		transaction-manager="transactionManager" order="2" />
 
 	<!-- PlatformTransactionManager:DataSourceTransactionManager|HibernateTransactionManager|JtaTransactionManager -->
-	<!-- local transaction manager for jdbc -->
+	<!-- local transaction manager for plain JDBC -->
 	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		primary="true">
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
+	
+	<!-- local transaction manager for Hibernate -->
+	<!-- <bean id="hibernateTransactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="dataSource" ref="dataSource1" />
+	</bean> -->
+	
+	<!-- local transaction manager for JPA -->
+	<!-- <bean id="jpaTransactionManager"
+		class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory"
+			ref="entityManagerFactory" />
+		<property name="dataSource" ref="dataSource1" />
+	</bean> -->
 
-	<!-- global transaction manager -->
-	<bean id="globalTransactionManager"
-		class="org.springframework.transaction.jta.JtaTransactionManager"
-		lazy-init="true" />
+	<!-- global transaction manager for JTA -->
+	<!-- <bean id="jtaTransactionManager"
+		class="org.springframework.transaction.jta.JtaTransactionManager"/> -->
 
 	<!-- more bean definitions go here -->
 
