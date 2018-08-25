@@ -169,4 +169,5 @@
 	<!-- more bean definitions for services go here -->
     <import resource="aop2.xml" />
 	<import resource="dataAccess2.xml" />
+	<import resource="springData2.xml" />
 </beans>
