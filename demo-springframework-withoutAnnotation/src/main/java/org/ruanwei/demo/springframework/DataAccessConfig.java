@@ -64,7 +64,7 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 				.addScripts("classpath:db/db-test-data.sql").build();
 	}
 
-	// DataSource:pure jdbc
+	// DataSource:plain JDBC
 	// should only be used for testing purposes since no pooling.
 	@Primary
 	@Qualifier("jdbcDataSource")

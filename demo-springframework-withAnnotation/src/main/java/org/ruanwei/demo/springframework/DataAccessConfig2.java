@@ -16,6 +16,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -41,14 +42,12 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	@Qualifier("embeddedDataSource")
 	@Bean
 	public DataSource dataSource() {
-		return new EmbeddedDatabaseBuilder().generateUniqueName(true)
-				.setType(EmbeddedDatabaseType.HSQL).setScriptEncoding("UTF-8")
-				.ignoreFailedDrops(true)
-				.addScript("classpath:db/db-schema-hsql.sql")
+		return new EmbeddedDatabaseBuilder().generateUniqueName(true).setType(EmbeddedDatabaseType.HSQL)
+				.setScriptEncoding("UTF-8").ignoreFailedDrops(true).addScript("classpath:db/db-schema-hsql.sql")
 				.addScripts("classpath:db/db-test-data.sql").build();
 	}
 
-	// DataSource:pure jdbc
+	// DataSource:plain JDBC
 	// should only be used for testing purposes since no pooling.
 	@Primary
 	@Qualifier("jdbcDataSource")
@@ -64,7 +63,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:dbcp2, see PoolingDataSource
 	@Qualifier("dbcp2DataSource")
-	@Bean(destroyMethod="close")
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource2() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName(driverClassName);
@@ -81,7 +80,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// polled-DataSource:c3p0
 	@Qualifier("c3p0DataSource")
-	@Bean(destroyMethod="close")
+	@Bean(destroyMethod = "close")
 	public DataSource dataSource3() throws Exception {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource();
 		dataSource.setDriverClass(driverClassName);
@@ -95,13 +94,21 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 	}
 
 	// ==========A.Data Access:TransactionManager==========
-	// local transaction manager for jdbc
+	// local transaction manager for JDBC
 	@Primary
 	@Bean("transactionManager")
 	public PlatformTransactionManager transactionManager() {
 		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
 		transactionManager.setDataSource(dataSource1());
 		return transactionManager;
+	}
+
+	// local transaction manager for JPA
+	@Bean("jpaTransactionManager")
+	public PlatformTransactionManager jpaTransactionManager() {
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setDataSource(dataSource1());
+		return jpaTransactionManager;
 	}
 
 	// global transaction manager
