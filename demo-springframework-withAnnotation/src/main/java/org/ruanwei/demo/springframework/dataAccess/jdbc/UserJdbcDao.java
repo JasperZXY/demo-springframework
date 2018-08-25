@@ -48,9 +48,9 @@ import org.springframework.transaction.annotation.Transactional;
  *
  */
 @Transactional
-@Repository("jdbcDAO")
-public class JdbcDao {
-	private static Log log = LogFactory.getLog(JdbcDao.class);
+@Repository
+public class UserJdbcDao {
+	private static Log log = LogFactory.getLog(UserJdbcDao.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;

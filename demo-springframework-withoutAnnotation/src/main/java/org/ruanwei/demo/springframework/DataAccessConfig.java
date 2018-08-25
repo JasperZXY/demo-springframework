@@ -5,7 +5,7 @@ import javax.sql.DataSource;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbcDao;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.EnvironmentAware;
@@ -111,10 +111,10 @@ public class DataAccessConfig implements EnvironmentAware, InitializingBean {// 
 	}
 
 	@Bean
-	public JdbcDao jdbcDao() {
-		JdbcDao jdbcDao = new JdbcDao();
-		jdbcDao.setDataSource(dataSource1());
-		return jdbcDao;
+	public UserJdbcDao userJdbcDao() {
+		UserJdbcDao userJdbcDao = new UserJdbcDao();
+		userJdbcDao.setDataSource(dataSource1());
+		return userJdbcDao;
 	}
 
 	// ==========A.Data Access:TransactionManager==========

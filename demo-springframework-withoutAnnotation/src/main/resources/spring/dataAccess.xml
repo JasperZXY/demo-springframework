@@ -96,9 +96,9 @@
 		<jdbc:script location="classpath:db/db-schema-hsql.sql" />
 		<jdbc:script location="classpath:db/db-test-data.sql" />
 	</jdbc:initialize-database>
-	
-	<bean id="jdbcDao"
-		class="org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao">
+
+	<bean id="userJdbcDao"
+		class="org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbcDao">
 		<property name="dataSource" ref="dataSource1" />
 	</bean>
 
@@ -131,15 +131,18 @@
 	</tx:advice>
 
 	<aop:config>
-		<aop:pointcut id="txPointcut"
+		<aop:pointcut id="daoPointcut"
 			expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.*Dao.*(..))" />
+		<aop:pointcut id="repositoryPointcut"
+			expression="execution(* org.ruanwei.demo.springframework.data.jdbc.*Repository.*(..))" />
 		<aop:advisor advice-ref="txAdvice"
-			pointcut-ref="txPointcut" order="2" />
-
+			pointcut-ref="daoPointcut" order="2" />
+		<aop:advisor advice-ref="txAdvice"
+			pointcut-ref="repositoryPointcut" order="3" />
 		<!-- execute before the transactional advice (hence the lower order number) -->
 		<!-- <aop:aspect id="myAspect3" ref="myAdvice" order="1">
 			<aop:pointcut id="daoPointcut2"
-				expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDAO.*(..)) 
+				expression="execution(* org.ruanwei.demo.springframework.dataAccess.jdbc.*DAO.*(..)) 
 			and args(name,age)" />
 			<aop:around pointcut-ref="daoPointcut2" method="profile" />
 		</aop:aspect> -->

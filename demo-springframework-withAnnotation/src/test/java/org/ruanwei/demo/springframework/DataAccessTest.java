@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.ruanwei.demo.springframework.dataAccess.User;
-import org.ruanwei.demo.springframework.dataAccess.jdbc.JdbcDao;
+import org.ruanwei.demo.springframework.dataAccess.jdbc.UserJdbcDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
@@ -79,7 +79,7 @@ public class DataAccessTest {
 	}
 
 	@Autowired
-	private JdbcDao jdbcDao;
+	private UserJdbcDao userJdbcDao;
 
 	@BeforeAll
 	static void beforeAll() {
@@ -94,16 +94,16 @@ public class DataAccessTest {
 	@Disabled
 	@Test
 	void testSpringJdbc() {
-		assertNotNull(jdbcDao, "jdbcDAO is null++++++++++++++++++++++++++++");
+		assertNotNull(userJdbcDao, "userJdbcDao is null++++++++++++++++++++++++++++");
 		testCRUD();
 	}
 
 	// @Disabled
 	@Test
 	void testSpringJdbcWithTransaction() {
-		assertNotNull(jdbcDao, "jdbcDao is null++++++++++++++++++++++++++++");
+		assertNotNull(userJdbcDao, "userJdbcDao is null++++++++++++++++++++++++++++");
 		try {
-			jdbcDao.transactionalMethod(users);
+			userJdbcDao.transactionalMethod(users);
 		} catch (Exception e) {
 			log.error("transaction rolled back", e);
 		}
@@ -128,35 +128,35 @@ public class DataAccessTest {
 	}
 
 	private void testCreate() {
-		jdbcDao.createUser1(paramForCreate1);
-		jdbcDao.createUser2(paramForCreate1);
-		jdbcDao.createUser3(paramForCreate1);
-		jdbcDao.createUser4(paramForCreate1);
-		jdbcDao.createUser4(mapParamForCreate1);
-		jdbcDao.createUser5(paramForCreate1);
-		jdbcDao.createUser5(mapParamForCreate1);
+		userJdbcDao.createUser1(paramForCreate1);
+		userJdbcDao.createUser2(paramForCreate1);
+		userJdbcDao.createUser3(paramForCreate1);
+		userJdbcDao.createUser4(paramForCreate1);
+		userJdbcDao.createUser4(mapParamForCreate1);
+		userJdbcDao.createUser5(paramForCreate1);
+		userJdbcDao.createUser5(mapParamForCreate1);
 	}
 
 	private void testBatchUpdate() {
-		jdbcDao.batchUpdateUser1(listParamForUpdate2);
-		jdbcDao.batchUpdateUser2(listParamForUpdate2);
-		jdbcDao.batchUpdateUser3(listParamForUpdate2);
-		jdbcDao.batchUpdateUser4(mapParamForUpdate1, mapParamForUpdate2);
+		userJdbcDao.batchUpdateUser1(listParamForUpdate2);
+		userJdbcDao.batchUpdateUser2(listParamForUpdate2);
+		userJdbcDao.batchUpdateUser3(listParamForUpdate2);
+		userJdbcDao.batchUpdateUser4(mapParamForUpdate1, mapParamForUpdate2);
 	}
 
 	private void testQueryForSingleRow() {
-		jdbcDao.queryForSingleRowWithSingleColumn(args1);
-		jdbcDao.queryForSingleRowAsColumnMap(args1);
-		jdbcDao.queryForSingleRowAsBeanProperty(args1);
+		userJdbcDao.queryForSingleRowWithSingleColumn(args1);
+		userJdbcDao.queryForSingleRowAsColumnMap(args1);
+		userJdbcDao.queryForSingleRowAsBeanProperty(args1);
 	}
 
 	private void testQueryForList() {
-		jdbcDao.queryForListWithSingleColumn(args0);
-		jdbcDao.queryForListWithColumnMap(args0);
-		jdbcDao.queryForListWithBeanProperty(args0);
+		userJdbcDao.queryForListWithSingleColumn(args0);
+		userJdbcDao.queryForListWithColumnMap(args0);
+		userJdbcDao.queryForListWithBeanProperty(args0);
 	}
 
 	private void testDelete() {
-		jdbcDao.deleteUser(2);
+		userJdbcDao.deleteUser(2);
 	}
 }
