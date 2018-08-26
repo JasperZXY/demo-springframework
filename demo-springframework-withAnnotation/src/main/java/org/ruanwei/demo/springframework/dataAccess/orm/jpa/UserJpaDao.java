@@ -43,13 +43,13 @@ public class UserJpaDao implements CrudDao<UserEntity, Integer> {
 	}
 
 	@Override
-	public <S extends UserEntity> S save(S entity) {
+	public UserEntity save(UserEntity entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends UserEntity> Iterable<S> saveAll(Iterable<S> entities) {
+	public List<UserEntity> saveAll(List<UserEntity> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -95,7 +95,7 @@ public class UserJpaDao implements CrudDao<UserEntity, Integer> {
 
 	@Transactional(readOnly = true)
 	@Override
-	public Iterable<UserEntity> findAllById(Iterable<Integer> ids) {
+	public List<UserEntity> findAllById(List<Integer> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -113,7 +113,7 @@ public class UserJpaDao implements CrudDao<UserEntity, Integer> {
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends UserEntity> entities) {
+	public void deleteAll(List<UserEntity> entities) {
 		// TODO Auto-generated method stub
 
 	}
