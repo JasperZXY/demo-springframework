@@ -24,7 +24,6 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.event.TransactionalEventListener;
 import org.springframework.transaction.jta.JtaTransactionManager;
@@ -104,52 +103,67 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 		return dataSource;
 	}
 
-	// @Bean("sessionFactory")
+	@Qualifier("sessionFactory")
+	@Bean("sessionFactory")
 	public LocalSessionFactoryBean sessionFactory() {
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource1());
+		sessionFactory.setPackagesToScan("org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity");
+
+		Properties hibernateProperties = new Properties();
+		hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL57Dialect");
+		hibernateProperties.put("hibernate.show_sql", true);
+		hibernateProperties.put("hibernate.format_sql", true);
+		hibernateProperties.put("hibernate.hbm2ddl.auto", "update");
+		sessionFactory.setHibernateProperties(hibernateProperties);
+
 		return sessionFactory;
 	}
 
-	@Bean("entityManagerFactory")
+	@Qualifier("entityManagerFactory")
+	// @Bean("entityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
 		entityManagerFactory.setDataSource(dataSource1());
 		entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 		entityManagerFactory.setPackagesToScan("org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity");
+
 		Properties jpaProperties = new Properties();
+		jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL57Dialect");
 		jpaProperties.put("hibernate.show_sql", true);
 		jpaProperties.put("hibernate.format_sql", true);
 		jpaProperties.put("hibernate.hbm2ddl.auto", "update");
 		entityManagerFactory.setJpaProperties(jpaProperties);
+
 		// entityManagerFactory.setLoadTimeWeaver(loadTimeWeaver);
+
 		return entityManagerFactory;
 	}
 
 	// JndiObjectFactoryBean
 
-	// ==========C.Data Access:TransactionManager==========
+	// ==========C.Data Access:PlatformTransactionManager==========
 	// local transaction manager for plain JDBC
 	@Primary
 	@Bean("transactionManager")
-	public PlatformTransactionManager transactionManager() {
+	public DataSourceTransactionManager transactionManager() {
 		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
 		transactionManager.setDataSource(dataSource1());
 		return transactionManager;
 	}
 
 	// local transaction manager for Hibernate
-	// @Bean("hibernateTransactionManager")
-	public PlatformTransactionManager hibernateTransactionManager() {
+	@Bean("hibernateTransactionManager")
+	public HibernateTransactionManager hibernateTransactionManager() {
 		HibernateTransactionManager hibernateTransactionManager = new HibernateTransactionManager();
 		hibernateTransactionManager.setSessionFactory(sessionFactory().getObject());
-		hibernateTransactionManager.setDataSource(dataSource1());
+		// hibernateTransactionManager.setDataSource(dataSource1());
 		return hibernateTransactionManager;
 	}
 
 	// local transaction manager for JPA
-	@Bean("jpaTransactionManager")
-	public PlatformTransactionManager jpaTransactionManager() {
+	// @Bean("jpaTransactionManager")
+	public JpaTransactionManager jpaTransactionManager() {
 		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
 		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		// jpaTransactionManager.setDataSource(dataSource1());
@@ -158,7 +172,7 @@ public class DataAccessConfig2 {// implements TransactionManagementConfigurer {
 
 	// global transaction manager for JTA
 	// @Bean("jtaTransactionManager")
-	public PlatformTransactionManager jtaTransactionManager() {
+	public JtaTransactionManager jtaTransactionManager() {
 		JtaTransactionManager jtaTransactionManager = new JtaTransactionManager();
 		return jtaTransactionManager;
 	}

@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Data;
 
@@ -15,12 +19,16 @@ import lombok.Data;
 @Entity
 public class UserEntity {
 	
-	@GeneratedValue
+	@GeneratedValue(generator="increment")
+	@GenericGenerator(name="increment", strategy = "increment")
 	@Id
 	private String name;
 	
 	@Column(name="age")
 	private int age;
+	
+	//@Temporal(TemporalType.DATE)
+	@Column(name="birthday")
 	private Date birthday;
 
 	public UserEntity() {

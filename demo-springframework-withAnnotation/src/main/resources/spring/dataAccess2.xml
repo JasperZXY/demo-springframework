@@ -99,41 +99,42 @@
 	
 	<!-- <jee:jndi-lookup id="dataSource4" jndi-name="java:comp/env/jdbc/myds"/> -->
 
-	<!-- <bean id="sessionFactory"
+	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource1" />
-		<property name="mappingResources">
-			<list>
-				<value>product.hbm.xml</value>
-			</list>
-		</property>
-		<property name="hibernateProperties">
-			<value>
-				hibernate.dialect=org.hibernate.dialect.HSQLDialect
-			</value>
-		</property>
-	</bean> -->
-
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="dataSource1" />
-		<property name="jpaVendorAdapter">
-			<bean
-				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
-		</property>
 		<property name="packagesToScan"
 			value="org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity" />
-		<property name="jpaProperties">
+		<property name="hibernateProperties">
 			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.format_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 			</props>
 		</property>
-		<property name="loadTimeWeaver">
+	</bean>
+
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="dataSource1" />
+		<property name="packagesToScan"
+			value="org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity" />
+		<property name="jpaVendorAdapter">
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<!-- <property name="loadTimeWeaver">
 			<bean
 				class="org.springframework.instrument.classloading.ReflectiveLoadTimeWeaver" />
-		</property>
+		</property> -->
 	</bean>
 
 	<!-- ==========C.Data Access:Transaction========== -->
@@ -149,11 +150,11 @@
 	</bean>
 	
 	<!-- local transaction manager for Hibernate -->
-	<!-- <bean id="hibernateTransactionManager"
+	<bean id="hibernateTransactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
-		<property name="dataSource" ref="dataSource1" />
-	</bean> -->
+		<!-- <property name="dataSource" ref="dataSource1" /> -->
+	</bean>
 	
 	<!-- local transaction manager for JPA -->
 	<bean id="jpaTransactionManager"
