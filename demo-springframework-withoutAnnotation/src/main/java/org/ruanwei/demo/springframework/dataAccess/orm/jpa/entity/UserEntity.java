@@ -1,23 +1,32 @@
-package org.ruanwei.demo.springframework.dataAccess.jdbc;
+package org.ruanwei.demo.springframework.dataAccess.orm.jpa.entity;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import lombok.Data;
 
-import org.springframework.data.annotation.Id;
-
 @Data
-public class User {
+@Table(name="user")
+@Entity
+public class UserEntity {
+	
+	@GeneratedValue
 	@Id
-	private int id;
 	private String name;
+	
+	@Column(name="age")
 	private int age;
 	private Date birthday;
 
-	public User() {
+	public UserEntity() {
 	}
 
-	public User(String name, int age, Date birthday) {
+	public UserEntity(String name, int age, Date birthday) {
 		this.name = name;
 		this.age = age;
 		this.birthday = birthday;
@@ -49,7 +58,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday + "]";
+		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday
+				+ "]";
 	}
 
 }

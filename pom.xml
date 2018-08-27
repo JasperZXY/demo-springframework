@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -122,11 +123,28 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jdbc</artifactId>
 		</dependency>
-
+		<!-- spring-data的release train版本 -->
+		<!-- Kay-SR9对应2.0.9.RELEASE, Lovelace-RC2对应2.1.0.RC2 -->
+		<!-- 目前2.1.0.RC2与2.0.9.RELEASE不兼容，因此这里进行覆盖 -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-redis</artifactId>
+			<artifactId>spring-data-commons</artifactId>
+			<version>2.1.0.RC2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>5.3.5.Final</version>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency> -->
 
 	</dependencies>
 

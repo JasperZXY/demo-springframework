@@ -13,6 +13,10 @@ import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.ruanwei.demo.springframework.dataAccess.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ParameterizedPreparedStatementSetter;
@@ -40,13 +44,12 @@ import org.springframework.jdbc.support.KeyHolder;
  * @author ruanwei
  *
  */
-public class JdbcDao
-{
-	private static Log log = LogFactory.getLog(JdbcDao.class);
+public class UserJdbcDao {
+	private static Log log = LogFactory.getLog(UserJdbcDao.class);
 
 	// 1.core JdbcTemplate & NamedParameterJdbcTemplate thread-safe
 	private JdbcTemplate jdbcTemplate;
-	// rovide named parameters instead of the traditional JDBC "?" placeholders.
+	// named parameters instead of the traditional JDBC "?" placeholders.
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	private AdvancedJdbcTemplate advancedJdbcTemplate;
 
@@ -85,7 +88,7 @@ public class JdbcDao
 	private static final String sql_62 = "select * from user where id > ?";
 	private static final String sql_63 = "select * from user where id > :id";
 
-	private static final String sql_71 = "insert into user(name,age,birthday) values(\"ruanwei\", 28,\"1983-07-06\")";
+	private static final String sql_71 = "insert into user(name,age,birthday) values(\"ruanwei\", 35, \"1983-07-06\")";
 	private static final String sql_72 = "insert into user(name,age,birthday) values(?, ?, ?)";
 	private static final String sql_73 = "insert into user(name,age,birthday) values(:name, :age, :birthday)";
 
@@ -95,100 +98,90 @@ public class JdbcDao
 
 	private static final String sql_9 = "delete from user where id > ?";
 
-	private static final Object[] args0 = new Object[] { 0L };
-	private static final Object[] args1 = new Object[] { 1L };
 	private static final PreparedStatementSetter pss0 = ps -> ps.setLong(1, 0L);
-	private static final Map<String, Long> namedParam0 = new HashMap<String, Long>();
-	private static final Map<String, Long> namedParam1 = new HashMap<String, Long>();
 
-	static {
-		namedParam0.put("id", 0L);
-		namedParam1.put("id", 1L);
-	}
-
-	public void setDataSource(DataSource dataSource) {
+	@Required
+	@Autowired
+	public void setDataSource(@Qualifier("jdbcDataSource") DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
-		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(
-				dataSource);
+		this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 		this.advancedJdbcTemplate = new AdvancedJdbcTemplate(dataSource);
 
-		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(
-				"user").usingGeneratedKeyColumns("id");
+		this.simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName("user").usingGeneratedKeyColumns("id");
 		this.simpleJdbcCall = new SimpleJdbcCall(dataSource);
 	}
 
 	// ====================single row====================
 	// RowMapperResultSetExtractor & SingleColumnRowMapper
-	public void queryForSingleColumn() {
+	public void queryForSingleRowWithSingleColumn(int id) {
 		String column1 = jdbcTemplate.queryForObject(sql_11, String.class);
-		String column2 = jdbcTemplate.queryForObject(sql_12, args1,
-				String.class);
-		String column3 = namedParameterJdbcTemplate.queryForObject(sql_13,
-				namedParam1, String.class);
-		log.info("column1=" + column1 + ",column2=" + column2 + ",column3="
-				+ column3);
+		String column2 = jdbcTemplate.queryForObject(sql_12, new Object[] { id }, String.class);
+
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", id);
+		String column3 = namedParameterJdbcTemplate.queryForObject(sql_13, namedParam, String.class);
+		log.info("column1=" + column1 + ",column2=" + column2 + ",column3=" + column3);
 	}
 
 	// RowMapperResultSetExtractor & ColumnMapRowMapper
-	public void queryForMultiColumn() {
+	public void queryForSingleRowAsColumnMap(int id) {
 		Map<String, Object> columnMap1 = jdbcTemplate.queryForMap(sql_21);
-		Map<String, Object> columnMap2 = jdbcTemplate
-				.queryForMap(sql_22, args1);
-		Map<String, Object> columnMap3 = namedParameterJdbcTemplate
-				.queryForMap(sql_23, namedParam1);
+		Map<String, Object> columnMap2 = jdbcTemplate.queryForMap(sql_22, new Object[] { id });
+
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", id);
+		Map<String, Object> columnMap3 = namedParameterJdbcTemplate.queryForMap(sql_23, namedParam);
 		columnMap1.forEach((k, v) -> log.info(k + "=" + v));
 		columnMap2.forEach((k, v) -> log.info(k + "=" + v));
 		columnMap3.forEach((k, v) -> log.info(k + "=" + v));
 	}
 
 	// RowMapperResultSetExtractor & BeanPropertyRowMapper
-	public void queryForObject() {
+	public void queryForSingleRowAsBeanProperty(int id) {
 		User obj1 = advancedJdbcTemplate.queryForObject(sql_31, User.class);
-		User obj2 = advancedJdbcTemplate.queryForObject(sql_32, args1,
-				User.class);
-		User obj3 = advancedJdbcTemplate.queryForObject(sql_33, namedParam1,
-				User.class);
+		User obj2 = advancedJdbcTemplate.queryForObject(sql_32, new Object[] { id }, User.class);
+
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", id);
+		User obj3 = advancedJdbcTemplate.queryForObject(sql_33, namedParam, User.class);
 		log.info("obj1=" + obj1 + ",obj2=" + obj2 + ",obj3=" + obj3);
 	}
 
 	// ====================multiple row====================
-	public void queryForSingleColumnList() {
-		List<String> columnList1 = jdbcTemplate.queryForList(sql_41,
-				String.class);
-		List<String> columnList2 = jdbcTemplate.queryForList(sql_42, args0,
-				String.class);
-		List<String> columnList3 = namedParameterJdbcTemplate.queryForList(
-				sql_43, namedParam0, String.class);
+	public void queryForListWithSingleColumn(int largerThanId) {
+		List<String> columnList1 = jdbcTemplate.queryForList(sql_41, String.class);
+		List<String> columnList2 = jdbcTemplate.queryForList(sql_42, new Object[] { largerThanId }, String.class);
+
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", largerThanId);
+		List<String> columnList3 = namedParameterJdbcTemplate.queryForList(sql_43, namedParam, String.class);
 		columnList1.forEach(column -> log.info("column=" + column));
 		columnList2.forEach(column -> log.info("column=" + column));
 		columnList3.forEach(column -> log.info("column=" + column));
 	}
 
-	public void queryForMultiColumnList() {
-		List<Map<String, Object>> columnMapList1 = jdbcTemplate
-				.queryForList(sql_51);
-		List<Map<String, Object>> columnMapList2 = jdbcTemplate.queryForList(
-				sql_52, args0);
-		List<Map<String, Object>> columnMapList3 = namedParameterJdbcTemplate
-				.queryForList(sql_53, namedParam0);
+	public void queryForListWithColumnMap(int largerThanId) {
+		List<Map<String, Object>> columnMapList1 = jdbcTemplate.queryForList(sql_51);
+		List<Map<String, Object>> columnMapList2 = jdbcTemplate.queryForList(sql_52, new Object[] { largerThanId });
 
-		columnMapList1.forEach(columbMap -> columbMap.forEach((k, v) -> log
-				.info(k + "=" + v)));
-		columnMapList2.forEach(columbMap -> columbMap.forEach((k, v) -> log
-				.info(k + "=" + v)));
-		columnMapList3.forEach(columbMap -> columbMap.forEach((k, v) -> log
-				.info(k + "=" + v)));
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", largerThanId);
+		List<Map<String, Object>> columnMapList3 = namedParameterJdbcTemplate.queryForList(sql_53, namedParam);
+
+		columnMapList1.forEach(columbMap -> columbMap.forEach((k, v) -> log.info(k + "=" + v)));
+		columnMapList2.forEach(columbMap -> columbMap.forEach((k, v) -> log.info(k + "=" + v)));
+		columnMapList3.forEach(columbMap -> columbMap.forEach((k, v) -> log.info(k + "=" + v)));
 	}
 
-	public void queryForObjectList() {
-		List<User> objList1 = advancedJdbcTemplate.queryForObjectList(sql_61,
+	public void queryForListWithBeanProperty(int largerThanId) {
+		List<User> objList1 = advancedJdbcTemplate.queryForObjectList(sql_61, User.class);
+		List<User> objList2 = advancedJdbcTemplate.queryForObjectList(sql_62, new Object[] { largerThanId },
 				User.class);
-		List<User> objList2 = advancedJdbcTemplate.queryForObjectList(sql_62,
-				args0, User.class);
-		List<User> objList3 = advancedJdbcTemplate.queryForObjectList(sql_62,
-				pss0, User.class);
-		List<User> objList4 = advancedJdbcTemplate.queryForObjectList(sql_63,
-				namedParam0, User.class);
+		List<User> objList3 = advancedJdbcTemplate.queryForObjectList(sql_62, pss0, User.class);
+
+		Map<String, Integer> namedParam = new HashMap<String, Integer>();
+		namedParam.put("id", largerThanId);
+		List<User> objList4 = advancedJdbcTemplate.queryForObjectList(sql_63, namedParam, User.class);
 		objList1.forEach(obj -> log.info("obj=" + obj));
 		objList2.forEach(obj -> log.info("obj=" + obj));
 		objList3.forEach(obj -> log.info("obj=" + obj));
@@ -199,10 +192,8 @@ public class JdbcDao
 	// create/update/delete都是调用update方法
 	public int createUser1(User user) {
 		log.info("createUser1(User user)" + user);
-		log.error("testSpringJdbcWithTransaction4+++++++++++++++++++++++++++++++++++"+jdbcTemplate);
 
-		int count = jdbcTemplate.update(sql_72, user.getName(), user.getAge(),
-				user.getBirthday());
+		int count = jdbcTemplate.update(sql_72, user.getName(), user.getAge(), user.getBirthday());
 		return count;
 	}
 
@@ -227,7 +218,7 @@ public class JdbcDao
 	public <T> int createUser4(T t) {
 		log.info("createUser4(T t)");
 
-		SqlParameterSource sqlParamSource = JdbcUtils.create(t);
+		SqlParameterSource sqlParamSource = SqlParameterSourceUtils.createBatch(t)[0];
 		int count = namedParameterJdbcTemplate.update(sql_73, sqlParamSource);
 		return count;
 	}
@@ -236,10 +227,9 @@ public class JdbcDao
 		log.info("createUser5(T t)");
 
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		SqlParameterSource sqlParamSource = JdbcUtils.create(t);
+		SqlParameterSource sqlParamSource = SqlParameterSourceUtils.createBatch(t)[0];
 
-		int count = namedParameterJdbcTemplate.update(sql_73, sqlParamSource,
-				keyHolder);
+		int count = namedParameterJdbcTemplate.update(sql_73, sqlParamSource, keyHolder);
 		log.info("generatedKey=" + keyHolder.getKey().longValue());
 		return count;
 	}
@@ -257,8 +247,7 @@ public class JdbcDao
 		log.info("batchUpdateUser2(final List<User> users)");
 
 		ParameterizedPreparedStatementSetter<User> uppss = buildUserPPSS();
-		int[][] updateCounts = jdbcTemplate
-				.batchUpdate(sql_82, users, 2, uppss);
+		int[][] updateCounts = jdbcTemplate.batchUpdate(sql_82, users, 2, uppss);
 		return updateCounts;
 	}
 
@@ -266,18 +255,15 @@ public class JdbcDao
 		log.info("batchUpdateUser3(final List<User> users)");
 
 		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(list);
-		int[] updateCounts = namedParameterJdbcTemplate.batchUpdate(sql_83,
-				batch);
+		int[] updateCounts = namedParameterJdbcTemplate.batchUpdate(sql_83, batch);
 		return updateCounts;
 	}
 
 	public <T> int[] batchUpdateUser4(final Map<String, ?>... batchValues) {
 		log.info("batchUpdateUser4(final Map<String, ?>... batchValues)");
 
-		SqlParameterSource[] batch = SqlParameterSourceUtils
-				.createBatch(batchValues);
-		int[] updateCounts = namedParameterJdbcTemplate.batchUpdate(sql_83,
-				batch);
+		SqlParameterSource[] batch = SqlParameterSourceUtils.createBatch(batchValues);
+		int[] updateCounts = namedParameterJdbcTemplate.batchUpdate(sql_83, batch);
 		return updateCounts;
 	}
 
@@ -317,12 +303,8 @@ public class JdbcDao
 
 	public void callProcedure() {
 		log.info("callProcedure()");
-		SqlParameterSource in = new MapSqlParameterSource()
-				.addValue("in_id", 1);
-		simpleJdbcCall
-				.withProcedureName("user")
-				.withoutProcedureColumnMetaDataAccess()
-				.useInParameterNames("in_id")
+		SqlParameterSource in = new MapSqlParameterSource().addValue("in_id", 1);
+		simpleJdbcCall.withProcedureName("user").withoutProcedureColumnMetaDataAccess().useInParameterNames("in_id")
 				.declareParameters(new SqlParameter("in_id", Types.NUMERIC),
 						new SqlOutParameter("out_first_name", Types.VARCHAR),
 						new SqlOutParameter("out_last_name", Types.VARCHAR),
@@ -342,6 +324,23 @@ public class JdbcDao
 		throw new UnsupportedOperationException();
 	}
 
+	// ====================transaction====================
+	// 不能在事务方法中进行try-catch
+	public void transactionalMethod(User... users) {
+		createUser1(users[0]);
+		createUser1(users[1]);
+
+		transactionalSubMethod(users[2], users[3]);
+
+		int i = 1 / 0;
+	}
+
+	// 不能在事务方法中进行try-catch
+	private void transactionalSubMethod(User... users) {
+		createUser1(users[0]);
+		createUser1(users[1]);
+	}
+
 	// ====================private====================
 	private PreparedStatementSetter buildUserPSS(User user) {
 		return ps -> {
@@ -354,8 +353,7 @@ public class JdbcDao
 	private BatchPreparedStatementSetter buildUserBPSS(List<User> users) {
 		return new BatchPreparedStatementSetter() {
 			@Override
-			public void setValues(PreparedStatement ps, int i)
-					throws SQLException {
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ps.setInt(1, users.get(i).getAge());
 				ps.setString(2, users.get(i).getName());
 			}
@@ -376,17 +374,11 @@ public class JdbcDao
 
 	private PreparedStatementCreator buildUserPSC(String sql, User user) {
 		return conn -> {
-			PreparedStatement ps = conn.prepareStatement(sql,
-					new String[] { "id" });
+			PreparedStatement ps = conn.prepareStatement(sql, new String[] { "id" });
 			ps.setString(1, user.getName());
 			ps.setInt(2, user.getAge());
 			ps.setDate(3, user.getBirthday());
 			return ps;
 		};
 	}
-
-	public JdbcTemplate getJdbcTemplate() {
-		return jdbcTemplate;
-	}
-	
 }

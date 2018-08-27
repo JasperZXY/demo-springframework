@@ -1,29 +1,28 @@
-package org.ruanwei.demo.springframework.dataAccess.springdata.jdbc;
+package org.ruanwei.demo.springframework.dataAccess;
 
 import java.sql.Date;
 
-import lombok.Data;
-
 import org.springframework.data.annotation.Id;
 
+import lombok.Data;
+
 @Data
-public class User2 {
+public class User {
 	@Id
-	private int id;
 	private String name;
 	private int age;
 	private Date birthday;
 
-	public User2() {
+	public User() {
 	}
 
-	public User2(String name, int age, Date birthday) {
+	public User(String name, int age, Date birthday) {
 		this.name = name;
 		this.age = age;
 		this.birthday = birthday;
 	}
 
-	public String getName() {
+	/*public String getName() {
 		return name;
 	}
 
@@ -45,12 +44,12 @@ public class User2 {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
+	}*/
 
 	@Override
 	public String toString() {
-		return "User2 [id=" + id + "name=" + name + ", age=" + age
-				+ ", birthday=" + birthday + "]";
+		return "User [name=" + name + ", age=" + age + ", birthday=" + birthday
+				+ "]";
 	}
 
 }
